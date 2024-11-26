@@ -1,0 +1,129 @@
+.large-font-size {
+    font-size: 30px;
+}
+.mid-font-size {
+    font-size: 20px;
+}
+.small-font-size {
+    font-size: 12px;
+}
+
+.bold-font {
+    font-weight: bold;
+}
+.font-color {
+    color: #4C1B41;
+}
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    margin-bottom: 3.7rem;
+  }
+.requests-container{
+    width: 75%;
+    background-color: white;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    align-items: center;
+}
+.main-top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    padding-right: 5%;
+
+}
+.header {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 15px;
+    width: 100%;
+    align-items: flex-start;
+}
+.btn {
+    display: flex;
+    align-items: center;
+    padding: 7px 15px;
+    background-color: #D9B34D;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .btn:hover {
+    background-color: #c2a249;
+  }
+  .end-icon {
+    margin-left: 10px;
+  }
+  .line{
+    width: 100%;
+    height: 1px;
+    background-color: lightgray;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+.search-container {
+    position: relative;
+    width: 40%;
+}
+
+.search-bar {
+    width: 100%;
+    height: 35px;
+    background-color: #eeebeb;
+    border-radius: 20px;
+    padding: 6px 20px 6px 40px;
+    color: black;
+    border: none;
+    outline: none;
+    font-size: 18px;
+}
+
+.search-bar::placeholder {
+    color: black;
+}
+
+.search-icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: black;
+    font-size: 20px;
+}
+.available-content{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    max-height: 480px;
+}
+.available-box{    border: 1px solid lightgray;
+    border-radius: 8px;
+    padding: 15px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+.available-box:hover{
+    background-color: #f0f0f094;    ; 
+    border-color: #D9B34D;
+}
+.available-img{
+    width: 135px;
+    height: 135px;
+    border-radius: 50%;
+    object-fit: cover;
+}

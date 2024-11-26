@@ -1,0 +1,252 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+body {
+    font-family: 'Playfair Display', serif;
+}
+
+.large-font-size {
+    font-size: 30px;
+}
+.mid-font-size {
+    font-size: 20px;
+}
+.small-font-size {
+    font-size: 12px;
+}
+
+.bold-font {
+    font-weight: bold;
+}
+.font-color {
+    color: #4C1B41;
+}
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 3.7rem;
+}
+.event-album-container {
+    width: 75%;
+    background-color: white;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    align-items: center;
+    height: 60%;
+}
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0px 15px;
+    width: 100%;
+}
+.btn {
+    display: flex;
+    align-items: center;
+    padding: 7px 15px;
+    background-color: #D9B34D;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .btn:hover {
+    background-color: #c2a249;
+  }
+  
+  .end-icon {
+    margin-left: 10px;
+  }
+  .line{
+    width: 100%;
+    height: 1px;
+    background-color: lightgray;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .delete-icon {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.500);
+    color: white;
+    padding: 5px 5px;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 12%;
+    height: auto;
+}
+.delete-icon:hover {
+    background-color: rgba(0, 0, 0, 0.700);
+}
+  .Album-container {
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+    overflow-x: auto;
+    white-space: nowrap;
+    flex-wrap: wrap;
+    width: 95%;
+    max-height: 82%;
+}
+/* Scrollbar styles */
+.Album-container::-webkit-scrollbar {
+    height: 8px; /* Adjust the height of the scrollbar */
+}
+
+.Album-container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background of the scrollbar track */
+    border-radius: 10px; /* Rounded corners for the track */
+}
+
+.Album-container::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+.Album-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color of the scrollbar thumb on hover */
+}
+
+.Album-img-container {
+    position: relative;
+    width: 315px;
+    height: 240px;
+    display: inline-block;
+    flex: none;
+}
+.Album-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    display: block;
+    object-fit: cover;
+}
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it appears above other content */
+}
+.modal-content {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.delete-modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 40%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+.delete-modal-btn {
+    display: flex;
+    flex-direction: row;
+    width: 25%;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.close-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+@media (max-width: 1128px) {
+    .header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 0px 15px;
+        width: 100%;
+    }
+    .event-album-container {
+        width: 75%;
+        background-color: white;
+        border-radius: 30px;
+        display: flex;
+        flex-direction: column;
+        padding: 2rem;
+        align-items: center;
+        height: 40%;
+    }
+    .Album-img-container {
+        position: relative;
+        width: 90%;
+        height: 18%;
+        display: inline-block;
+        flex: none;
+    }
+    .Album-container {
+        display: flex;
+        flex-direction: row;
+        gap: 18px;
+        overflow-x: auto;
+        white-space: nowrap;
+        flex-wrap: wrap;
+        width: 95%;
+        max-height: 78%;
+        justify-content: center;
+    }
+    .Album-img-container {
+        position: relative;
+        width: 445px;
+        height: 245px;
+        display: inline-block;
+        flex: none;
+    }
+}
+
+@media (max-width: 800px) {
+    .header {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0px 15px;
+        width: 100%;
+    }
+    .event-album-container {
+        width: 75%;
+        background-color: white;
+        border-radius: 30px;
+        display: flex;
+        flex-direction: column;
+        padding: 2rem;
+        align-items: center;
+        height: 40%;
+    }
+    .Album-img-container {
+        position: relative;
+        width: 77%;
+        height: 30%;
+        display: inline-block;
+        flex: none;
+    }
+    .Album-container {
+        display: flex;
+        flex-direction: row;
+        gap: 18px;
+        overflow-x: auto;
+        white-space: nowrap;
+        flex-wrap: wrap;
+        width: 95%;
+        max-height: 78%;
+        justify-content: center;
+    }
+}

@@ -1,0 +1,67 @@
+.calender_design{
+    border-bottom: 2px ;
+    padding: 5px 15px;
+    padding-left: 2rem;
+    /* width: 150%; */
+    border: #4C1B41 solid;
+    color:#4C1B41;
+    border-radius: 30px;
+}
+
+.cal-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;    
+    gap: 25px;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    padding: 0px 5%;
+}
+
+.event_day{
+    text-align: start;
+    font-size: 25px;
+    color: #4C1B41;
+
+
+}
+ 
+.semi-line{
+    height: 5% ;
+    border: none;
+    border-top: 5px solid #4C1B41; 
+    width: 18%;
+    margin-bottom: 2%;
+    border-radius: 10px;
+    
+  }
+  .headline {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+}
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #4C1B41;
+    padding-bottom: 5px;
+  }
+
+  .bold-font {
+    font-weight: bold;
+}
+
+.large-font-size {
+  font-size: 30px;
+}
+
+.booking {
+
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center;
+}

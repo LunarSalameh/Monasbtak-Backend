@@ -1,0 +1,25 @@
+.box {
+  border-bottom: 2px ;
+  padding: 5px 15px;
+  padding-left: 2rem;
+  /* width: 100%; */
+  border: #4C1B41 solid;
+  color:#4C1B41;
+  border-radius: 30px;
+}
+  .event_attend{
+    color: #4C1B41;
+    width: 120%;
+    font-size: 25px;
+    text-align: start;
+
+  }
+  
+  .NumberBox {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
+    
+  }
+  

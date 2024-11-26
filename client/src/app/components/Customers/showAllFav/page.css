@@ -1,0 +1,300 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+body {
+    font-family: 'Playfair Display', serif;
+}
+
+.large-font-size {
+    font-size: 30px;
+}
+.mid-font-size {
+    font-size: 20px;
+}
+.small-font-size {
+    font-size: 12px;
+}
+
+.bold-font {
+    font-weight: bold;
+}
+.font-color {
+    color: #4C1B41;
+}
+.line{
+    height: 5% ;
+    border: none;
+    border-top: 5px solid #4C1B41; 
+    width: 100%;
+    margin-bottom: 2%;
+    border-radius: 10px;
+    
+  }
+.Favorite-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 60%;
+}
+.Fav-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.Fav-Box{
+    border: 2px solid lightgray;
+    padding: 10px;
+    border-radius: 5px;
+    width: 23%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    gap: 6px;
+    position: relative; 
+}
+.Fav-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    display: block;
+    object-fit: cover;
+}
+.Transparent-Box {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background-color: rgba(0, 0, 0, 0.500);
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.showall {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+}
+/* Media queries for responsiveness */
+@media (max-width: 1200px) {
+    .Favorite-container {
+        width: 85%;
+        padding-top: 10%;
+    }
+
+    .Fav-phone-view {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        max-width: 90%; /* Adjust the width as needed */
+        overflow-x: auto;
+        white-space: nowrap; /* Prevent wrapping to new lines */
+    }
+
+    /* Scrollbar styles */
+    .Fav-phone-view::-webkit-scrollbar {
+        height: 8px; /* Adjust the height of the scrollbar */
+    }
+
+    .Fav-phone-view::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Background of the scrollbar track */
+        border-radius: 10px; /* Rounded corners for the track */
+    }
+
+    .Fav-phone-view::-webkit-scrollbar-thumb {
+        background: #888; /* Color of the scrollbar thumb */
+        border-radius: 10px; /* Rounded corners for the thumb */
+    }
+
+    .Fav-phone-view::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Color of the scrollbar thumb on hover */
+    }
+
+    .Fav-Box {
+        flex: none;
+        padding: 2px;
+        margin-left: 4%;
+        width: 35%;
+    }
+
+    .Fav-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: nowrap;
+    }
+
+    .Profile-Image {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .Favorite-container {
+        width: 85%;
+        padding-top: 10%;
+    }
+
+    .Fav-phone-view {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        max-width: 90%; /* Adjust the width as needed */
+        overflow-x: auto;
+        white-space: nowrap; /* Prevent wrapping to new lines */
+    }
+
+    /* Scrollbar styles */
+    .Fav-phone-view::-webkit-scrollbar {
+        height: 8px; /* Adjust the height of the scrollbar */
+    }
+
+    .Fav-phone-view::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Background of the scrollbar track */
+        border-radius: 10px; /* Rounded corners for the track */
+    }
+
+    .Fav-phone-view::-webkit-scrollbar-thumb {
+        background: #888; /* Color of the scrollbar thumb */
+        border-radius: 10px; /* Rounded corners for the thumb */
+    }
+
+    .Fav-phone-view::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Color of the scrollbar thumb on hover */
+    }
+
+    .Fav-Box {
+        flex: none;
+        padding: 2px;
+        margin-left: 4%;
+        width: 35%;
+    }
+
+    .Fav-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: nowrap;
+    }
+
+    .Profile-Image {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media (max-width: 576px) {
+    .Favorite-container {
+        width: 85%;
+        padding-top: 10%;
+    }
+
+    .Fav-phone-view {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        max-width: 90%; /* Adjust the width as needed */
+        overflow-x: auto;
+        white-space: nowrap; /* Prevent wrapping to new lines */
+    }
+
+    /* Scrollbar styles */
+    .Fav-phone-view::-webkit-scrollbar {
+        height: 8px; /* Adjust the height of the scrollbar */
+    }
+
+    .Fav-phone-view::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Background of the scrollbar track */
+        border-radius: 10px; /* Rounded corners for the track */
+    }
+
+    .Fav-phone-view::-webkit-scrollbar-thumb {
+        background: #888; /* Color of the scrollbar thumb */
+        border-radius: 10px; /* Rounded corners for the thumb */
+    }
+
+    .Fav-phone-view::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Color of the scrollbar thumb on hover */
+    }
+
+    .Fav-Box {
+        flex: none;
+        padding: 2px;
+        margin-left: 4%;
+        width: 80%;
+    }
+
+    .Fav-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: nowrap;
+    }
+
+    .Profile-Image {
+        width: 100px;
+        height: 100px;
+    }
+}
+@media (max-width: 400px) {
+    .Favorite-container {
+        width: 85%;
+        padding-top: 10%;
+    }
+
+    .Fav-phone-view {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        max-width: 90%; /* Adjust the width as needed */
+        overflow-x: auto;
+        white-space: nowrap; /* Prevent wrapping to new lines */
+    }
+
+    /* Scrollbar styles */
+    .Fav-phone-view::-webkit-scrollbar {
+        height: 8px; /* Adjust the height of the scrollbar */
+    }
+
+    .Fav-phone-view::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Background of the scrollbar track */
+        border-radius: 10px; /* Rounded corners for the track */
+    }
+
+    .Fav-phone-view::-webkit-scrollbar-thumb {
+        background: #888; /* Color of the scrollbar thumb */
+        border-radius: 10px; /* Rounded corners for the thumb */
+    }
+
+    .Fav-phone-view::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Color of the scrollbar thumb on hover */
+    }
+
+    .Fav-Box {
+        flex: none;
+        padding: 2px;
+        margin-left: 4%;
+        width: 85%;
+    }
+
+    .Fav-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: nowrap;
+    }
+
+    .Profile-Image {
+        width: 100px;
+        height: 100px;
+    }
+}

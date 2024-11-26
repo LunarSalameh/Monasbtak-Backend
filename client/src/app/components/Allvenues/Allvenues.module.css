@@ -1,0 +1,46 @@
+.venues-container {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+/* Adjust the container for smaller screens */
+@media (max-width: 768px) {
+  .venues-container {
+    margin: 10px;
+    padding: 15px;
+  }
+}
+
+.venue-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Make the venue items adapt to smaller screens */
+.venue-item {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Adjust the header size for smaller screens */
+.venue-item h3 {
+  margin: 0;
+  color: #4c1b41;
+  font-size: 1.2em; /* Adjust font size for readability */
+}
+.venue-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .venue-item h3 {
+    font-size: 1em; /* Smaller font size for mobile */
+  }
+}

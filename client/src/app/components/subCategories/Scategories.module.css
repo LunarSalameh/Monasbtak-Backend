@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+.largeFontSize {
+  font-size: 30px;
+}
+.fontColor {
+  color: #4C1B41;
+}
+.boldFont {
+  font-weight: bold;
+}
+.line{
+  height: 5% ;
+  border: none;
+  border-top: 5px solid #4C1B41; 
+  width: 100%;
+  margin-bottom: 2%;
+  border-radius: 10px;
+}
+.container {
+  display: flex;
+  flex-direction: column; /* Keep the title above the cards */
+  align-items: center; /* Center the title horizontally */
+  padding: 20px;
+}
+.headLine{
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+}
+
+.container h2 {
+  font-size: 36px;
+  color: #4c1b41;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.cardsWrapper {
+  display: flex; /* Set this wrapper to flex */
+  flex-wrap: wrap; /* Allow cards to wrap to the next line on smaller screens */
+  justify-content: center; /* Center the cards horizontally */
+  gap: 20px; /* Space between cards */
+  width: 70%;
+}
+
+/* Cards styling */
+.sCategoryCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.3s;
+  margin: 10px; /* Reduce margin for better spacing */
+  width: 28%;
+}
+
+.sCategoryCard:hover {
+  transform: translateY(-5px);
+}
+
+.sCategoryImage {
+  width: 100%;
+  height: 80%;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  object-fit: cover;
+}
+
+.sCategoryName {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4c1b41;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sCategoryCard {
+    width: 45%; /* Change to fit 2 cards per row */
+  }
+}
+
+@media (max-width: 480px) {
+  .sCategoryCard {
+    width: 90%; /* Stack cards on smaller screens */
+  }
+
+  .container h2 {
+    font-size: 28px; /* Adjust title font size for smaller screens */
+  }
+}

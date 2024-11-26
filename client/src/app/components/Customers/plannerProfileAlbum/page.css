@@ -1,0 +1,340 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+body {
+    font-family: 'Playfair Display', serif;
+}
+
+.large-font-size {
+    font-size: 30px;
+}
+.mid-font-size {
+    font-size: 20px;
+}
+.small-font-size {
+    font-size: 12px;
+}
+
+.bold-font {
+    font-weight: bold;
+}
+.font-color {
+    color: #4C1B41;
+}
+.line{
+    height: 5% ;
+    border: none;
+    border-top: 5px solid #4C1B41; 
+    width: 100%;
+    margin-bottom: 2%;
+    border-radius: 10px;
+}
+.Show-Button {
+    background-color: #4C1B41;
+    border: none;
+    color: white;
+    padding: 6px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0px 7px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.Planner-album-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-top: 40px;
+    width: 60%;
+}
+.Album-container {
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+    max-width: 100%; 
+    overflow-x: auto;
+    white-space: nowrap; 
+}
+.Modal-Album-container {
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+    max-width: 100%;
+    max-height: 610px;
+    overflow-y: auto;
+    white-space: nowrap;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: space-between;
+}
+/* Scrollbar styles */
+.Album-container::-webkit-scrollbar {
+    height: 8px; /* Adjust the height of the scrollbar */
+}
+
+.Album-container::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Background of the scrollbar track */
+    border-radius: 10px; /* Rounded corners for the track */
+}
+
+.Album-container::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+.Album-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color of the scrollbar thumb on hover */
+}
+
+.Album-img-container {
+    position: relative;
+    width: 324px;
+    height: 240px;
+    display: inline-block; 
+    flex: none; 
+    display: none; 
+}
+
+.Album-img-container:nth-child(-n+5) {
+    display: inline-block; 
+}
+.Album-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    display: block;
+    object-fit: cover;
+}
+.showall {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 95%;
+}
+.Modal-Album-img-container {
+    position: relative;
+    width: 324px;
+    height: 240px;
+    display: inline-block; 
+    flex: none; 
+}
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it appears above other content */
+}
+  
+.modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 72%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+  
+.close-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+  
+.modal-content {
+    margin-top: 20px;
+}
+.album-sections {
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-top: 40px;
+    width: 32%;
+    padding: 10px 10px;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    align-items: center;
+}
+.section:hover {
+    background-color: #f0f0f094;
+    border-color: #4C1B41;
+}
+.section-img {
+    width: 310px;
+    height: 200px;
+    border-radius: 8px;
+    display: block;
+    object-fit: cover;
+}
+
+.image-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100; /* Ensure it appears above the showModal */
+}
+.image-modal {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    width: 80%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.full-size-img {
+    width: 80%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.prev-button, .next-button {
+    background: none;
+    border: none;
+    font-size: 30px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.prev-button {
+    left: 10px;
+}
+
+.next-button {
+    right: 10px;
+}
+
+@media (max-width: 1200px) {
+    .Planner-album-container {
+        width: 85%;
+    }
+    .Modal-Album-container {
+        display: flex;
+        flex-direction: row;
+        gap: 18px;
+        max-width: 95%;
+        max-height: 610px;
+        overflow-y: auto;
+        white-space: nowrap;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-content: space-between;
+    }
+}
+@media (max-width: 768px) {
+    .Planner-album-container {
+        width: 85%;
+    }
+    .Modal-Album-container {
+        display: flex;
+        flex-direction: row;
+        gap: 18px;
+        max-width: 95%;
+        max-height: 610px;
+        overflow-y: auto;
+        white-space: nowrap;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-content: space-between;
+    }
+}
+@media (max-width: 576px) {
+    .Planner-album-container {
+        width: 85%;
+    }
+    .showall {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 95%;
+    }
+    .Modal-Album-container {
+        display: flex;
+        flex-direction: row;
+        gap: 18px;
+        max-width: 100%;
+        max-height: 610px;
+        overflow-y: auto;
+        white-space: nowrap;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-content: space-between;
+    }
+    .Modal-Album-img-container {
+        position: relative;
+        width: 226px;
+        height: 141px;
+        display: inline-block;
+        flex: none;
+        object-fit: cover;
+    }
+}
+
+@media (max-width: 400px) {
+    .Planner-album-container {
+        width: 85%;
+    }
+    .Album-img-container {
+        position: relative;
+        width: 85%;
+        height: 195px;
+        display: inline-block;
+        flex: none;
+    }
+    .showall {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .Modal-Album-container {
+        display: flex;
+        flex-direction: row;
+        gap: 18px;
+        max-width: 100%;
+        max-height: 610px;
+        overflow-y: auto;
+        white-space: nowrap;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-content: space-between;
+    }
+    .Modal-Album-img-container {
+        position: relative;
+        width: 218px;
+        height: 141px;
+        display: inline-block;
+        flex: none;
+        object-fit: cover;
+    }
+}

@@ -1,0 +1,38 @@
+.Page-Container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5%;
+    margin-bottom: 3.7rem;
+}
+/* Media queries for responsiveness */
+@media (max-width: 1200px) {
+    .Page-Container {
+        margin-top: 5%;
+    }
+}
+
+@media (max-width: 992px) {
+    .Page-Container {
+        margin-top: 5%;
+    }
+}
+
+@media (max-width: 768px) {
+    .Page-Container {
+        margin-top: 5%;
+    }
+}
+
+@media (max-width: 576px) {
+    .Page-Container {
+        margin-top: 5%;
+    }
+}
+
+@media (max-width: 400px) {
+    .Page-Container {
+        margin-top: 5%;
+    }
+}

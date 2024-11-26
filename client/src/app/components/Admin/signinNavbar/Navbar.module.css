@@ -1,0 +1,52 @@
+/* Updated Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #f8f8f8;
+  border-bottom: 3px solid #d9b34d;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 95px;
+}
+
+.navbar_brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.navbar_name {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #d9b34d;
+}
+
+.logo {
+  height: 75px;
+  width: auto;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.5rem 1rem;
+    height: auto;
+  }
+
+  .navbar_brand {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .navbar_name {
+    font-size: 1.2rem;
+  }
+
+  .logo {
+    height: 40px;
+  }
+}

@@ -1,0 +1,81 @@
+/* table.css */
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table th,
+  .table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+    border-right: none;
+    border-left: none;
+    border-top-style: none;
+  }
+  
+  .table th {
+    background-color: #d9b34d21;
+    font-weight: bold;
+  }
+  
+  .pagination {
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    width: 85%;
+    justify-content: flex-end;
+    padding-top: 22px;
+}
+  
+  .pagination button {
+    padding: 5px 10px;
+    margin: 0 5px;
+    background-color: #d9b44da2;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+  
+  .pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .pagination button.active {
+    background-color: #d9b34d;
+  }
+  
+  .pagination span {
+    margin-left: 10px;
+  }
+  .delete-modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 35%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+  .delete-container-modal{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .row-flex{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 30%;
+  }
+  @media(max-width: 768px){
+    .pagination {
+      padding: 10px;
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      padding-top: 22px;
+  }
+  }

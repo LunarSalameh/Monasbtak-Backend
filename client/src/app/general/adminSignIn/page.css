@@ -1,0 +1,14 @@
+
+.Navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    background-color: #ffffff;
+    color: #fff;
+    /* border-bottom: 8px solid #4c1b41; */
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    height: 95px;
+    border: 5px solid #d9b34d;
+}

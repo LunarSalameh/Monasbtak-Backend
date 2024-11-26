@@ -1,0 +1,13 @@
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    margin-bottom: 3.7rem;
+    /* width: 75%; */
+  }
+  .required-label::after {
+    content: " *";
+    font-weight: bold;
+    color: rgb(203, 0, 0);
+  }

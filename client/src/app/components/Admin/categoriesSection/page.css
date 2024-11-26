@@ -1,0 +1,48 @@
+
+.large-font-size {
+    font-size: 30px;
+}
+.mid-font-size {
+    font-size: 20px;
+}
+.small-font-size {
+    font-size: 12px;
+}
+
+.bold-font {
+    font-weight: bold;
+}
+.font-color {
+    color: #4C1B41;
+}
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    margin-bottom: 3.7rem;
+  }
+.categories-container{
+    width: 75%;
+    background-color: white;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    align-items: center;
+}
+.header {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 15px;
+    width: 100%;
+    align-items: flex-start;
+}
+.line{
+    width: 100%;
+    height: 1px;
+    background-color: lightgray;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }

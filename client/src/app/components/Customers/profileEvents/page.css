@@ -1,0 +1,533 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+body {
+    font-family: 'Playfair Display', serif;
+}
+
+.large-font-size {
+    font-size: 30px;
+}
+.mid-font-size {
+    font-size: 20px;
+}
+.small-font-size {
+    font-size: 12px;
+}
+
+.bold-font {
+    font-weight: bold;
+}
+.font-color {
+    color: #4C1B41;
+}
+
+.row-felx{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.showall {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 85%;
+}
+.line{
+    height: 5% ;
+    border: none;
+    border-top: 5px solid #4C1B41; 
+    width: 100%;
+    margin-bottom: 2%;
+    border-radius: 10px;
+  }
+  .Show-Button {
+    background-color: #4C1B41;
+    border: none;
+    color: white;
+    padding: 6px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0px 7px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+  .Events-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-top: 40px;
+    width: 60%;
+}
+
+.Events-Types {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.Event-Box {
+    border: 2px solid lightgray;
+    padding: 10px;
+    border-radius: 5px;
+    width: 92%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s; /* Smooth transition */
+}
+.Event-Box:hover {
+    background-color: #f0f0f0; /* Change background color on hover */
+    border-color: #4c1b4173;
+}
+
+/* Show only the first three Event-Box elements */
+.Event-Box {
+    display: none; /* Hide all Event-Box elements by default */
+}
+
+.Event-Box:nth-child(-n+3) {
+    display: flex; /* Show only the first three Event-Box elements */
+}
+.Event-details{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 20px;
+    width: 225px;
+}
+.Event-location{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+.Event-img-container {
+    position: relative; 
+    width: 248px; 
+    height: 160px; 
+}
+
+.Event-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    display: block; 
+    object-fit: cover;
+}
+
+.Price-tag {
+    position: absolute;
+    bottom: 10px; 
+    left: 10px; 
+    background-color: rgba(0, 0, 0, 0.500);
+    color: white;
+    padding: 3px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.row-flex{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;}
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it appears above other content */
+}
+.modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 72%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+.close-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+.modal-content {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.Modal-Event-Box {
+    border: 2px solid lightgray;
+    padding: 10px;
+    border-radius: 5px;
+    width: 92%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 15px;
+    margin-top: 22px;
+    height: 560px;
+    margin-left: 45px;
+}
+.Modal-Event-img {
+    width: 50%;
+    height: 310px;
+    border-radius: 8px;
+    display: block;
+    object-fit: cover;
+    margin-left: 12px;
+    margin-top: 8%;
+}
+.Modal-Price-tag {
+    bottom: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.500);
+    color: white;
+    padding: 3px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 15%;
+    padding-bottom: 6px;
+}
+.Modal-Event-details {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    padding-left: 37px;
+    width: 48%;
+}
+.Modal-Profile-Image {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-top: 4%;
+}
+.Modal-planner-profile{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+}
+/* Media queries for responsiveness */
+@media (max-width: 1200px) {
+    .Events-container {
+        width: 85%;
+    }
+
+    .Phone-view {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        max-width: 100%; 
+        overflow-x: auto;
+        white-space: pre-wrap;
+    }
+    
+    /* Scrollbar styles */
+    .Phone-view::-webkit-scrollbar {
+        height: 8px; /* Adjust the height of the scrollbar */
+    }
+    
+    .Phone-view::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Background of the scrollbar track */
+        border-radius: 10px; /* Rounded corners for the track */
+    }
+    
+    .Phone-view::-webkit-scrollbar-thumb {
+        background: #888; /* Color of the scrollbar thumb */
+        border-radius: 10px; /* Rounded corners for the thumb */
+    }
+    
+    .Phone-view::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Color of the scrollbar thumb on hover */
+    }
+    .current-events{
+        width: 90%;
+    }
+    .Event-Box {
+        padding: 2px;
+        display: flex;
+        flex-direction: column;
+        padding-left: 20px;
+        width: 32%;
+    }
+    .Events-Types {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .Event-details {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-left: 20px;
+        width: 227px;
+        margin-bottom: 5px;
+    }
+    .previous-events{
+        width: 90%;
+    }
+    .Event-img-container {
+        position: relative;
+        width: 94%;
+        height: 50%;
+        margin-top: 5px;
+    }
+    .Event-location {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 10px;
+        margin-right: 10px;
+    }
+}
+@media (max-width: 768px) {
+    .Events-container {
+        width: 85%;
+    }
+    .Phone-view {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        max-width: 100%; 
+        overflow-x: auto;
+        white-space: pre-wrap;
+    }
+    
+    /* Scrollbar styles */
+    .Phone-view::-webkit-scrollbar {
+        height: 8px; /* Adjust the height of the scrollbar */
+    }
+    
+    .Phone-view::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Background of the scrollbar track */
+        border-radius: 10px; /* Rounded corners for the track */
+    }
+    
+    .Phone-view::-webkit-scrollbar-thumb {
+        background: #888; /* Color of the scrollbar thumb */
+        border-radius: 10px; /* Rounded corners for the thumb */
+    }
+    
+    .Phone-view::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Color of the scrollbar thumb on hover */
+    }
+    .current-events{
+        width: 90%;
+    }
+    .Event-Box {
+        padding: 2px;
+        width: 40%;
+    }
+    .Events-Types {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .Event-details {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-left: 20px;
+        width: 227px;
+        margin-bottom: 5px;
+    }
+    .previous-events{
+        width: 90%;
+    }
+    .Event-img-container {
+        position: relative;
+        width: 94%;
+        height: 50%;
+        margin-top: 5px;
+        margin-left: 8px;
+    }
+    .Event-location {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 10px;
+        margin-right: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .Events-container {
+        width: 85%;
+    }
+    .Phone-view {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        max-width: 100%; 
+        overflow-x: auto;
+        white-space: pre-wrap;
+    }
+    
+    /* Scrollbar styles */
+    .Phone-view::-webkit-scrollbar {
+        height: 8px; /* Adjust the height of the scrollbar */
+    }
+    
+    .Phone-view::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Background of the scrollbar track */
+        border-radius: 10px; /* Rounded corners for the track */
+    }
+    
+    .Phone-view::-webkit-scrollbar-thumb {
+        background: #888; /* Color of the scrollbar thumb */
+        border-radius: 10px; /* Rounded corners for the thumb */
+    }
+    
+    .Phone-view::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Color of the scrollbar thumb on hover */
+    }
+    .current-events{
+        width: 90%;
+    }
+    .showall {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 95%;
+    }
+    .Event-Box {
+        padding: 2px;
+        width: 72%;
+    }
+    .Events-Types {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .Event-details {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-left: 20px;
+        width: 227px;
+        margin-bottom: 5px;
+    }
+    .previous-events{
+        width: 90%;
+    }
+    .Event-img-container {
+        position: relative;
+        width: 94%;
+        height: 50%;
+        margin-top: 5px;
+    }
+    .Event-location {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 10px;
+        margin-right: 10px;
+    }
+}
+
+@media (max-width: 400px) {
+    .Events-container {
+        width: 85%;
+    }
+    .Phone-view {
+        display: flex;
+        flex-direction: row;
+        gap: 12px;
+        max-width: 100%; 
+        overflow-x: auto;
+        white-space: pre-wrap;
+    }
+    
+    /* Scrollbar styles */
+    .Phone-view::-webkit-scrollbar {
+        height: 8px; /* Adjust the height of the scrollbar */
+    }
+    
+    .Phone-view::-webkit-scrollbar-track {
+        background: #f1f1f1; /* Background of the scrollbar track */
+        border-radius: 10px; /* Rounded corners for the track */
+    }
+    
+    .Phone-view::-webkit-scrollbar-thumb {
+        background: #888; /* Color of the scrollbar thumb */
+        border-radius: 10px; /* Rounded corners for the thumb */
+    }
+    
+    .Phone-view::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Color of the scrollbar thumb on hover */
+    }
+    .current-events{
+        width: 90%;
+    }
+    .showall {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .Event-Box {
+        padding: 2px;
+        width: 82%;
+    }
+    .Events-Types {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    .Event-details {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-left: 20px;
+        width: 185px;
+        margin-bottom: 5px;
+        word-break: break-word;
+    }
+    .previous-events{
+        width: 90%;
+    }
+    .Event-img-container {
+        position: relative;
+        width: 94%;
+        height: 50%;
+        margin-top: 5px;
+    }
+    .Event-location {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 10px;
+        margin-right: 10px;
+    }
+
+}

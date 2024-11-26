@@ -1,0 +1,333 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+body {
+    font-family: 'Playfair Display', serif;
+}
+
+.large-font-size {
+    font-size: 30px;
+}
+.mid-font-size {
+    font-size: 20px;
+}
+.small-font-size {
+    font-size: 12px;
+}
+
+.bold-font {
+    font-weight: bold;
+}
+.font-color {
+    color: #4C1B41;
+}
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    margin-bottom: 3.7rem;
+  }
+.packages-container{
+    width: 75%;
+    background-color: white;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem;
+    align-items: center;
+}
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0px 15px;
+    width: 100%;
+}
+.btn {
+    display: flex;
+    align-items: center;
+    padding: 7px 15px;
+    background-color: #D9B34D;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .btn:hover {
+    background-color: #c2a249;
+  }
+  
+  .end-icon {
+    margin-left: 10px;
+  }
+  .line{
+    width: 100%;
+    height: 1px;
+    background-color: lightgray;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .Gird{
+    display: grid;
+    justify-items: center;
+    grid-template-rows: repeat(2, 0fr);
+  }
+  .Package-Box {
+    border: 1.5px solid lightgray;
+    padding: 15px 10px;
+    border-radius: 5px;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 15px;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s; /* Smooth transition */
+}
+.Package-Box:hover {
+    background-color: #f0f0f0; 
+    border-color: #D9B34D;
+}
+.Package-img-container {
+    position: relative; 
+    width: 248px; 
+    height: 160px; 
+}
+
+.Package-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    display: block; 
+    object-fit: cover;
+}
+.Price-tag {
+    position: absolute;
+    bottom: 10px; 
+    left: 10px; 
+    background-color: rgba(0, 0, 0, 0.500);
+    color: white;
+    padding: 3px 15px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.Package-details{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 12px;
+    width: 65%;
+}
+.Package-location{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+.Delete-icon{
+    width: 30px;
+    height: 30px;
+    color: darkgray;
+}
+.row-flex{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center ;
+    width: 105%;
+}
+.location{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    color: rgb(98, 98, 98);
+}
+.Location-icon{
+    width: 25px;
+    height: 25px;
+    color: rgb(98, 98, 98);
+}
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; 
+}
+  
+.modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 60%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow-y: scroll;
+    max-height: 90%;
+}
+.Modal-Add-package-container {
+    position: relative;
+    display: inline-block; 
+    width: 55%;
+    flex: none; 
+}
+.input{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+.close-button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+  
+.modal-content {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.delete-modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 40%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+.delete-modal-btn {
+    display: flex;
+    flex-direction: row;
+    width: 25%;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.slider {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slides {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.arrow {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.left-arrow {
+  left: 10px;
+}
+
+.right-arrow {
+  right: 10px;
+}
+
+@media (max-width: 768px) {
+    .location{
+        display: none;
+    }
+    .display{
+        display: none;
+    }
+    .row-flex {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+    }
+    .Package-details {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-left: 12px;
+        width: 65%;
+        padding-top: 15px;
+    }
+    .Package-img-container {
+        position: relative;
+        width: 255px;
+        height: 125px;
+    }
+}
+
+@media (max-width:550px){
+    .header {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 0px 15px;
+        width: 100%;
+        align-items: center;
+        gap: 5px;
+    }
+    .btn {
+        display: none;
+    }
+    .row-flex {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    .Package-Box {
+        border: 1.5px solid lightgray;
+        padding: 15px 10px;
+        border-radius: 5px;
+        width: 90%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin-bottom: 15px;
+        margin-top: 15px;
+        cursor: pointer;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+    .Package-details {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding-left: 10px;
+        width: 90%;
+        padding-top: 15px;
+    }
+    .Package-img-container {
+        position: relative;
+        width: 260px;
+        height: 95px;
+    }
+}

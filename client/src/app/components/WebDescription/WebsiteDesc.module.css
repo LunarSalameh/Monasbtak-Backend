@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+.largeFontSize {
+  font-size: 30px;
+}
+.fontColor {
+  color: #4C1B41;
+}
+.boldFont {
+  font-weight: bold;
+}
+.line{
+  height: 5% ;
+  border: none;
+  border-top: 5px solid #4C1B41; 
+  width: 100%;
+  margin-bottom: 2%;
+  border-radius: 10px;
+}
+.pageContainer{
+  margin-top: 3%;
+}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  width: 80%;
+}
+
+.card {
+  display: flex;
+  gap: 35px;
+  align-items: center;
+  padding: 10px 40px;
+  margin-bottom: 32px;
+}
+
+.card:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.card > p {
+  font-size: 20px;
+  text-align: left;
+  width: 100%;
+}
+
+.card > div {
+  width: 85%;
+}
+
+.card > div > img {
+  width: 88%;
+}
+
+@media (max-width: 768px) {
+  .card {
+    flex-direction: column !important;
+  }
+}

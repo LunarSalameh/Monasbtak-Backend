@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+.largeFontSize {
+  font-size: 30px;
+}
+.fontColor {
+  color: #4C1B41;
+}
+.boldFont {
+  font-weight: bold;
+}
+.line{
+  height: 5% ;
+  border: none;
+  border-top: 5px solid #4C1B41; 
+  width: 100%;
+  margin-bottom: 2%;
+  border-radius: 10px;
+}
+.pageContainer{
+  margin-top: 3%;
+  width: 80%;
+}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 32px 0px;
+}
+
+.Container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 20px;
+  margin-bottom: 24px;
+  justify-items: center;
+}
+
+.Container h2 {
+  grid-column: 1 / -1; /* Span across all columns */
+  font-size: 36px;
+  color: #4c1b41;
+  margin-bottom: 20px;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Category card styling */
+.categoryCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: transform 0.3s;
+    overflow: hidden;
+    text-decoration: none;
+    width: 80%;
+    height: 100%;
+}
+
+/* Add hover effect */
+.categoryCard:hover {
+  transform: translateY(-5px);
+}
+
+.cardHeader {
+  width: 100%; /* Ensure image scales with the card */
+  aspect-ratio: 3/2;
+}
+
+.categoryImage {
+  width: 100%;
+  height: 247px;
+  object-fit: cover;
+}
+
+.cardBody {
+  padding: 12px;
+  width: 100%;
+}
+
+.categoryName {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4c1b41;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .Container {
+    grid-template-columns: repeat(
+      2,
+      1fr
+    ); /* Switch to 2 columns for medium screens */
+  }
+
+  .categoryName {
+    font-size: 16px; /* Slightly smaller font for mobile */
+  }
+
+  .Container h2 {
+    font-size: 28px; /* Adjust header size for better fit */
+  }
+
+  .categoryImage {
+    height: 150px; /* Reduce image height for smaller screens */
+  }
+}
+@media (max-width: 400px) {
+  .Container{
+    grid-template-columns: repeat(1,1fr);
+  }
+  
+}

@@ -1,0 +1,355 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+body {
+    font-family: 'Playfair Display', serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+body {
+    font-family: 'Playfair Display', serif;
+}
+
+.large-font-size {
+    font-size: 30px;
+}
+.mid-font-size {
+    font-size: 20px;
+}
+.small-font-size {
+    font-size: 12px;
+}
+
+.bold-font {
+    font-weight: bold;
+}
+.font-color {
+    color: #4C1B41;
+}
+
+.row-felx{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.line{
+    height: 5% ;
+    border: none;
+    border-top: 5px solid #4C1B41; 
+    width: 100%;
+    margin-bottom: 2%;
+    border-radius: 10px;
+  }
+  .Show-Button {
+    background-color: #4C1B41;
+    border: none;
+    color: white;
+    padding: 6px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0px 7px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+  .Packages-container{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-top: 40px;
+    width: 60%;
+  }
+
+.Packages-types {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.Package-Box {
+  border: 2px solid lightgray;
+  padding: 10px;
+  border-radius: 5px;
+  width: 24%;
+  display: inline-block; 
+  flex: none; 
+  margin-bottom: 15px;
+  margin-top: 15px;
+  gap: 2px;
+  margin-right: 10px;
+  display: none; 
+}
+
+.Package-Box:nth-child(-n+8) {
+  display: inline-block; 
+}
+
+.Package-details{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 20px;
+    width: 225px;
+}
+.Package-location{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+.Package-img-container {
+  position: relative;
+  width: 100%;
+  height: 145px;
+}
+
+.Package-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  display: block;
+  object-fit: cover;
+}
+
+.Price-tag {
+  position: absolute;
+  bottom: 10px; 
+  left: 10px; 
+  background-color: rgba(0, 0, 0, 0.500);
+  color: white;
+  padding: 3px 15px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.Price-tag2 {
+  position: absolute;
+  bottom: 10px; 
+  left: 10px; 
+  background-color: rgba(0, 0, 0, 0.500); 
+  color: white;
+  padding: 3px 15px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.Transparent-Box {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background-color: rgba(0, 0, 0, 0.500);
+  padding: 5px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.showall {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 95%;
+}
+
+@media (max-width: 1200px) {
+  .Packages-container {
+    width: 85%;
+}
+.Package-img-container {
+  position: relative;
+  width: 100%;
+  height: 75%;
+}
+.Package-Box {
+  width: 40%;
+}
+.Planner-package-phone-view {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  max-width: 100%; 
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+/* Scrollbar styles */
+.Planner-package-phone-view::-webkit-scrollbar {
+  height: 8px; /* Adjust the height of the scrollbar */
+}
+
+.Planner-package-phone-view::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+  border-radius: 10px; /* Rounded corners for the track */
+}
+
+.Planner-package-phone-view::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+.Planner-package-phone-view::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scrollbar thumb on hover */
+}
+}
+
+@media (max-width: 768px) {
+  .Packages-container {
+    width: 85%;
+}
+.Package-img-container {
+  position: relative;
+  width: 100%;
+  height: 75%;
+}
+.Package-Box {
+  width: 55%;
+}
+.Planner-package-phone-view {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  max-width: 100%; 
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+/* Scrollbar styles */
+.Planner-package-phone-view::-webkit-scrollbar {
+  height: 8px; /* Adjust the height of the scrollbar */
+}
+
+.Planner-package-phone-view::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+  border-radius: 10px; /* Rounded corners for the track */
+}
+
+.Planner-package-phone-view::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+.Planner-package-phone-view::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scrollbar thumb on hover */
+}
+}
+@media (max-width: 576px) {
+  .Packages-container {
+    width: 85%;
+}
+.Package-img-container {
+  position: relative;
+  width: 100%;
+  height: 75%;
+}
+.Package-Box {
+  width: 75%;
+}
+.showall {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 95%;
+}
+.Planner-package-phone-view {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  max-width: 100%; 
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+/* Scrollbar styles */
+.Planner-package-phone-view::-webkit-scrollbar {
+  height: 8px; /* Adjust the height of the scrollbar */
+}
+
+.Planner-package-phone-view::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+  border-radius: 10px; /* Rounded corners for the track */
+}
+
+.Planner-package-phone-view::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+.Planner-package-phone-view::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scrollbar thumb on hover */
+}
+}
+
+@media (max-width: 400px) {
+
+  .Packages-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-top: 40px;
+    width: 85%;
+}
+.Package-Box {
+  border: 2px solid lightgray;
+  padding: 10px;
+  border-radius: 5px;
+  width: 75%;
+  display: inline-block;
+  flex: none;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  gap: 2px;
+  margin-right: 10px;
+}
+.Package-img-container {
+  position: relative;
+  width: 100%;
+  height: 70%;
+}
+.row-felx {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  padding-top: 5px;
+}
+.showall {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+  .Planner-package-phone-view {
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      max-width: 100%; 
+      overflow-x: auto;
+      white-space: pre-wrap;
+  }
+  
+  /* Scrollbar styles */
+  .Planner-package-phone-view::-webkit-scrollbar {
+      height: 8px; /* Adjust the height of the scrollbar */
+  }
+  
+  .Planner-package-phone-view::-webkit-scrollbar-track {
+      background: #f1f1f1; /* Background of the scrollbar track */
+      border-radius: 10px; /* Rounded corners for the track */
+  }
+  
+  .Planner-package-phone-view::-webkit-scrollbar-thumb {
+      background: #888; /* Color of the scrollbar thumb */
+      border-radius: 10px; /* Rounded corners for the thumb */
+  }
+  
+  .Planner-package-phone-view::-webkit-scrollbar-thumb:hover {
+      background: #555; /* Color of the scrollbar thumb on hover */
+  }
+} 

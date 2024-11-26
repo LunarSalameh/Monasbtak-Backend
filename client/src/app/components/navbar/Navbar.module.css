@@ -1,0 +1,135 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  background-color: #4c1b41;
+  color: #fff;
+  border-bottom: 17px solid #d9b34d;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  height: 95px;
+}
+.navbar_brand{
+  display: flex;
+  align-items: center;
+}
+.navbar_brand a{
+  text-decoration: none;
+  color: #d9b34d;
+}
+
+.logo{
+  height: 70px;
+  width: auto;
+}
+.navbar_name {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.navbar_list {
+  list-style-type: none;
+  display: flex;
+  gap: 3rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar_item a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 20px;
+}
+
+.navbar_item a:hover {
+  color: #ccc;
+}
+/* Responsive List */
+.navbarLogo img {
+  width: 100px;
+}
+
+.navbarMenuIcon {
+  display: none;
+  cursor: pointer;
+}
+
+.navbar_list {
+  list-style: none;
+  display: flex;
+  gap: 65px;
+  margin-right: 5%;
+}
+
+.navbar_item a {
+  color: white;
+  text-decoration: none;
+}g
+.icon {
+  width: 30px; /* Adjust the width as needed */
+  height: 30px; /* Adjust the height as needed */
+}
+.sidebar {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+  width: 250px;
+  height: 100%;
+  background-color: white;
+  color: #4c1b41;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  border-radius: 12px;
+}
+.sidebar_list {
+  list-style: none;
+  padding: 0;
+  font-size: 22px;
+}
+.sidebarCloseIcon {
+  display: flex;
+  justify-content: flex-end;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.sidebar_item {
+  margin: 20px 0;
+}
+
+.sidebar_item a {
+  color: #4c1b41;
+  text-decoration: none;
+}
+
+.sidebar_item a:hover {
+  text-decoration: underline;
+}
+ 
+
+@media (max-width:1200px){
+  .Navbar{
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    align-items: center;
+}
+
+  .navbar_list {
+    display: none;
+  }
+
+  .navbarMenuIcon {
+    display: block;
+  }
+  .sidebar {
+    height: 45%;
+}
+.logo{
+  height: 70px;
+  width: auto;
+}
+}
