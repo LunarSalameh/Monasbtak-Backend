@@ -1,6 +1,6 @@
 <?php
 // DATABASE CONNECTION
-$dsn = "mysql:host=127.0.0.1;dbname=MonTest";
+$dsn = "mysql:host=127.0.0.1;dbname=NadaMon";
 $dbusername = "root";
 $dbpassword = "";
 

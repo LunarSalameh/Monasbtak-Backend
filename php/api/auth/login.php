@@ -13,20 +13,20 @@ $pdo = include_once('/opt/lampp/htdocs/FullProject/php/config/dbh.inc.php');
 // Get POST data
 $data = json_decode(file_get_contents('php://input'), true);
 
-if (isset($data['username']) || isset($data['phonenumber']) && isset($data['pwd'])) {
+if (isset($data['username'])&& isset($data['pwd'])) {
     
     $username = $data['username'];
-    $phonenumber = $data['phonenumber'];
+    // $phonenumber = $data['phonenumber'];
     $password = $data['pwd'];
 
     try {
         // Query to find the user
         $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE phonenumber = :phonenumber");
+        // $stmt = $pdo->prepare("SELECT * FROM users WHERE phonenumber = :phonenumber");
 
         $stmt->bindParam(':username', $username);
-        $stmt->bindParam('phonenumber',$phonenumber);
-        
+        // $stmt->bindParam('phonenumber',$phonenumber);
+
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
