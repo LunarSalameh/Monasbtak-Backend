@@ -8,31 +8,27 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = include_once('/opt/lampp/htdocs/FullProject/php/config/dbh.inc.php');
+$pdo = include_once('C:\xampp\htdocs\Monasbtak-Backend\php\config\dbh.inc.php');
 
 // Get POST data
 $data = json_decode(file_get_contents('php://input'), true);
 
-if (isset($data['username'])&& isset($data['pwd'])) {
-    
-    $username = $data['username'];
-    // $phonenumber = $data['phonenumber'];
+if (isset($data['usernameOrPhone']) && isset($data['pwd'])) {
+    $usernameOrPhone = $data['usernameOrPhone'];
     $password = $data['pwd'];
 
     try {
-        // Query to find the user
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :username");
-        // $stmt = $pdo->prepare("SELECT * FROM users WHERE phonenumber = :phonenumber");
-
-        $stmt->bindParam(':username', $username);
-        // $stmt->bindParam('phonenumber',$phonenumber);
-
+        // Query to find the user by username or phone number
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :usernameOrPhone OR phonenumber = :usernameOrPhone");
+        $stmt->bindParam(':usernameOrPhone', $usernameOrPhone);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user) {
             // Verify the password
             if (password_verify($password, $user['pwd'])) {
+                // Remove sensitive data before sending the response
+                unset($user['pwd']);
                 echo json_encode(['success' => true, 'message' => 'Sign-in successful', 'user' => $user]);
             } else {
                 echo json_encode(['success' => false, 'message' => 'Invalid password']);
@@ -44,6 +40,6 @@ if (isset($data['username'])&& isset($data['pwd'])) {
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
     }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Invalid input']);
+    echo json_encode(['success' => false, 'message' => 'Invalid input']);
 }
 ?>
