@@ -17,7 +17,7 @@ function Profile() {
 
   useEffect(() => {
     const userId = 1; // Replace with dynamic user ID as needed
-    fetch(`http://localhost/FullProject/php/api/planner/profile.php?id=${id}`)
+    fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile.php?id=${id}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

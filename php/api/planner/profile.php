@@ -7,43 +7,39 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+// Include the database connection
+$conn = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
-// Database connection parameters
-$servername = "127.0.0.1";
-$username = "root";
-$password = "";
-$dbname = "MonTest";
+try {
+    // Get user ID from query parameters
+    $user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+    if ($user_id > 0) {
+        // Prepare and execute the query
+        $sql = "SELECT username, email, phonenumber, age, image, location, gender FROM users WHERE id = :id";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id', $user_id, PDO::PARAM_INT);
+        $stmt->execute();
 
-// Check connection
-if ($conn->connect_error) {
-    echo json_encode(['error' => 'Connection failed: ' . $conn->connect_error]);
-    exit();
-}
+        if ($stmt->rowCount() > 0) {
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// Get user ID from query parameters
-$user_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+            // Convert image to base64 if it exists
+            if (!empty($user['image'])) {
+                $user['image'] = 'data:image/jpeg;base64,' . base64_encode($user['image']);
+            }
 
-if ($user_id > 0) {
-    // Fetch user data based on user ID
-    $sql = "SELECT username, email, phonenumber, age, image, location, gender FROM users WHERE id = $user_id";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-        // Convert image to base64
-        if (!empty($user['image'])) {
-            $user['image'] = 'data:image/jpeg;base64,' . base64_encode($user['image']);
+            echo json_encode(['success' => true, 'user' => $user]);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'User not found']);
         }
-        echo json_encode(['success' => true, 'user' => $user]);
     } else {
-        echo json_encode(['success' => false, 'message' => 'User not found']);
+        echo json_encode(['success' => false, 'message' => 'Invalid user ID']);
     }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Invalid user ID']);
+} catch (PDOException $e) {
+    echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
 }
 
-$conn->close();
+// Close the connection
+$conn = null;
 ?>

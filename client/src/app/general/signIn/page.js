@@ -34,7 +34,7 @@ export default function SignIn() {
             pwd: password,
         };
 
-        fetch('http://localhost/FullProject/php/api/auth/login.php', {
+        fetch('http://localhost/Monasbtak-Backend/php/api/auth/login.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

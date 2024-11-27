@@ -31,7 +31,7 @@ export default function AdminSignIn() {
             pwd: password,
         };
 
-        fetch('http://localhost/FullProject/php/api/admin/login.php', {
+        fetch('http://localhost/Monasbtak-Backend/php/api/admin/login.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
