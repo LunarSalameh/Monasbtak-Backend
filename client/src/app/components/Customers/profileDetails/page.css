@@ -102,7 +102,7 @@ body {
     border-radius: 8px;
     border: 1px solid lightgray;
 }
-@media (max-width: 1200px) {
+@media (max-width: 1050px) {
     .Profile-Container {
         flex-direction: column;
         align-items: center;
@@ -132,7 +132,7 @@ body {
     }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 1050px) {
     .Profile-Container {
         padding-left: 5px;
     }
@@ -149,6 +149,9 @@ body {
 
     .Info-Details {
         font-size: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
     }
 
     .Profile-Image {

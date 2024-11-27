@@ -6,6 +6,7 @@ import { FaPhone, FaLocationDot } from "react-icons/fa6";
 import { GrUserManager } from "react-icons/gr";
 import { TbGenderBigender } from "react-icons/tb";
 import { Icon } from '@iconify/react';
+
 import { IoClose } from "react-icons/io5";
 
 function ProfileDetails({ user }) {

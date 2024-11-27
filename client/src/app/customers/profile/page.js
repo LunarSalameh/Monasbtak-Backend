@@ -6,7 +6,11 @@ import ProfileDetails from '../../components/Customers/profileDetails/page';
 import Events from '../../components/Customers/profileEvents/page';
 import Favorite from '../../components/Customers/profileFavorite/page';
 import { useSearchParams } from 'next/navigation';
+import { OrbitProgress } from 'react-loading-indicators';
+
 import './page.css';
+
+
 
 
 function Profile() {
@@ -16,7 +20,12 @@ function Profile() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const userId = 1; // Replace with dynamic user ID as needed
+    // console.log('User ID from URL:', id);
+    if (!id) {
+      setError('User ID is missing in the URL.');
+      return;
+    }
+
     fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile.php?id=${id}`)
       .then((response) => {
         if (!response.ok) {
@@ -28,14 +37,22 @@ function Profile() {
         if (data.success) {
           setUser(data.user);
         } else {
+          setError(data.message);
           console.error('Error fetching user:', data.message);
         }
       })
-      .catch((error) => console.error('Failed to fetch user:', error));
-  }, []);
+      .catch((error) => {
+        setError('Failed to fetch user data');
+        console.error('Failed to fetch user:', error);
+      });
+  }, [id]);
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
-    <div>
+    <>
       <Navbar />
       <div className='Page-Container'>
         {user ? (
@@ -45,12 +62,15 @@ function Profile() {
             <Favorite userId={user.id} />
           </>
         ) : (
-          <p>Loading...</p>
+          <>
+            <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
+          </>
         )}
       </div>
       <Footer />
-    </div>
+    </>
   );
 }
+
 
 export default Profile;

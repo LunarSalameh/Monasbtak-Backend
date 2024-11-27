@@ -62,16 +62,43 @@ export default function AdminSignIn() {
 
     return (
         <>
-            <Navbar />
-            <div className="p-8 pb-20 ">
+            <Navbar/>
+            <div className="m-10  h-fit bg-white rounded-xl shadow-md ">
+                <div className=" grid grid-cols-[0.5fr,1fr] max-md:grid-cols-1 justify-center ">
+                    <div className='max-md:hidden'>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlnsXlink="http://www.w3.org/1999/xlink"
+                            id="visual"
+                            viewBox="0 0 540 540"
+                            width="540"
+                            height="540"
+                            version="1.1"
+                            className='rounded-xl w-[124%]'
+
+                            
+                            >
+                            <g transform="translate(0, 0) scale(0.8)">
+                                <path
+                                d="M639.8 -300C734.1 -206.2 649.8 60.2 513.4 240.7C377 421.3 188.5 516.2 14.7 507.7C-159.1 499.2 -318.1 387.3 -416.3 228.8C-514.4 70.3 -551.7 -134.8 -472.1 -220.1C-392.6 -305.4 -196.3 -270.8 38.2 -292.9C272.8 -315 545.6 -393.8 639.8 -300"
+                                fill="#d9b34d"
+                                />
+                            </g>
+                            <g transform="translate(100, 660) scale(0.4) rotate(185)">
+                                <path
+                                d="M639.8 -300C734.1 -206.2 649.8 60.2 513.4 240.7C377 421.3 188.5 516.2 14.7 507.7C-159.1 499.2 -318.1 387.3 -416.3 228.8C-514.4 70.3 -551.7 -134.8 -472.1 -220.1C-392.6 -305.4 -196.3 -270.8 38.2 -292.9C272.8 -315 545.6 -393.8 639.8 -300"
+                                fill="#d9b34d"
+                                />
+                            </g>
+
+                            
+
+                            
+                        </svg>
  
-            <div className="p-10">
-                <div className="w-[45%] m-auto bg-white rounded-2xl shadow-xl shadow-gray-500">
-                    <div className="flex flex-col  gap-2 w-full px-8 py-10 md:p-8 justify-center ">
-                        <div className="text-center">
-                            <div className="text-lg my-2 font-bold text-[30px]">Hello Admin</div>
-                        </div>
-                        
+                    </div>
+                    
+                    <div className="flex flex-col justify-center">
                         <>
                         {message && (
                             <div className=" text-red-600 border-red-600 border-solid border-2 rounded-md  bg-red-100 py-2 mx-4 text-center p-0 m-0">
@@ -80,20 +107,21 @@ export default function AdminSignIn() {
                         )}
                         </>
                         
-                        <form onSubmit={handleSignIn} className="flex flex-col">
-                            <label htmlFor="userName" className="my-3 font-bold">Username</label>
-                            <input 
-                            type="text" 
-                            id="userName" 
-                            placeholder="Enter UserName" 
-                            className="px-5 py-2 rounded-full bg-white border-[#4c1b41] border-2"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            required
-                            />
-
+                        <form onSubmit={handleSignIn} className="flex flex-col gap-5 justify-evenly   my-16 px-16 w-full h-full">
+                            <div className='flex flex-col'>
+                                <label htmlFor="userName" className="my-3 font-bold text-xl">Username</label>
+                                <input 
+                                type="text" 
+                                id="userName" 
+                                placeholder="Enter Username" 
+                                className="px-5 py-2 rounded-full bg-white border-[#4c1b41] border-2"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
+                                />
+                            </div   >
                             <div className="flex flex-col relative">
-                                <label htmlFor="password" className="my-2 font-bold">Password</label>
+                                <label htmlFor="password" className="my-2 font-bold text-xl">Password</label>
                                 <div className="relative">
                                     <input 
                                     type={showPassword ? "text" : "password"} 
@@ -151,14 +179,13 @@ export default function AdminSignIn() {
                                 </div>
                             </div>
 
-                            <div className="flex flex-col items-center gap-4">
-                                <button type="submit" className="bg-[#d9b34d] px-10 py-3 mt-4 rounded-full text-center text-white w-[25%]">Sign In</button>
+                            <div className="flex flex-col items-center gap-4 ">
+                                <button type="submit" className="bg-[#d9b34d] px-10 py-3 mt-4 rounded-full text-center text-white w-full">Sign In</button>
                             </div>
                         </form>
                         
                     </div>
                 </div>
-            </div>
         </div>
     </>
     );

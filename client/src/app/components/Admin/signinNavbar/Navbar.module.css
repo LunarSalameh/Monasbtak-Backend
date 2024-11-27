@@ -4,7 +4,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #f8f8f8;
+  background-color: #ffff;
   border-bottom: 3px solid #d9b34d;
   border-radius: 0 0 12px 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -15,7 +15,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 100%;
 }
 
@@ -38,7 +38,7 @@
   }
 
   .navbar_brand {
-    flex-direction: column;
+    /* flex-direction: column; */
     gap: 0.5rem;
   }
 

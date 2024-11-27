@@ -11,7 +11,7 @@ const Navbar = () => {
     <nav className={stl.navbar}>
       <div className={stl.navbar_brand}>
         <img src="/Golden-logo.png" alt="Logo" className={stl.logo} />
-        <span className={stl.navbar_name}>Admin Dashboard</span>
+        <span className={stl.navbar_name}>Admin</span>
       </div>
     </nav>
   );
