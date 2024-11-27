@@ -10,11 +10,11 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 
-$conn = include_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
+$pdo = include_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
 // Fetch Data the users table
 $sql = "SELECT id, username, email, pwd FROM users";
-$stmt = $conn->prepare($sql);
+$stmt = $pdo->prepare($sql);
 $stmt->execute();
 
 $users = $stmt->fetchAll(PDO::FETCH_ASSOC); // Fetch data as associative array
