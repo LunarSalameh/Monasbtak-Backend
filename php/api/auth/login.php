@@ -18,16 +18,28 @@ if (isset($data['usernameOrPhone']) && isset($data['pwd'])) {
     $password = $data['pwd'];
 
     try {
-        // Query to find the user by username or phone number
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = :usernameOrPhone OR phonenumber = :usernameOrPhone");
+        
+        // check both tables 
+        $stmt = $pdo->prepare("(
+            SELECT 'customer' AS accountType, id, username, phonenumber, pwd, gender, account_type FROM users WHERE username = :usernameOrPhone OR phonenumber = :usernameOrPhone
+        )
+        UNION
+        (
+            SELECT 'planner' AS accountType, id, username, phonenumber, pwd, gender, account_type FROM planners WHERE username = :usernameOrPhone OR phonenumber = :usernameOrPhone
+        )");
+
         $stmt->bindParam(':usernameOrPhone', $usernameOrPhone);
         $stmt->execute();
+        
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
+
         if ($user) {
+
+            $user['accountType'] = $user['accountType'] ?? NULL;
+            
             // Verify the password
             if (password_verify($password, $user['pwd'])) {
-                // Remove sensitive data before sending the response
                 unset($user['pwd']);
                 echo json_encode(['success' => true, 'message' => 'Sign-in successful', 'user' => $user]);
             } else {
@@ -37,9 +49,12 @@ if (isset($data['usernameOrPhone']) && isset($data['pwd'])) {
             echo json_encode(['success' => false, 'message' => 'User not found']);
         }
     } catch (PDOException $e) {
+
+        error_log("Database error: " . $e->getMessage());
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
     }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Invalid input']);
+    echo json_encode(['success' => false, 'message' => 'Invalid input']);
 }
+
 ?>

@@ -13,6 +13,8 @@ export default function SignUp() {
     const [gender , setGender] = useState('');
     const [message, setMessage] = useState('');
     const [isTransitioning, setIsTransitioning] = useState(false);
+
+    const [accountType,setAccountType] = useState('')
     
     const [showPassword, setShowPassword] = useState(false);
     
@@ -21,7 +23,7 @@ export default function SignUp() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!username || !password || !retypePassword || !phonenumber || !gender) {
+        if (!username || !password || !retypePassword || !phonenumber || !gender || !accountType) {
             setMessage('All fields are required');
             return;
         }
@@ -36,6 +38,7 @@ export default function SignUp() {
             pwd: password,
             phonenumber,
             gender,
+            account_type: accountType
         };
 
         
@@ -255,17 +258,33 @@ export default function SignUp() {
                             </div>
                         </div>
 
-                        {/* <div className="flex flex-col gap-2 mt-4">
+                        <div className="flex flex-col gap-2 mt-4">
                             <div className="font-bold">Account Type:</div>
 
                             <div className="flex items-center gap-4">
                                 <label className="flex items-center gap-2">
-                                    <input type="radio" name="userType" value="Customer" className="text-[#4c1b41]"/> Customer</label>
+                                    <input 
+                                        type="radio" 
+                                        name="userType" 
+                                        value="customer" 
+                                        className="text-[#4c1b41]"
+                                        checked = {accountType === 'customer'}
+                                        onChange={(e) => setAccountType(e.target.value)}
+                                    /> Customer
+                                </label>
 
                                 <label className="flex items-center gap-2">
-                                    <input type="radio" name="userType" value="Other" className="text-[#4c1b41]"/> Other (planner, venue, or vendor)</label>
+                                    <input 
+                                        type="radio" 
+                                        name="userType" 
+                                        value="planner" 
+                                        className="text-[#4c1b41]"
+                                        checked = {accountType === 'planner'}
+                                        onChange={(e) => setAccountType(e.target.value)}
+                                    /> Planner
+                                </label>
                             </div>
-                        </div> */}
+                        </div>
 
                         <div className="flex flex-col items-center gap-4">
                             <button type="submit" className="bg-[#4C1B41] px-10 py-3 mt-4 rounded-full text-center text-white w-full">Sign Up</button>

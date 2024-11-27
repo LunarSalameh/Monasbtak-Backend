@@ -14,11 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get POST data
     $data = json_decode(file_get_contents('php://input'), true);
 
-    if (isset($data['username']) && isset($data['pwd']) && isset($data['phonenumber']) && isset($data['gender'])) {
+    if (isset($data['username']) && isset($data['pwd']) && isset($data['phonenumber']) && isset($data['gender']) && isset($data['account_type'])) {
         $username = $data['username'];
         $password = $data['pwd'];
         $phonenumber = $data['phonenumber'];
         $gender = $data['gender'];
+        $accountType = $data['account_type'];
+        $status = "Pending";
 
         // Validate password
         $passwordPattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/';
@@ -50,21 +52,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
 
-            // Prepare the insert statement
-            $sql = "INSERT INTO users (username, pwd, phonenumber, gender) VALUES (:username, :pwd, :phonenumber, :gender)";
-            $stmt = $pdo->prepare($sql);
+            error_log("$accountType");
+            if ($accountType == "customer"){
+                $sql = "INSERT INTO users (username, pwd, phonenumber, gender, account_type) VALUES (:username, :pwd, :phonenumber, :gender, :account_type)";
 
-            // Bind parameters
-            $stmt->bindParam(':username', $username);
-            $stmt->bindParam(':pwd', $password);
-            $stmt->bindParam(':phonenumber', $phonenumber);
-            $stmt->bindParam(':gender', $gender);
+                // Prepare the insert statement
+                $stmt = $pdo->prepare($sql);
+
+                // Bind parameters
+                $stmt->bindParam(':username', $username);
+                $stmt->bindParam(':pwd', $password);
+                $stmt->bindParam(':phonenumber', $phonenumber);
+                $stmt->bindParam(':gender', $gender);
+                $stmt->bindParam(':account_type', $accountType);
+
+            } else {
+                $sql = "INSERT INTO planners (username, pwd, phonenumber, gender, status, account_type) VALUES (:username, :pwd, :phonenumber, :gender, :status, :account_type)";
+    
+                // Prepare the insert statement
+                $stmt = $pdo->prepare($sql);
+
+                // Bind parameters
+                $stmt->bindParam(':username', $username);
+                $stmt->bindParam(':pwd', $password);
+                $stmt->bindParam(':phonenumber', $phonenumber);
+                $stmt->bindParam(':gender', $gender);
+                $stmt->bindParam(':status', $status);
+                $stmt->bindParam(':account_type', $accountType);
+
+
+            }
+            
 
             // Execute the query
             if ($stmt->execute()) {
-                echo json_encode(['success' => 'User registered successfully']);
+                echo json_encode(['success' => 'registered successfully']);
             } else {
-                echo json_encode(['error' => 'Failed to register user']);
+                echo json_encode(['error' => 'Failed to register ']);
             }
         } catch (PDOException $e) {
             echo json_encode(['error' => 'Failed to register user: ' . $e->getMessage()]);
@@ -76,6 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!isset($data['pwd'])) $missing_fields[] = 'pwd';
         if (!isset($data['phonenumber'])) $missing_fields[] = 'phonenumber';
         if (!isset($data['gender'])) $missing_fields[] = 'gender';
+        if (!isset($data['account_type'])) $missing_fields[] = 'account_type';
         error_log('Missing fields: ' . implode(', ', $missing_fields));
 
         echo json_encode(['error' => 'Invalid input']);

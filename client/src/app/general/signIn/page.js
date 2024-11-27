@@ -48,7 +48,11 @@ export default function SignIn() {
                 if (data.success) {
                     // Display success message and redirect
                     localStorage.setItem('message', `Welcome, ${data.user.username}!`);
-                    router.push(`/customers/landingPage?id=${data.user.id}`);
+                    if (data.user.accountType === 'planner') {
+                        router.push(`/planners/home?id=${data.user.id}`);
+                    } else {
+                        router.push(`/customers/landingPage?id=${data.user.id}`);
+                    }
                 } else {
                     // Display error message from backend
                     setMessage(data.message || 'Invalid credentials.');

@@ -8,7 +8,7 @@ const LandingPage = () => {
 
     useEffect(() => {
         if (id) {
-            fetch(`http://localhost/backend2/profile.php?id=${id}`)
+            fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile.php?id=${id}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
