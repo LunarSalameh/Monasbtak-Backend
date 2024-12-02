@@ -1,5 +1,6 @@
-'use client';
-import {React , useState} from 'react'
+"use client";
+
+import React, { useState, useEffect } from "react";
 import './page.css'
 import Table from '../table/page'
 import { Icon } from '@iconify/react'
@@ -9,137 +10,107 @@ import { IoClose } from "react-icons/io5";
 
 function page() {
   const [Edit, setEdit] = useState(false);
+  const [Users, setAllUsers] = useState([]);
 
-  const openEdit = () => {
-      setEdit(true);
-  }
+  const [DeleteUser, setDeleteUser] = useState(null); 
+
+  const openEdit = (user) => {
+    setEdit(true);
+    setDeleteUser(user);
+  };
+
   const closeEdit = () => {
     setEdit(false);
-  }
-  const [AddUser, setAddUser] = useState(false);
-    const handleAddUser = () => {
-        setAddUser(true);
-    };
-    const handleCloseAddUser = () => {
-        setAddUser(false);
-    };
-    const data = [
-        {
-            name: 'Jane Cooper',
-            location: 'Amman',
-            phone: '0791234567',
-            email: 'jane@microsoft.com',
-            type: 'Planner',
-            image: '/customer_image.jpg',
-            edit: <button className='delete-btn-table' onClick={openEdit}><Icon icon="hugeicons:delete-02" className='delete-icon'/></button>,
-        },
-        {
-            name: 'Jane Cooper',
-            location: 'Amman',
-            phone: '0791234567',
-            email: 'jane@microsoft.com',
-            type: 'Customer',
-            image: '/customer_image.jpg',
-            edit: <button className='delete-btn-table' onClick={openEdit}><Icon icon="hugeicons:delete-02" className='delete-icon'/></button>,
-        },
-        {
-            name: 'Jane Cooper',
-            location: 'Amman',
-            phone: '0791234567',
-            email: 'jane@microsoft.com',
-            type: 'Planner',
-            image: '/customer_image.jpg',
-            edit: <button className='delete-btn-table' onClick={openEdit}><Icon icon="hugeicons:delete-02" className='delete-icon'/></button>,
-        },
-        {
-            name: 'Jane Cooper',
-            location: 'Amman',
-            phone: '0791234567',
-            email: 'jane@microsoft.com',
-            type: 'Planner',
-            image: '/customer_image.jpg',
-            edit: <button className='delete-btn-table' onClick={openEdit}><Icon icon="hugeicons:delete-02" className='delete-icon'/></button>,
-        },
-        {
-            name: 'Jane Cooper',
-            location: 'Amman',
-            phone: '0791234567',
-            email: 'jane@microsoft.com',
-            type: 'Planner',
-            image: '/customer_image.jpg',
-            edit: <button className='delete-btn-table' onClick={openEdit}><Icon icon="hugeicons:delete-02" className='delete-icon'/></button>,
+    setDeleteUser(null); 
+  };
 
-        },
-        {
-            name: 'Jane Cooper',
-            location: 'Amman',
-            phone: '0791234567',
-            email: 'jane@microsoft.com',
-            type: 'Customer',
-            image: '/customer_image.jpg',
-            edit: <button className='delete-btn-table' onClick={openEdit}><Icon icon="hugeicons:delete-02" className='delete-icon'/></button>,
+  const [Addplanner, setAddPlanner] = useState(false);
 
-        },
-        {
-            name: 'Jane Cooper',
-            location: 'Amman',
-            phone: '0791234567',
-            email: 'jane@microsoft.com',
-            type: 'Customer',
-            image: '/customer_image.jpg',
-            edit: <button className='delete-btn-table' onClick={openEdit}><Icon icon="hugeicons:delete-02" className='delete-icon'/></button>,
+  const handleAddPlanner = () => {
+    setAddPlanner(true);
+  };
+  const handleCloseAddPlanner = () => {
+    setAddPlanner(false);
+  };
 
-        },
-        {
-            name: 'Jane Cooper',
-            location: 'Amman',
-            phone: '0791234567',
-            email: 'jane@microsoft.com',
-            type: 'Planner',
-            image: '/customer_image.jpg',
-            edit: <button className='delete-btn-table' onClick={openEdit}><Icon icon="hugeicons:delete-02" className='delete-icon'/></button>,
-
-        },
-      ];
-      
-      const columns = [
-        {
-          Header: 'User Name',
-          accessor: 'name',
-        },
-        {
-          Header: 'Location',
-          accessor: 'location',
-        },
-        {
-            Header: 'Phone Number',
-            accessor: 'phone',
-        },
-        {
-          Header: 'Email',
-          accessor: 'email',
-        },
-        {
-          Header: 'User Type',
-          accessor: 'type',
-        },
-        {
-          Header: 'Profile Image',
-          accessor: 'image',
-        },
-        {
-          Header:'',
-          accessor: 'edit',
+  useEffect(() => {
+    fetch("http://localhost/Monasbtak-Backend/php/api/admin/getUsers.php")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-      ];
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          const formattedData = data.users.map((user) => ({
+            ...user,
+            edit: (
+              <button
+                className="delete-btn-table"
+                onClick={() => openEdit(user)} 
+              >
+                <Icon icon="hugeicons:delete-02" className="delete-icon" />
+              </button>
+            ),
+          }));
+          setAllUsers(formattedData);
+        } else {
+          console.error(data.message || "Failed to fetch users.");
+        }
+      })
+      .catch((error) => console.error("Error fetching users:", error));
+  }, []);
+
+  const handleDeleteUser = () => {
+    if (!DeleteUser) return;
+
+    fetch("http://localhost/Monasbtak-Backend/php/api/admin/deleteUser.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: DeleteUser.username,
+        account_type: DeleteUser.account_type,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
+          // alert(data.message);
+          setAllUsers((prevUsers) =>
+            prevUsers.filter((user) => user.username !== DeleteUser.username)
+          );  
+          closeEdit();
+        } else {
+          alert(`Error: ${data.message}`);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  const columns = [
+    { Header: "User Name", accessor: "username" },
+    { Header: "Email", accessor: "email" },
+    { Header: "Phone Number", accessor: "phonenumber" },
+    { Header: "Gender", accessor: "gender" },
+    { Header: "Age", accessor: "age" },
+    { Header: "Status", accessor: "action" },
+    { Header: "Account Type", accessor: "account_type" },
+    { Header: "", accessor: "edit" },
+  ];
+
   return (
     <div className='page-container'>
       <div className='users-container'>
         <div className='main-top'>
             <div className='header'>
             <span className='large-font-size bold-font'>All Users</span>
-            <button className='light-btn mid-font-size ' onClick={handleAddUser}>
-                Add user
+            <button className='light-btn mid-font-size ' onClick={handleAddPlanner}>
+                Add Planner
                 <Icon icon="hugeicons:upload-03" className='end-icon' />
             </button>
             </div>
@@ -150,40 +121,44 @@ function page() {
         </div>
         <hr className='line'/>
         <div className='table-container'>
-          <Table columns={columns} data={data} />
+          <Table columns={columns} data={Users} />
         </div>
       </div>
-      {AddUser && (
+      {Addplanner && (
         <div className="modal-overlay">
         <div className="modal">
-          <button className="close-button" onClick={handleCloseAddUser}><IoClose /></button>
+          <button className="close-button" onClick={handleCloseAddPlanner}><IoClose /></button>
           <span className='XL-font-size bold-font'>Add New Planner</span>
           <hr className='line'/>
           <div className="modal-content">
+            
+            {/** USERNAME */}
             <div className='Modal-Add-package-container'>
-              <span>First Name</span>
+              <span>Username</span>
               <input type='text' className='input' />
             </div>
-            <div className='Modal-Add-package-container'>
-              <span>Last Name</span>
-              <input type='text' className='input' />
-            </div>
-            <div className='Modal-Add-package-container'>
+            {/* <div className='Modal-Add-package-container'>
               <span>User Type</span>
               <select className='input' >
                 <option value=''>Select User Type</option>
                 <option value='Planner'>Planner</option>
               </select>
-            </div>
+            </div> */}
+
+            {/** EMAIL */}
             <div className='Modal-Add-package-container'>
               <span>Email</span>
               <input type='email' className='input' />
             </div>
+
+              {/** PASSWORD */}
             <div className='Modal-Add-package-container'>
                 <span>Password</span>
                 <input type='password' className='input' />
             </div>
-            <div className='Modal-Add-package-container'>
+
+
+            {/* <div className='Modal-Add-package-container'>
                   <span>Date of Birth</span>
                   <div className='dob-container'>
                     <input type='number' className='input dob-input' placeholder='DD' min='1' max='31' />
@@ -204,9 +179,11 @@ function page() {
                   </select>
                     <input type='number' className='input dob-input' placeholder='YYYY' min='1940' max={new Date().getFullYear()} />
                   </div>
-                </div>
+              </div> */}
+
+              {/* SUBMIT PLANNER */}
             <button className='btn'>
-              Add User
+              Add Planner
             </button>
           </div>
         </div>
@@ -217,9 +194,9 @@ function page() {
           <div className="modal-delete">
             <button className="close-button" onClick={closeEdit}><IoClose /></button>
             <div className='delete-container-modal'>
-              <span className='mid-font-size bold-font'>Are you sure you want to delete this user</span>
+              <span className='mid-font-size bold-font'>Are you sure you want to delete {DeleteUser?.username}?</span>
               <div className='delete-row-flex'>
-                <button className='btn'>Yes</button>
+                <button className='btn' onClick={handleDeleteUser}>Yes</button>
                 <button className='btn' onClick={closeEdit}>No</button>
               </div>
             </div>

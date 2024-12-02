@@ -7,6 +7,8 @@ import { FiPackage } from "react-icons/fi";
 import { VscRequestChanges } from "react-icons/vsc";
 import { LuPackageCheck ,LuPackagePlus } from "react-icons/lu";
 import { HiOutlineViewList } from "react-icons/hi";
+import { IoPersonAddSharp } from "react-icons/io5";
+
 
 export default function Sidebar () {
     const [open, setOpen] = useState(true);
@@ -22,6 +24,7 @@ export default function Sidebar () {
                 { title: "Packages Available", src:<LuPackageCheck />, path: "/admin/plannerPackagesAvailable" }
               ]
         },
+        {title: "Pending Planners", src:<IoPersonAddSharp /> , path:"/admin/pendingPlanner"},
         {title: "All Events", src:<FaRegCalendar /> , path:"/admin/events"},
         // {title: "Revenue", src:<FaDollarSign />, path:"/admin/revenue" }
     ]

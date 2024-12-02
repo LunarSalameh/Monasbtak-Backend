@@ -21,11 +21,11 @@ if (isset($data['usernameOrPhone']) && isset($data['pwd'])) {
         
         // check both tables 
         $stmt = $pdo->prepare("(
-            SELECT 'customer' AS accountType, id, username, phonenumber, pwd, gender, account_type FROM users WHERE username = :usernameOrPhone OR phonenumber = :usernameOrPhone
+            SELECT 'customer' AS accountType, id, username, phonenumber, pwd, gender, account_type, NULL as action FROM users WHERE username = :usernameOrPhone OR phonenumber = :usernameOrPhone
         )
         UNION
         (
-            SELECT 'planner' AS accountType, id, username, phonenumber, pwd, gender, account_type FROM planners WHERE username = :usernameOrPhone OR phonenumber = :usernameOrPhone
+            SELECT 'planner' AS accountType, id, username, phonenumber, pwd, gender, account_type , action FROM planners WHERE username = :usernameOrPhone OR phonenumber = :usernameOrPhone
         )");
 
         $stmt->bindParam(':usernameOrPhone', $usernameOrPhone);
@@ -38,6 +38,17 @@ if (isset($data['usernameOrPhone']) && isset($data['pwd'])) {
 
             $user['accountType'] = $user['accountType'] ?? NULL;
             
+            if ($user['accountType'] === 'planner' && $user['action'] !== 'Accepted') {
+                if ($user['action'] === 'Rejected'){
+                    echo json_encode(['success' => false, 'message' => 'Please Signup First']);
+                }
+                else if ($user['action'] === 'Pending'){
+                    echo json_encode(['success' => false, 'message' => 'Your account has not been approved yet.']);
+                }
+                exit;
+            }
+
+
             // Verify the password
             if (password_verify($password, $user['pwd'])) {
                 unset($user['pwd']);
@@ -49,7 +60,6 @@ if (isset($data['usernameOrPhone']) && isset($data['pwd'])) {
             echo json_encode(['success' => false, 'message' => 'User not found']);
         }
     } catch (PDOException $e) {
-
         error_log("Database error: " . $e->getMessage());
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
     }

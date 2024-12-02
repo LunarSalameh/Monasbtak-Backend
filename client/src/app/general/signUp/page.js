@@ -7,14 +7,20 @@ import Link from 'next/link';
 
 export default function SignUp() {
     const [username, setUsername] = useState('');
+    const [email,setEmail] = useState('');
+
     const [password, setPassword] = useState('');
     const [retypePassword, setRetypePassword] = useState('');
+
     const [phonenumber, setPhonenumber] = useState('');
     const [gender , setGender] = useState('');
+
     const [message, setMessage] = useState('');
     const [isTransitioning, setIsTransitioning] = useState(false);
 
-    const [accountType,setAccountType] = useState('')
+    const [accountType,setAccountType] = useState('');
+
+    const [resume, setResume] = useState('');
     
     const [showPassword, setShowPassword] = useState(false);
     
@@ -23,10 +29,15 @@ export default function SignUp() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!username || !password || !retypePassword || !phonenumber || !gender || !accountType) {
+        if (!username || !email || !password || !retypePassword || !phonenumber || !gender || !accountType) {
             setMessage('All fields are required');
             return;
         }
+        if (accountType == 'planner' && !resume){
+            setMessage('Please upload your resume as a planner');
+            return;
+        }
+
 
         if (password !== retypePassword) {
             setMessage('Passwords do not match');
@@ -35,14 +46,15 @@ export default function SignUp() {
 
         const data = {
             username,
+            email,
             pwd: password,
             phonenumber,
             gender,
-            account_type: accountType
+            account_type: accountType,
+            resume,
         };
 
         
-
         try {
             const response = await fetch('http://localhost/Monasbtak-Backend/php/api/auth/register.php', {
                 method: 'POST',
@@ -99,6 +111,18 @@ export default function SignUp() {
                               className="px-5 py-2 rounded-full bg-white border-[#4c1b41] border-2"
                               value={username}
                               onChange={(e) => setUsername(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label htmlFor="email" className="my-3 font-bold">Email</label>
+                            <input 
+                              type="email" 
+                              id="email" 
+                              placeholder="Enter your Email" 
+                              className="px-5 py-2 rounded-full bg-white border-[#4c1b41] border-2"
+                              value={email}
+                              onChange={(e) => setEmail(e.target.value)}
                             />
                         </div>
 
@@ -232,15 +256,17 @@ export default function SignUp() {
                             />
                         </div>
 
+                        
+                        <div className='grid grid-cols-2 mx-2 mb-2 mt-1 gap-5 '>
                         <div className="flex flex-col gap-2 mt-4">
                             <div className="font-bold">Gender:</div>
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-4 ">
                                 <label className="flex items-center gap-2">
                                     <input 
                                         type="radio" 
                                         name="gender" 
                                         value="Male" 
-                                        className="text-[#4c1b41]" 
+                                        className="appearance-none h-2 w-2 border border-gray-500 rounded-full checked:bg-[#4c1b41] checked:border-[#4c1b41] focus:outline-none checked:ring-1 checked:ring-offset-2 checked:ring-[#4c1b41]" 
                                         checked={gender === 'Male'}
                                         onChange={(e) => setGender(e.target.value)}
                                     /> Male
@@ -250,7 +276,7 @@ export default function SignUp() {
                                         type="radio" 
                                         name="gender" 
                                         value="Female" 
-                                        className="text-[#4c1b41]" 
+                                        className="appearance-none h-2 w-2 border border-gray-500 rounded-full checked:bg-[#4c1b41] checked:border-[#4c1b41] focus:outline-none checked:ring-1 checked:ring-offset-2 checked:ring-[#4c1b41]" 
                                         checked={gender === 'Female'}
                                         onChange={(e) => setGender(e.target.value)}
                                     /> Female
@@ -267,7 +293,7 @@ export default function SignUp() {
                                         type="radio" 
                                         name="userType" 
                                         value="customer" 
-                                        className="text-[#4c1b41]"
+                                        className="appearance-none h-2 w-2 border border-gray-500 rounded-full checked:bg-[#4c1b41] checked:border-[#4c1b41] focus:outline-none checked:ring-1 checked:ring-offset-2 checked:ring-[#4c1b41]"
                                         checked = {accountType === 'customer'}
                                         onChange={(e) => setAccountType(e.target.value)}
                                     /> Customer
@@ -278,13 +304,29 @@ export default function SignUp() {
                                         type="radio" 
                                         name="userType" 
                                         value="planner" 
-                                        className="text-[#4c1b41]"
+                                        className="appearance-none h-2 w-2 border border-gray-500 rounded-full checked:bg-[#4c1b41] checked:border-[#4c1b41] focus:outline-none checked:ring-1 checked:ring-offset-2 checked:ring-[#4c1b41]"
                                         checked = {accountType === 'planner'}
                                         onChange={(e) => setAccountType(e.target.value)}
                                     /> Planner
                                 </label>
                             </div>
                         </div>
+                        </div>
+
+                        {accountType == 'planner' && (
+                            <div className="flex flex-col">
+                                <label htmlFor="resume" className="my-2 font-bold">Upload Your Resume</label>
+                                <input 
+                                    type="file" 
+                                    id="resume" 
+                                    // placeholder="Phone Number" 
+                                    className="px-5 py-2 rounded-full bg-white border-[#4c1b41] border-2"
+                                    value={resume}
+                                    onChange={(e) => setResume(e.target.value)}
+                                    accept='.PDF'
+                                />
+                        </div>
+                        )}
 
                         <div className="flex flex-col items-center gap-4">
                             <button type="submit" className="bg-[#4C1B41] px-10 py-3 mt-4 rounded-full text-center text-white w-full">Sign Up</button>
