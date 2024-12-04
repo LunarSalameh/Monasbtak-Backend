@@ -21,11 +21,11 @@ if (isset($data['usernameOrPhone']) && isset($data['pwd'])) {
         
         // check both tables 
         $stmt = $pdo->prepare("(
-            SELECT 'customer' AS accountType, id, username, phonenumber, pwd, gender, account_type, NULL as action FROM users WHERE username = :usernameOrPhone OR phonenumber = :usernameOrPhone
+            SELECT 'customer' AS accountType, id, username, phonenumber, pwd, gender, account_type, NULL as action, IsDeleted FROM users WHERE username = :usernameOrPhone OR phonenumber = :usernameOrPhone
         )
         UNION
         (
-            SELECT 'planner' AS accountType, id, username, phonenumber, pwd, gender, account_type , action FROM planners WHERE username = :usernameOrPhone OR phonenumber = :usernameOrPhone
+            SELECT 'planner' AS accountType, id, username, phonenumber, pwd, gender, account_type , action, IsDeleted FROM planners WHERE username = :usernameOrPhone OR phonenumber = :usernameOrPhone
         )");
 
         $stmt->bindParam(':usernameOrPhone', $usernameOrPhone);
@@ -38,14 +38,20 @@ if (isset($data['usernameOrPhone']) && isset($data['pwd'])) {
 
             $user['accountType'] = $user['accountType'] ?? NULL;
             
-            if ($user['accountType'] === 'planner' && $user['action'] !== 'Accepted') {
-                if ($user['action'] === 'Rejected'){
-                    echo json_encode(['success' => false, 'message' => 'Please Signup First']);
+            if ($user['accountType'] === 'planner' && $user['action'] !== 'Accepted' ) {
+                if ($user['action'] === 'Rejected' ){
+                    echo json_encode(['success' => false, 'message' => 'Your Account has been REJECTED please contact us at MonasbtakTeam@gmail.com']);
                 }
                 else if ($user['action'] === 'Pending'){
                     echo json_encode(['success' => false, 'message' => 'Your account has not been approved yet.']);
                 }
+
                 exit;
+            }
+            else if ($user['IsDeleted'] == true ){
+                echo json_encode(['success' => false, 'message' => 'Your Account is deactivated please contact us at MonasbtakTeam@gmail.com']);
+                exit;
+
             }
 
 

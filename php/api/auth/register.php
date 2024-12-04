@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get POST data
     $data = json_decode(file_get_contents('php://input'), true);
 
-    if (isset($data['username']) && isset($data['email']) && isset($data['pwd']) && isset($data['phonenumber']) && isset($data['gender']) && isset($data['account_type']) && isset($data['resume']) ) {
+    if (isset($data['username']) && isset($data['email']) && isset($data['pwd']) && isset($data['phonenumber']) && isset($data['gender']) && isset($data['account_type']) && isset($data['resume'])) {
         $username = $data['username'];
         $email = $data['email'];
         $password = $data['pwd'];
@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             if ($accountType == "customer"){
-                $sql = "INSERT INTO users (username, email,pwd, phonenumber, gender, account_type) VALUES (:username, :email, :pwd, :phonenumber, :gender, :account_type)";
+                $sql = "INSERT INTO users (username, email,pwd, phonenumber, gender, account_type ) VALUES (:username, :email, :pwd, :phonenumber, :gender, :account_type)";
 
                 // Prepare the insert statement
                 $stmt = $pdo->prepare($sql);

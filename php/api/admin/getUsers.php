@@ -14,11 +14,11 @@ $pdo = include_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php'
 
 try{
     $sql="(
-            SELECT username, email, phonenumber, age, gender,account_type, NULL as action FROM users 
+            SELECT username, email, phonenumber, age, gender,account_type, NULL as action, IsDeleted FROM users WHERE IsDeleted = false 
         )
         UNION ALL
         (
-            SELECT username, email, phonenumber,age, gender, account_type, action FROM planners
+            SELECT username, email, phonenumber,age, gender, account_type, action, IsDeleted FROM planners  WHERE IsDeleted = false 
         )";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();

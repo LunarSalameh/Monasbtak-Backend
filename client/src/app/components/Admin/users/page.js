@@ -1,38 +1,70 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import './page.css'
-import Table from '../table/page'
-import { Icon } from '@iconify/react'
+import "./page.css";
+import Table from "../table/page";
+import { Icon } from "@iconify/react";
 import { IoIosSearch } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 
+function AddPlannerPage() {
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [message, setMessage] = useState("");
+  
+  const [searchVal, setSearchVal] = useState("");
 
-function page() {
-  const [Edit, setEdit] = useState(false);
-  const [Users, setAllUsers] = useState([]);
+  const [acceptAlert, setAcceptAlert] = useState(false);
+  const [deleteAlert, setDeleteAlert] = useState(false);
 
-  const [DeleteUser, setDeleteUser] = useState(null); 
-
-  const openEdit = (user) => {
-    setEdit(true);
-    setDeleteUser(user);
+  const handleAcceptAlert = () => {
+    closeAddPlannerModal();
+    setAcceptAlert(true);
+    setTimeout(() => {
+      setAcceptAlert(false);
+    }, 2500); 
   };
 
-  const closeEdit = () => {
-    setEdit(false);
-    setDeleteUser(null); 
+  const handleDeleteAlert = () => {
+    closeEditModal();
+    setDeleteAlert(true);
+    setTimeout(() => {
+      setDeleteAlert(false);
+    }, 2500); 
+    handleDeleteUser();
   };
 
-  const [Addplanner, setAddPlanner] = useState(false);
 
-  const handleAddPlanner = () => {
-    setAddPlanner(true);
-  };
-  const handleCloseAddPlanner = () => {
-    setAddPlanner(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+  const [addPlannerModalOpen, setAddPlannerModalOpen] = useState(false);
+  const [addPlannerData, setAddPlannerData] = useState({
+    username: "",
+    email: "",
+    pwd: "",
+    phonenumber: "",
+  });
+
+  // Open and close modals
+  const openEditModal = (user) => {
+    setEditModalOpen(true);
+    setUserToDelete(user);
   };
 
+  const closeEditModal = () => {
+    setEditModalOpen(false);
+    setUserToDelete(null);
+  };
+
+  const openAddPlannerModal = () => {
+    setMessage(null)
+    setAddPlannerModalOpen(true);
+  };
+
+  const closeAddPlannerModal = () => {
+    setAddPlannerModalOpen(false);
+  };
+
+  // Fetch all users
   useEffect(() => {
     fetch("http://localhost/Monasbtak-Backend/php/api/admin/getUsers.php")
       .then((response) => {
@@ -48,13 +80,13 @@ function page() {
             edit: (
               <button
                 className="delete-btn-table"
-                onClick={() => openEdit(user)} 
+                onClick={() => openEditModal(user)}
               >
                 <Icon icon="hugeicons:delete-02" className="delete-icon" />
               </button>
             ),
           }));
-          setAllUsers(formattedData);
+          setUsers(formattedData);
         } else {
           console.error(data.message || "Failed to fetch users.");
         }
@@ -62,8 +94,62 @@ function page() {
       .catch((error) => console.error("Error fetching users:", error));
   }, []);
 
+  // Handle add planner submission
+  const handleAddPlannerSubmit = (e) => {
+    e.preventDefault();
+
+    // Validate inputs
+    if (
+      !addPlannerData.username ||
+      !addPlannerData.email ||
+      !addPlannerData.pwd ||
+      !addPlannerData.phonenumber
+    ) {
+      setMessage("All fields are required");
+      return;
+    }
+
+    fetch("http://localhost/Monasbtak-Backend/php/api/admin/addPlanner.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(addPlannerData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+          // alert(data.message || "Planner added successfully.");
+          setAddPlannerData({ username: "", email: "", pwd: "", phonenumber: "" });
+          setUsers([...users, { ...addPlannerData, action: "Accepted" }]);
+          handleAcceptAlert();
+        } else {
+          setMessage(data.error || data.message || "An error occurred.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        setMessage("Error: " + error.message);
+      });
+  };
+
+  // Handle input change
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setAddPlannerData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  // Handle delete user
   const handleDeleteUser = () => {
-    if (!DeleteUser) return;
+    if (!userToDelete) return;
 
     fetch("http://localhost/Monasbtak-Backend/php/api/admin/deleteUser.php", {
       method: "POST",
@@ -71,20 +157,19 @@ function page() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: DeleteUser.username,
-        account_type: DeleteUser.account_type,
+        username: userToDelete.username,
+        account_type: userToDelete.account_type,
       }),
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.status === "success") {
-          // alert(data.message);
-          setAllUsers((prevUsers) =>
-            prevUsers.filter((user) => user.username !== DeleteUser.username)
-          );  
-          closeEdit();
+        if (data.success) {
+          setUsers((prevUsers) =>
+            prevUsers.filter((user) => user.username !== userToDelete.username)
+          );
+          closeEditModal();
         } else {
-          alert(`Error: ${data.message}`);
+          console.log(`Error: ${data.message}`);
         }
       })
       .catch((error) => {
@@ -92,6 +177,13 @@ function page() {
       });
   };
 
+  const filteredUsers = users.filter(
+    (user) =>
+      user.username.toLowerCase().includes(searchVal.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchVal.toLowerCase())
+  );
+
+  // Table columns
   const columns = [
     { Header: "User Name", accessor: "username" },
     { Header: "Email", accessor: "email" },
@@ -100,111 +192,145 @@ function page() {
     { Header: "Age", accessor: "age" },
     { Header: "Status", accessor: "action" },
     { Header: "Account Type", accessor: "account_type" },
+    // { Header: "IsDeleted", accessor: "IsDeleted" },
     { Header: "", accessor: "edit" },
   ];
 
   return (
-    <div className='page-container'>
-      <div className='users-container'>
-        <div className='main-top'>
-            <div className='header'>
-            <span className='large-font-size bold-font'>All Users</span>
-            <button className='light-btn mid-font-size ' onClick={handleAddPlanner}>
-                Add Planner
-                <Icon icon="hugeicons:upload-03" className='end-icon' />
-            </button>
-            </div>
-            <div className="search-container">
-                <IoIosSearch className="search-icon" />
-                <input type="search" className="search-bar mid-font-size" placeholder="Search" />
-            </div>
-        </div>
-        <hr className='line'/>
-        <div className='table-container'>
-          <Table columns={columns} data={Users} />
-        </div>
-      </div>
-      {Addplanner && (
-        <div className="modal-overlay">
-        <div className="modal">
-          <button className="close-button" onClick={handleCloseAddPlanner}><IoClose /></button>
-          <span className='XL-font-size bold-font'>Add New Planner</span>
-          <hr className='line'/>
-          <div className="modal-content">
-            
-            {/** USERNAME */}
-            <div className='Modal-Add-package-container'>
-              <span>Username</span>
-              <input type='text' className='input' />
-            </div>
-            {/* <div className='Modal-Add-package-container'>
-              <span>User Type</span>
-              <select className='input' >
-                <option value=''>Select User Type</option>
-                <option value='Planner'>Planner</option>
-              </select>
-            </div> */}
-
-            {/** EMAIL */}
-            <div className='Modal-Add-package-container'>
-              <span>Email</span>
-              <input type='email' className='input' />
-            </div>
-
-              {/** PASSWORD */}
-            <div className='Modal-Add-package-container'>
-                <span>Password</span>
-                <input type='password' className='input' />
-            </div>
-
-
-            {/* <div className='Modal-Add-package-container'>
-                  <span>Date of Birth</span>
-                  <div className='dob-container'>
-                    <input type='number' className='input dob-input' placeholder='DD' min='1' max='31' />
-                    <select className='input dob-input'>
-                    <option value=''>MM</option>
-                    <option value='1'>January</option>
-                    <option value='2'>February</option>
-                    <option value='3'>March</option>
-                    <option value='4'>April</option>
-                    <option value='5'>May</option>
-                    <option value='6'>June</option>
-                    <option value='7'>July</option>
-                    <option value='8'>August</option>
-                    <option value='9'>September</option>
-                    <option value='10'>October</option>
-                    <option value='11'>November</option>
-                    <option value='12'>December</option>
-                  </select>
-                    <input type='number' className='input dob-input' placeholder='YYYY' min='1940' max={new Date().getFullYear()} />
-                  </div>
-              </div> */}
-
-              {/* SUBMIT PLANNER */}
-            <button className='btn'>
+    <div className="page-container">
+      <div className="users-container">
+        <div className="main-top">
+          <div className="header">
+            <span className="large-font-size bold-font">All Users</span>
+            <button className="light-btn mid-font-size" onClick={openAddPlannerModal}>
               Add Planner
+              <Icon icon="hugeicons:upload-03" className="end-icon" />
             </button>
           </div>
+          <div className="search-container">
+            <IoIosSearch className="search-icon" />
+            <input
+              type="search"
+              className="search-bar mid-font-size"
+              placeholder="Search"
+              onChange={(e) => setSearchVal(e.target.value)}
+            />
+          </div>
+        </div>
+        <hr className="line" />
+        <div className="table-container">
+          <Table columns={columns} data={filteredUsers} />
         </div>
       </div>
+
+      {/* Add Planner Modal */}
+      {addPlannerModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <button className="close-button" onClick={closeAddPlannerModal}>
+              <IoClose />
+            </button>
+            <span className="XL-font-size bold-font">Add New Planner</span>
+            <hr className="line" />
+            <form className="modal-content" onSubmit={handleAddPlannerSubmit}>
+              {message && (
+                <div className="text-red-600">{message}</div>
+              )}
+              <div className="Modal-Add-package-container">
+                <span>Username</span>
+                <input
+                  type="text"
+                  className="input"
+                  name="username"
+                  value={addPlannerData.username}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="Modal-Add-package-container">
+                <span>Email</span>
+                <input
+                  type="email"
+                  className="input"
+                  name="email"
+                  value={addPlannerData.email}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="Modal-Add-package-container">
+                <span>Phone Number</span>
+                <input
+                  type="text"
+                  className="input"
+                  name="phonenumber"
+                  value={addPlannerData.phonenumber}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <div className="Modal-Add-package-container">
+                <span>Password</span>
+                <input
+                  type="password"
+                  className="input"
+                  name="pwd"
+                  value={addPlannerData.pwd}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+              <button className="btn" type="submit">
+                Add Planner
+              </button>
+            </form>
+          </div>
+        </div>
       )}
-      {Edit && (
+
+        {acceptAlert &&(
+          <div className="modal-overlay-status">
+            <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
+              <div className="bg-green-600 p-0 rounded-l-xl"></div>
+              <div className="p-5 bg-white  border-2 border-green-600 ">Planner Has Been Added Successfully</div>
+            </div>
+          </div>
+        )}
+
+      {/* Delete User Modal */}
+      {editModalOpen && (
         <div className="modal-overlay">
           <div className="modal-delete">
-            <button className="close-button" onClick={closeEdit}><IoClose /></button>
-            <div className='delete-container-modal'>
-              <span className='mid-font-size bold-font'>Are you sure you want to delete {DeleteUser?.username}?</span>
-              <div className='delete-row-flex'>
-                <button className='btn' onClick={handleDeleteUser}>Yes</button>
-                <button className='btn' onClick={closeEdit}>No</button>
+            <button className="close-button" onClick={closeEditModal}>
+              <IoClose />
+            </button>
+            <div className="delete-container-modal">
+              <span className="mid-font-size bold-font">
+                Are you sure you want to delete <span className="text-[#D9B34D] ">" {userToDelete?.username} " </span>?
+              </span>
+              <div className="delete-row-flex">
+                <button className="btn" onClick={handleDeleteAlert}>
+                  Yes
+                </button>
+                <button className="btn" onClick={closeEditModal}>
+                  No
+                </button>
               </div>
             </div>
           </div>
         </div>
+      )}
+
+      {deleteAlert &&(
+          <div className="modal-overlay-status">
+            <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
+              <div className="bg-red-600 p-0 rounded-l-xl"></div>
+              <div className="p-5 bg-white  border-2 border-red-600 ">user Has Been Deleted</div>
+            </div>
+          </div>
         )}
     </div>
-  )
+  );
 }
 
-export default page
+export default AddPlannerPage;

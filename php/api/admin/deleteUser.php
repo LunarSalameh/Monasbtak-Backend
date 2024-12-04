@@ -29,9 +29,9 @@ try {
     $accountType = $data['account_type'];
 
     if ($accountType === 'customer') {
-        $sql = "DELETE FROM users WHERE username = :username";
+        $sql = "UPDATE users SET IsDeleted = true WHERE username = :username ";
     } elseif ($accountType === 'planner') {
-        $sql = "DELETE FROM planners WHERE username = :username";
+        $sql = "UPDATE planners SET IsDeleted = true WHERE username = :username ";
     } 
     else {
         echo json_encode(["status" => "error", "message" => "Invalid account type."]);

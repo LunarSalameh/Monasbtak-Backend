@@ -9,7 +9,7 @@ error_reporting(E_ALL);
 
 // Include the database connection
 $pdo = include_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
-include('/opt/lampp/htdocs/Monasbtak-Backend/php/api/admin/email.php');
+include('/opt/lampp/htdocs/Monasbtak-Backend/php/api/admin/emailStatusChange.php');
 
 $data = json_decode(file_get_contents('php://input'), true);
 
@@ -21,7 +21,12 @@ if (isset($data['id']) && isset($data['action'])){
     $newStatus = $action === 'Accepted' ? 'Accepted' : 'Rejected';
 
     try{
-        $stmt = $pdo->prepare("UPDATE planners SET action = :action WHERE id = :id ");
+        if ($newStatus==='Accepted'){
+            $stmt = $pdo->prepare("UPDATE planners SET action = :action WHERE id = :id ");
+        }
+        else if ($newStatus === 'Rejected'){
+            $stmt = $pdo->prepare("UPDATE planners SET action = :action, IsDeleted = true WHERE id = :id ");
+        }
         
         $stmt->bindParam(':action', $newStatus);
         $stmt->bindParam(':id', $plannerId);

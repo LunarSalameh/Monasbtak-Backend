@@ -8,15 +8,18 @@ import { FiPackage } from "react-icons/fi";
 import { IoMdPhotos } from "react-icons/io";
 import { HiOutlineViewList } from "react-icons/hi";
 
-export default function Sidebar () {
+// import { useRouter } from 'next/router';
+
+export default function Sidebar ({id}) {
     const [open,setOpen] = useState(true);
 
     const menu = [
-        {title: "Home Dashboard", src:<FaKey/> , path:"/planners/home"},
-        {title: "Planner Profile", src:<MdPeopleAlt/>, path:"/planners/profile" },
-        {title: "packages", src:<FiPackage/> , path:"/planners/packages" },
-        {title: "Event Album", src:<IoMdPhotos/>, path:"/planners/eventAlbum"},
-        {title: "Events", src:<FaRegCalendarCheck /> , path:"/planners/allEvents"},
+        {title: "Home Dashboard", src:<FaKey/> , path:`/planners/home?id=${id}`},
+        {title: "Planner Profile", src:<MdPeopleAlt/>, path:`/planners/profile?id=${id}` },
+        {title: "packages", src:<FiPackage/> , path:`/planners/packages?id=${id}` },
+        {title: "Event Album", src:<IoMdPhotos/>, path:`/planners/eventAlbum?id=${id}`},
+        {title: "Events", src:<FaRegCalendarCheck /> , path:`/planners/allEvents?id=${id}`},
+        {title: "Test", src:<FaDollarSign /> , path:`/planners/test/${id}`},
         // {title: "Revenue", src:<FaDollarSign />, path:"/planners/revenue" }
     ]
 

@@ -2,16 +2,36 @@
 
 import TopSection from "../../components/planners/topSection/page";
 import Sidebar from "../../components/sidebar/page";
-import {React, useState} from "react";
+import {React, useState, useEffect} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { TiDelete } from "react-icons/ti";
+import { useSearchParams } from 'next/navigation';
 
 
 import './page.css'
+import { fail } from "assert";
 
 export default function Profile () {
+    const searchParams = useSearchParams();
+    const id = searchParams.get('id'); // Get user ID from the query parameters
+
     const [EditProfile, setEditProfile] = useState(false);
+
+    const [acceptAlert, setAcceptAlert] = useState(false);
+    const [failureAlert, setFailureAlert] = useState(false);
+
+    
+    const [profileData,setProfileData] = useState(
+            {
+                username: "",
+                email: "",
+                phonenumber: "",
+                age: "",
+                description: "",
+            }
+        )
+    // const  [planner,setPlanner] = useState(null);
 
     const [EditCategoriesModal, setEditCategoriesModal] = useState(false)
     const [EditVenuesModal, setEditVenuesModal] = useState(false)
@@ -34,9 +54,79 @@ export default function Profile () {
         setChangePasswordModal(!changePasswordModal)
     }
 
-    const handleProfileModal = () => {
-        setEditProfile(!EditProfile);
+    const handleAcceptAlert = () => {
+        setAcceptAlert(true);
+        setTimeout(() => {
+          setAcceptAlert(false);
+        }, 2500); 
       };
+
+      const handleFailureAlert = () => {
+        setFailureAlert(true);
+        setTimeout(() => {
+          setFailureAlert(false);
+        }, 2500); 
+      };
+
+    const handleProfileModal = () => {
+        if (EditProfile) {
+            // Send updated profile data to the server
+            fetch(`http://localhost/Monasbtak-Backend/php/api/planner/editProfile.php?id=${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(profileData),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        alert('Profile updated successfully!');
+                        handleAcceptAlert();
+                    } else {
+                        alert('Failed to update profile');
+                        handleFailureAlert();
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error updating profile:', error);
+                    alert('Error updating profile');
+                });
+        }
+    
+        setEditProfile(!EditProfile); // Toggle profile edit mode
+    };
+    
+
+      useEffect(() => {
+        // console.log('User ID from URL:', id);
+        if (!id) {
+          setError('planner ID is missing in the URL.');
+          return;
+        }
+    
+        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/getOnePlanner.php?id=${id}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.success) {
+              setProfileData(data.planner);
+            } else {
+              setError(data.message);
+              console.error('Error fetching planner:', data.message);
+            }
+          })
+          .catch((error) => {
+            setError('Failed to fetch planner data');
+            console.error('Failed to fetch planner:', error);
+          });
+        //   console.log(planner.age);
+
+      }, [id]);
 
     const categories =[
         {name: "Wedding"},
@@ -50,19 +140,7 @@ export default function Profile () {
         {name: "Venue 2"},
         {name: "Venue 3"},
         {name: "Venue 4"},
-    ]
-
-
-    const [profileData,setProfileData] = useState(
-        {
-            firstName: "Lunar",
-            secondName: "Salameh",
-            email: "Lunarsalameh@gmail.com",
-            phoneNumber: "0797762824",
-            birthday: new Date("2001-04-05"),
-            description: "Lorem Ibsum Lorem Ibsum Lorem Ibsum  ... ",
-        }
-    )
+    ];
 
     const handleInputChange = (e) => {
         const {id, value} = e.target;
@@ -72,13 +150,14 @@ export default function Profile () {
         }))
     }
 
-    const handleDateChange = (newDate) => {
-        setProfileData((prevData) => ({
-            ...prevData,
-            birthday: newDate
-        }))
-
-    }
+    const handleDateChange = (date) => {
+        const formattedDate = date.toISOString().split('T')[0]; // 'YYYY-MM-DD'        
+        
+        setProfileData({
+            ...profileData,
+            age: formattedDate,
+        });
+    };
 
     const addCategory = () => {
         if (newCategory.trim()) {
@@ -95,11 +174,9 @@ export default function Profile () {
     };
     
 
-    
-
     return (
         <>            
-            <Sidebar/>
+            <Sidebar id={id}/>
             <div className="flex flex-col " style={{width:'90%', marginLeft:'auto'}}>
             <TopSection />
             <div className="page-container" >
@@ -118,43 +195,24 @@ export default function Profile () {
                         <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">
                         {/* 1st Name */}                        
                             <div className="flex flex-col flex-wrap">
-                                <label htmlFor="firstName" className="required-label my-2 font-bold">First Name</label>
+                                <label htmlFor="username" className="required-label my-2 font-bold">UserName</label>
                                 {EditProfile ? (
                                     <input 
                                         type="text"
-                                        id="firstName"
-                                        value={profileData.firstName}
+                                        id="username"
+                                        value={profileData.username}
 
                                         onChange={handleInputChange}
                                         className="px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
                                     />
                                 ) : (
                                     <p style={{border: '1px solid lightgray', padding: '7px', borderRadius: '5px'}}>
-                                        {profileData.firstName}
+                                        {profileData.username}
                                     </p>                          
                                       )}
                             </div>
 
-                            {/* 2nd Name */}
-                            <div className="flex flex-col flex-wrap">
-                                <label htmlFor="secondName" className="required-label my-2 font-bold">Second Name</label>
-                                {EditProfile ? (
-                                    <input 
-                                        type="text"
-                                        id="secondName"
-                                        value={profileData.secondName}
-
-                                        onChange={handleInputChange}
-                                        className="px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
-                                    />
-                                ) : (
-                                    <p style={{border: '1px solid lightgray', padding: '7px', borderRadius: '5px'}}>
-                                        {profileData.secondName}
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-
+                            
                          {/* Email*/}
                          <div className="flex flex-col flex-wrap">
                             <label htmlFor="email" className="required-label my-2 font-bold">Email</label>
@@ -172,6 +230,9 @@ export default function Profile () {
                                 </p>
                             )}
                         </div>
+
+                        </div>
+
                         
                         <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">
                             {/* Birthday */}
@@ -179,9 +240,9 @@ export default function Profile () {
                                 <label htmlFor="Birthday" className="my-2 font-bold">Birthday</label>
                                 {EditProfile ?(  
                                 <DatePicker 
-                                    selected={profileData.birthday}
+                                    selected={profileData.age}
                                     onChange={handleDateChange}
-                                    dateFormate="MM/dd/YYYY"
+                                    dateFormat="yyyy-MM-dd"
                                     placeholderText="Enter your Birthday"
                                     className="rounded-lg bg-white border-[#4c1b419c] border-2 w-full"
                                     id="Birthday"
@@ -191,26 +252,27 @@ export default function Profile () {
                                     
                                 />
                                 ):(
+                                    
                                     <p style={{border: '1px solid lightgray', padding: '7px', borderRadius: '5px'}}>
-                                        {profileData.birthday.toLocaleDateString("en-US")}</p>
-                                )}
+                                       {profileData.age}</p>
+                                )
+                                }
                             </div>
 
                             {/* Phone Number */}
                             <div className="flex flex-col flex-wrap">
-                                <label htmlFor="phoneNumber" className="required-label my-2 font-bold">Phone Number</label>
+                                <label htmlFor="phonenumber" className="required-label my-2 font-bold">Phone Number</label>
                                 {EditProfile ? (
                                 <input 
                                     type="tel"
-                                    id="phoneNumber"
-                                    value={profileData.phoneNumber}
+                                    id="phonenumber"
+                                    value={profileData.phonenumber}
                                     onChange={handleInputChange}
                                     className="px-5 py-1.5 rounded-lg bg-white border-[#4c1b419c] border-2"
                                 />
                             ) : (
                                 <p style={{border: '1px solid lightgray', padding: '7px', borderRadius: '5px'}}>
-                                    {profileData.phoneNumber
-                                }</p>
+                                    {profileData.phonenumber }</p>
                             )}
                             </div>
 
@@ -226,6 +288,7 @@ export default function Profile () {
                                     id="description"
                                     value={profileData.description}
                                     onChange={handleInputChange}
+                                    placeholder="Talk about your work..."
                                     className="px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
                                 />
                             ) : (
@@ -442,6 +505,24 @@ export default function Profile () {
                     </div>
                 </div>
                 )}
+
+                {acceptAlert &&(
+                    <div className="modal-overlay-status">
+                        <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
+                        <div className="bg-green-600 p-0 rounded-l-xl"></div>
+                        <div className="p-5 bg-white  border-2 border-green-600 ">Profile Updated Successfully</div>
+                        </div>
+                    </div>
+                )}
+
+                {failureAlert &&(
+                    <div className="modal-overlay-status">
+                        <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
+                        <div className="bg-red-600 p-0 rounded-l-xl"></div>
+                        <div className="p-5 bg-white  border-2 border-red-600 ">Failed to update profile</div>
+                        </div>
+                    </div>
+                    )}
 
 
         </div>

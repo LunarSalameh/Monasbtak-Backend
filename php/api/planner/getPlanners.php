@@ -12,16 +12,16 @@ error_reporting(E_ALL);
 
 $pdo = include_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
-// Fetch Data the users table
-$sql = "SELECT id, username, email,pwd, phonenumber, gender, account_type, age,IsDeleted FROM users";
+// Fetch Data the planners table
+$sql = "SELECT * FROM planners";
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 
-$users = $stmt->fetchAll(PDO::FETCH_ASSOC);  
+$planners = $stmt->fetchAll(PDO::FETCH_ASSOC); 
 
-if (count($users) > 0) {
-    echo json_encode(['success' => true, 'users' => $users]);
+if (count($planners) > 0) {
+    echo json_encode(['success' => true, 'planners' => $planners]);
 } else {
-    echo json_encode(['success' => true, 'users' => []]);  
+    echo json_encode(['success' => true, 'planners' => []]);
 }
 

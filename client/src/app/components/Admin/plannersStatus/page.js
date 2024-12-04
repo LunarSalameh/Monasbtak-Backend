@@ -5,8 +5,6 @@ import "./page.css";
 import Table from "../table/page";
 import { IoClose } from "react-icons/io5";
 
-import Head from "next/head";
-
 export default function PlannerStatus() {
   const [planners, setPlanners] = useState([]);
 
@@ -17,6 +15,7 @@ export default function PlannerStatus() {
   const [rejectAlert, setRejectAlert] = useState(false);
 
   const [planner,setPlanner] = useState(null)
+  const [userToDelete, setUserToDelete] = useState(null);
 
   const openAcceptModal = () => {setAcceptModal(true);};
   const closeAcceptModal = () => {setAcceptModal(false);};
@@ -45,19 +44,21 @@ export default function PlannerStatus() {
   };
   
 
-  const handleAcceptPlanner = (id) => {
+  const handleAcceptPlanner = (username,id) => {
       openAcceptModal();
       setPlanner(id);
+      setUserToDelete(username);
   };
 
-  const handleRejectPlanner = (id) => {
+  const handleRejectPlanner = (username,id) => {
     openRejectModal();
     setPlanner(id);
+    setUserToDelete(username);
+
 };
 
-  // Fetch planners on component mount
   useEffect(() => {
-    fetch("http://localhost/Monasbtak-Backend/php/api/admin/getPendingPlanners.php") // Replace with your API endpoint
+    fetch("http://localhost/Monasbtak-Backend/php/api/admin/getPendingPlanners.php") 
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -85,7 +86,7 @@ export default function PlannerStatus() {
               <div className="flex flex-row flex-wrap gap-2 justify-start">
                 <button
                   className="bg-green-700 text-white rounded-xl py-1.5 px-3 hover:bg-green-500 hover:shadow-xl"
-                  onClick={()=>handleAcceptPlanner(planner.id)}
+                  onClick={()=>handleAcceptPlanner(planner.username, planner.id)}
                   
                 >
                   Accept
@@ -93,7 +94,7 @@ export default function PlannerStatus() {
                 </button>
                 <button
                   className="bg-red-600 text-white rounded-xl py-1.5 px-3 hover:bg-red-500 hover:shadow-xl"
-                  onClick={()=>handleRejectPlanner(planner.id)}
+                  onClick={()=>handleRejectPlanner(planner.username, planner.id)}
                 >
                   Reject
                 </button>
@@ -110,7 +111,6 @@ export default function PlannerStatus() {
 
   // Handle Accept/Reject
   const handleStatusChange = (plannerId, action) => {
-    // console.log("Attempting to change status for planner with ID:", plannerId, "to:", action);
     if (!planner) return;
 
     fetch("http://localhost/Monasbtak-Backend/php/api/admin/postPlannersStatus.php", {
@@ -175,8 +175,8 @@ export default function PlannerStatus() {
               <div className="modal">
                   <div className="modal-content">
                     <button className="close-button" onClick={closeAcceptModal}><IoClose /></button>
-                    <div className="flex  flex-wrap font-bold text-xl justify-center text-center"> Are you sure you want to ACCEPT this planner ? </div>
-                    <div className='flex justify-between w-[20%] items-center '>
+                    <div className="flex flex-wrap font-bold text-xl justify-center text-center"> Are you sure you want to ACCEPT <span className="text-[#D9B34D] ">&nbsp;" {userToDelete} "&nbsp;</span>? </div>
+                    <div className='flex gap-5 justify-between w-[20%] items-center '>
                       <button className='btn'
                               onClick={handleAcceptModal}>
                                 Yes</button>
@@ -201,8 +201,8 @@ export default function PlannerStatus() {
               <div className="modal">
                   <div className="modal-content">
                     <button className="close-button" onClick={closeRejectModal}><IoClose /></button>
-                    <div className="flex  flex-wrap font-bold text-xl justify-center text-center"> Are you sure you want to REJECT this planner ? </div>
-                    <div className='flex justify-between w-[20%] items-center '>
+                    <div className="flex  flex-wrap font-bold text-xl justify-center text-center"> Are you sure you want to REJECT <span className="text-[#D9B34D] ">&nbsp;" {userToDelete} "&nbsp;</span>? </div>
+                    <div className='flex  gap-5  justify-between w-[20%] items-center '>
                       <button className='btn'
                               onClick={handleRejectModal}>
                                 Yes</button>
