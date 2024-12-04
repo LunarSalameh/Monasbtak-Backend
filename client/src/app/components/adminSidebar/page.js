@@ -7,22 +7,26 @@ import { FiPackage } from "react-icons/fi";
 import { VscRequestChanges } from "react-icons/vsc";
 import { LuPackageCheck ,LuPackagePlus } from "react-icons/lu";
 import { HiOutlineViewList } from "react-icons/hi";
+import { useSearchParams } from "next/navigation";
+
 
 export default function Sidebar () {
+    const searchParams = useSearchParams();
+    const id = searchParams.get("id"); // Get user ID from the query parameters
     const [open, setOpen] = useState(true);
     const [submenuOpen, setSubmenuOpen] = useState(false);
 
     const menu = [
-        {title: "Home Dashboard", src:<FaKey/> , path:"/admin/dashboard"},
-        {title: "Venues", src:<FaBuilding/>, path:"/admin/venues" },
-        {title: "Users", src:<FaRegCircleUser /> , path:"/admin/users" },
+        {title: "Home Dashboard", src:<FaKey/> , path:`/admin/dashboard?id=${id}`},
+        {title: "Venues", src:<FaBuilding/>, path:`/admin/venues?id=${id}` },
+        {title: "Users", src:<FaRegCircleUser /> , path:`/admin/users?id=${id}` },
         {title: "Planner Packages", src:<FiPackage/>,
             submenu: [
-                { title: "Packages Requests", src:<LuPackagePlus />, path: "/admin/plannerPackagesRequests" },
-                { title: "Packages Available", src:<LuPackageCheck />, path: "/admin/plannerPackagesAvailable" }
+                { title: "Packages Requests", src:<LuPackagePlus />, path: `/admin/plannerPackagesRequests?id=${id}` },
+                { title: "Packages Available", src:<LuPackageCheck />, path: `/admin/plannerPackagesAvailable?id=${id}` }
               ]
         },
-        {title: "All Events", src:<FaRegCalendar /> , path:"/admin/events"},
+        {title: "All Events", src:<FaRegCalendar /> , path:`/admin/events?id=${id}`},
         // {title: "Revenue", src:<FaDollarSign />, path:"/admin/revenue" }
     ]
 

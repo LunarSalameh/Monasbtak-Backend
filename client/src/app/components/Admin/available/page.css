@@ -102,12 +102,14 @@
 }
 .available-content{
     display: flex;
-    width: 100%;
-    justify-content: center;
+    width: 90%;
+    justify-content: flex-start;
     gap: 20px;
     flex-wrap: wrap;
     overflow-y: scroll;
     max-height: 480px;
+    margin-left: 7%;
+
 }
 .available-box{    border: 1px solid lightgray;
     border-radius: 8px;

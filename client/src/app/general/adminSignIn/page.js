@@ -48,7 +48,7 @@ export default function AdminSignIn() {
             if (data.success) {
                 localStorage.setItem('message', `Welcome, ${data.username}!`);
                 setTimeout(() => {
-                    router.push('/admin/dashboard'); // Redirect to the admin dashboard
+                    router.push(`/admin/dashboard?id=${data.user.id}`); // Redirect to the admin dashboard
                 }, 0);
             } else {
                 setMessage(data.message);

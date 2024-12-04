@@ -1,56 +1,245 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './page.css';
 import { Icon } from '@iconify/react';
 import { IoClose } from "react-icons/io5";
+import { useSearchParams } from "next/navigation";
+
 
 function Page() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id"); 
   const [AddPackageModal, setAddPackageModal] = useState(false);
   const [EditPackageModal, setEditPackageModal] = useState(false);
   const [DeletePackageModal, setDeletePackageModal] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [venues, setVenues] = useState([]);
+  const [added, setAdded] = useState(false);
+  const [packages, setPackages] = useState([]);
+  const [planner, setPlanner] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedPackage, setSelectedPackage] = useState(null);
+  const [deletePackages, setDeletePackages] = useState([]);
+  
+  const openDeleteModel = (pkg) => {
+    setSelectedPackage(pkg);
+    setDeletePackageModal(true);
+}
 
-  const packages = [
-    {
-      name: "Package 1",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ultrices ornare augue non tristiqueLorem ipsum dolor sit amet",
-      price: 99.9,
-      location: "Location 1",
-      image: "/wedding2.jpg"
-    },
-    {
-      name: "Package 2",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ultrices ornare augue non tristiqueLorem ipsum dolor sit amet",
-      price: 199.9,
-      location: "Location 2",
-      image: "/wedding3.jpg"
-    },
-    {
-      name: "Package 3",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ultrices ornare augue non tristiqueLorem ipsum dolor sit amet",
-      price: 199.9,
-      location: "Location 3",
-      image: "/wedding4.jpg"
-    },
-    {
-      name: "Package 4",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ultrices ornare augue non tristiqueLorem ipsum dolor sit amet",
-      price: 199.9,
-      location: "Location 3",
-      image: "/wedding.jpg"
-    },
-  ];
+const handleAccept = () => {
+  setDeletePackageModal(false);
+  fetchDeltePackage();
+};
+
+const handleReject = () => {
+  setDeletePackageModal(false);
+  // setRejected(true);
+};
+
+const fetchDeltePackage = async () => {
+  try {
+    const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/Planner/deletePackage.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: selectedPackage.id
+      })
+    });
+    console.log(selectedPackage);
+    const result = await response.json();
+    if (result.message === 'Package deleted successfully') {
+      console.log('Package Deleted');
+    } else {
+      console.error('Error deleting package:', result.message);
+    }
+  } catch (error) {
+    console.error('Error Deleting:', error);
+  }
+};
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/getCategorySub.php');
+        const result = await response.json();
+        setCategories(result.categories);
+        setSubCategories(result.sub_categories);
+      } catch (error) {
+        console.error('Error fetching categories:', error);
+      }
+    };
+
+    const fetchVenues = async () => {
+      try {
+        const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/getVenues.php');
+        const result = await response.json();
+        setVenues(result.venues);
+      } catch (error) {
+        console.error('Error fetching venues:', error);
+      }
+    };
+
+    fetchCategories();
+    fetchVenues();
+  }, []);
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const planner_id = id;
+        const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/packages/getPlannerPackages.php?planner_id=${planner_id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const result = await response.json();
+        if (!result.data || result.data.length === 0) {
+          setPackages(null);
+        }
+        else if (result.status === 'error') {
+          console.error(result.message);
+          setPackages(null); 
+        } else {
+          setPackages(result.data);
+        }
+      } catch (error) {
+        console.error('Error fetching packages:', error);
+        setPackages(null); 
+      } finally {
+        setLoading(false); 
+      }
+    };
+
+    const fetchPlanner = async () => {
+      try {
+        const planner_id = id; 
+        const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/admin/packages/getPlannerDetails.php?id=${planner_id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const result = await response.json();
+        if (!result.data || result.data.length === 0) {
+          setPlanner(null); 
+        }
+        else if (result.status === 'error') {
+          console.error(result.message);
+          setPlanner(null); 
+        } else {
+          setPlanner(result.data);
+        }
+      } catch (error) {
+        console.error('Error fetching planner:', error);
+        setPlanner(null); 
+      }
+    };
+  
+    fetchPackages();
+    fetchPlanner();
+  }, [id]);
 
   const handleAddPackageModal = () => {
     setAddPackageModal(true);
   };
+
+  const handleSubmitAddPackage = async (event) => {
+    event.preventDefault();
+  
+    const formData = new FormData(event.target);
+    formData.append('name', formData.get('name'));
+    formData.append('description', formData.get('description'));
+    formData.append('price', formData.get('price'));
+    formData.append('image', formData.get('image'));
+    formData.append('planner_id', id); // Replace with actual planner_id
+    formData.append('venue_id', formData.get('venue_id'));
+    formData.append('category_id', formData.get('category_id'));
+    formData.append('subCat_name', formData.get('subCat_name'));
+    formData.append('location', venues.find(venue => venue.id == formData.get('venue_id')).name);
+    formData.append('status', 'Pending');
+    if (planner) {
+      formData.append('planner_name', planner.username); // Directly use the username from the planner object
+    } else {
+      console.error('Planner data is not available.');
+    }
+    
+  
+    try {
+      const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/createPackage.php', {
+        method: 'POST',
+        body: formData, // Use FormData directly
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        // alert(result.message);
+        handleAddedPackage();
+        setAddPackageModal(false);
+      } else {
+        const errorText = await response.text();
+        alert(`Error: ${errorText}`);
+      }
+    } catch (error) {
+      console.error('Error submitting package:', error);
+    }
+  };
+  
+
   const handleCloseModal = () => {
     setAddPackageModal(false);
   };
 
-  const handleEditPackageModal = () => {
+  const handleEditPackageModal = (pkg) => {
+    setSelectedPackage(pkg);
     setEditPackageModal(true);
   };
+
+  const handleSubmitEditPackage = async (event) => {
+    event.preventDefault();
+  
+    const formData = new FormData(event.target);
+    
+    formData.append('id', selectedPackage.id);
+    formData.append('name', formData.get('name'));
+    formData.append('description', formData.get('description'));
+    formData.append('price', formData.get('price'));
+    formData.append('venue_id', formData.get('venue_id'));
+  
+    if (formData.get('image').size > 0) {
+      formData.append('image', formData.get('image'));
+    }
+
+    try {
+      const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/editPackage.php', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        if (result.message === 'Package updated successfully') {
+          console.log('Package Updated');
+          setEditPackageModal(false);
+          // Refresh packages list
+          fetchPackages();
+        } else {
+          console.error('Error updating package:', result.message);
+        }
+      } else {
+        const errorText = await response.text();
+        console.error(`Error: ${errorText}`);
+      }
+    } catch (error) {
+      console.error('Error submitting package:', error);
+    }
+  };
+
   const handleCloseEditModal = () => {
     setEditPackageModal(false);
   };
@@ -69,6 +258,18 @@ function Page() {
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + Math.ceil(packages.length / 2)) % Math.ceil(packages.length / 2));
   };
+
+  const handleCategoryChange = (event) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  const handleAddedPackage = () => {
+    setAdded(true);
+  }
+  const handleAddedPackageclose = () => {
+    setAdded(false);
+  }
+
 
   return (
     <div className='page-container'>
@@ -89,10 +290,16 @@ function Page() {
             </svg>
           </button>
           <div className='slides'>
-            {packages.slice(currentSlide * 2, currentSlide * 2 + 2).map((pkg, index) => (
+          {loading ? (
+                    <div>Loading...</div> 
+                ) : (
+          packages === null || packages.length === 0 ? (
+            <div>No packages found</div>
+          ) : (
+            Array.isArray(packages) && packages.slice(currentSlide * 2, currentSlide * 2 + 2).map((pkg, index) => (
               <div className='Package-Box' key={index}>
                 <div className='Package-img-container'>
-                  <img src={pkg.image} className='Package-img'/>
+                  <img src={`data:image/jpeg;base64,${pkg.image}`} className='Package-img'/>
                   <span className='Price-tag'>$ {pkg.price}</span>
                 </div>
                 <div className='Package-details'>
@@ -103,15 +310,16 @@ function Page() {
                       <Icon icon="hugeicons:location-04" className="Location-icon" />
                       <span>{pkg.location}</span>
                     </div>
-                    <button className='btn' onClick={handleEditPackageModal}>
+                    <button className='btn' onClick={() => handleEditPackageModal(pkg)}>
                       Edit
                       <Icon icon="hugeicons:edit" className='end-icon' />
                     </button>
                   </div>
                 </div>
-                <Icon icon="hugeicons:delete-02" className='Delete-icon' onClick={handleDeletePackageModal} />
+                <Icon icon="hugeicons:delete-02" className='Delete-icon' onClick={() => openDeleteModel(pkg)}/>
               </div>
-            ))}
+            ))
+          ))}
           </div>
           <button className='arrow right-arrow' onClick={nextSlide}>
             <svg className="h-8 w-8 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -126,55 +334,56 @@ function Page() {
             <button className="close-button" onClick={handleCloseModal}><IoClose /></button>
             <span className='XL-font-size bold-font'>Add New Package</span>
             <hr className='line'/>
-            <div className="modal-content">
+            <form className="modal-content" onSubmit={handleSubmitAddPackage}>
               <div className='Modal-Add-package-container'>
                 <span>Package Name</span>
-                <input type='text' className='input' />
+                <input type='text' name='name' className='input' required />
               </div>
               <div className='Modal-Add-package-container'>
                 <span>Package Description</span>
-                <input type='text' className='input' />
+                <input type='text' name='description' className='input' required />
               </div>
               <div className='Modal-Add-package-container'>
                 <span>Package Photo</span>
-                <input type='file' accept='image/*' className='input' />
+                <input type='file' name='image' accept='image/*' className='input' required />
               </div>
               <div className='Modal-Add-package-container'>
                 <span>Category</span>
-                <select className='input' >
+                <select name='category_id' className='input' required onChange={handleCategoryChange}>
                   <option value=''>Select Category</option>
-                  <option value='Wedding'>Wedding </option>
-                  <option value='Graduation'>Graduation </option>
-                  <option value='Maternity'>Maternity </option>
-                  <option value='Birthday'>Birthday </option>
-                  <option value='Formal'>Formal Events </option>
+                  {categories.map((category, index) => (
+                    <option key={index} value={category.id}>{category.name}</option>
+                  ))}
                 </select>
               </div>
               <div className='Modal-Add-package-container'>
                 <span>Sub Category</span>
-                <select className='input' >
+                <select name='subCat_name' className='input' required>
                   <option value=''>Select Sub Category</option>
-                  <option value='Luxuary'>Luxary </option>
-                  <option value='Luxuary'>Mid level</option>
-                  <option value='Luxuary'>On budgit </option>
+                  {subCategories
+                    .filter(subCategory => subCategory.category_id == selectedCategory)
+                    .map((subCategory, index) => (
+                      <option key={index} value={subCategory.name}>{subCategory.name}</option>
+                    ))}
                 </select>
               </div>
               <div className='Modal-Add-package-container'>
                 <span>Venue Name</span>
-                <input type='text' className='input' />
-              </div>
-              <div className='Modal-Add-package-container'>
-                <span>Venue Location</span>
-                <input type='text' className='input' />
+                <select name='venue_id' className='input' required>
+                  <option value=''>Select Venue</option>
+                  {venues.map((venue, index) => (
+                    <option key={index} value={venue.id}>{venue.name}</option>
+                  ))}
+                </select>
               </div>
               <div className='Modal-Add-package-container'>
                 <span>Price</span>
-                <input type='text' className='input' />
+                <input type='text' name='price' className='input' required />
               </div>
-              <button className='btn'>
+              <button type='submit' className='btn' >
                 Add Package
               </button>
-            </div>
+            </form>
           </div>
         </div>
       )}
@@ -184,35 +393,36 @@ function Page() {
             <button className="close-button" onClick={handleCloseEditModal}><IoClose /></button>
             <span className='XL-font-size bold-font'>Edit Package</span>
             <hr className='line'/>
-            <div className="modal-content">
+            <form className="modal-content" onSubmit={handleSubmitEditPackage}>
               <div className='Modal-Add-package-container'>
                 <span>Package Name</span>
-                <input type='text' className='input' />
+                <input type='text' name='name' className='input' defaultValue={selectedPackage.name} required />
               </div>
               <div className='Modal-Add-package-container'>
                 <span>Package Description</span>
-                <input type='text' className='input' />
+                <input type='text' name='description' className='input' defaultValue={selectedPackage.description} required />
               </div>
               <div className='Modal-Add-package-container'>
                 <span>Package Photo</span>
-                <input type='file' accept='image/*' className='input' />
+                <input type='file' name='image' accept='image/*' className='input' />
               </div>
               <div className='Modal-Add-package-container'>
                 <span>Venue Name</span>
-                <input type='text' className='input' />
-              </div>
-              <div className='Modal-Add-package-container'>
-                <span>Venue Location</span>
-                <input type='text' className='input' />
+                <select name='venue_id' className='input' required defaultValue={selectedPackage.venue_id}>
+                  <option value=''>Select Venue</option>
+                  {venues.map((venue, index) => (
+                    <option key={index} value={venue.id}>{venue.name}</option>
+                  ))}
+                </select>
               </div>
               <div className='Modal-Add-package-container'>
                 <span>Price</span>
-                <input type='text' className='input' />
+                <input type='text' name='price' className='input' defaultValue={selectedPackage.price} required />
               </div>
-              <button className='btn'>
+              <button type='submit' className='btn' onClick={() => window.location.reload()}>
                 Submit
               </button>
-            </div>
+            </form>
           </div>
         </div>
       )}
@@ -224,10 +434,10 @@ function Page() {
             <div className="modal-content">
               <span className='mid-font-size'>Are you sure you want to delete this package?</span>
               <div className='delete-modal-btn'>
-                <button className='btn'>
+                <button className='btn' onClick={() => {handleAccept(); window.location.reload();}}>
                   Yes
                 </button>
-                <button className='btn' onClick={handleCloseDeleteModal}>
+                <button className='btn' onClick={handleReject}>
                   No
                 </button>
               </div>
@@ -235,6 +445,18 @@ function Page() {
           </div>
         </div>
       )}
+      {added && (
+        <div className="modal-overlay">
+          <div className="added-modal">
+            <span className='added-text'>Package Created Successfully</span>
+            <div className="modal-content">
+              <button className='btn' onClick={handleAddedPackageclose}>
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+        )}
     </div>
   );
 }

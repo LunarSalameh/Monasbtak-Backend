@@ -1,12 +1,20 @@
 'use client';
-import {React,useState} from 'react'
+import {React,useState, useEffect} from 'react'
 import './page.css'
 import { IoIosSearch } from "react-icons/io";
 import { Icon } from '@iconify/react';
+import { useSearchParams } from 'next/navigation';
 
 
 function page() {
+  const searchParams = useSearchParams();
+    const id = searchParams.get('id'); 
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [packages, setPackages] = useState(null);
+    const [loading, setLoading] = useState(true); 
+    const [categories, setCategories] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+
     const nextSlide = () => {
         setCurrentSlide((prev) => (prev + 1) % Math.ceil(packages.length / 2));
       };
@@ -15,48 +23,61 @@ function page() {
         setCurrentSlide((prev) => (prev - 1 + Math.ceil(packages.length / 2)) % Math.ceil(packages.length / 2));
       };
 
-    const packages = [
-        {
-          name: "Package 1",
-          description: "Luxury Wedding Package",
-          category: "Wedding",
-          subCategory: "Mid Level",
-          venue:"Four Seasons Hotel",
-          price: 99.9,
-          location: "5th Circle, Amman",
-          image: "/wedding2.jpg"
-        },
-        {
-            name: "Package 2",
-            description: "Luxury Wedding Package",
-            category: "Wedding",
-            subCategory: "Luxury",
-            venue:"Four Seasons Hotel",
-            price: 99.9,
-            location: "5th Circle, Amman",
-            image: "/wedding3.jpg"
-          },
-          {
-            name: "Package 3",
-            description: "Luxury Wedding Package",
-            category: "Wedding",
-            subCategory: "Luxury",
-            venue:"Four Seasons Hotel",
-            price: 99.9,
-            location: "5th Circle, Amman",
-            image: "/wedding4.jpg"
-          },
-          {
-            name: "Package 4",
-            description: "Luxury Wedding Package",
-            category: "Wedding",
-            subCategory: "On Budget",
-            venue:"Four Seasons Hotel",
-            price: 99.9,
-            location: "5th Circle, Amman",
-            image: "/wedding.jpg"
-          },
-      ];
+      useEffect(() => {
+        const fetchPackages = async () => {
+          try {
+            const planner_id = id; 
+            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/packages/getPlannerPackages.php?planner_id=${planner_id}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            const result = await response.json();
+            if (!result.data || result.data.length === 0) {
+              setPackages(null); 
+            }
+            else if (result.status === 'error') {
+              console.error(result.message);
+              setPackages(null); 
+            } else {
+              setPackages(result.data);
+            }
+          } catch (error) {
+            console.error('Error fetching packages:', error);
+            setPackages(null); 
+          } finally {
+            setLoading(false); 
+          }
+        };
+
+        fetchPackages();
+      }, [id]);
+
+      useEffect(() => {
+        const fetchCategories = async () => {
+          try {
+            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/getCategorySub.php');
+            const result = await response.json();
+            setCategories(result.categories);
+          } catch (error) {
+            console.error('Error fetching categories:', error);
+          }
+        };
+    
+        fetchCategories();
+      }, []);
+
+      const getCategoryName = (categoryId) => {
+        const category = categories.find(cat => cat.id === categoryId);
+        return category ? category.name : 'Unknown Category';
+      };
+
+      const filteredPackages = packages ? packages.filter(pkg => 
+        pkg.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        getCategoryName(pkg.category_id).toLowerCase().includes(searchTerm.toLowerCase())
+      ) : [];
+
   return (
     <div className='page-container'>
         <div className='packages-container'>
@@ -66,7 +87,13 @@ function page() {
             </div>
             <div className="search-container">
                 <IoIosSearch className="search-icon" />
-                <input type="search" className="search-bar mid-font-size" placeholder="Search" />
+                <input 
+                  type="search" 
+                  className="search-bar mid-font-size" 
+                  placeholder="Search" 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
             </div>
         </div>
         <hr className='line'/>
@@ -77,18 +104,23 @@ function page() {
             </svg>
           </button>
           <div className='slides'>
-            {packages.slice(currentSlide * 2, currentSlide * 2 + 2).map((pkg, index) => (
+          {loading ? (
+                    <div>Loading...</div> 
+                ) : (
+          filteredPackages.length === 0 ? (
+            <div>No packages found</div>
+          ) : (
+            filteredPackages.slice(currentSlide * 2, currentSlide * 2 + 2).map((pkg, index) => (
               <div className='Package-Box' key={index}>
                 <div className='Package-img-container'>
-                  <img src={pkg.image} className='Package-img'/>
+                  <img src={`data:image/jpeg;base64,${pkg.image}`} className='Package-img'/>
                   <span className='Price-tag'>$ {pkg.price}</span>
                 </div>
                 <div className='Package-details'>
                   <span className='mid-font-size'>{pkg.name}</span>
                   <span className='display'>{pkg.description}</span>
-                  <span className='display'>{pkg.category}</span>                  
-                  <span className='display'>{pkg.subCategory}</span>
-                  <span className='display'>{pkg.venue}</span>
+                  <span className='display'>{getCategoryName(pkg.category_id)}</span>                  
+                  <span className='display'>{pkg.subCat_name}</span>
                   <div className='row-flex'>
                     <div className='location'>
                       <Icon icon="hugeicons:location-04" className="Location-icon" />
@@ -97,7 +129,8 @@ function page() {
                   </div>
                 </div>
               </div>
-            ))}
+            ))
+          ))}
           </div>
           <button className='arrow right-arrow' onClick={nextSlide}>
             <svg className="h-8 w-8 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
