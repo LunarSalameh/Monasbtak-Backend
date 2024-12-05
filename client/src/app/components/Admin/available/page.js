@@ -1,8 +1,48 @@
+'use client';
 import React from 'react'
+import { useEffect,useState } from 'react';
 import './page.css'
 import { IoIosSearch } from "react-icons/io";
+import Link from 'next/link';
 
 function page() {
+  const [planners , setPlanners] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState(""); 
+
+
+    useEffect(() => {
+        const fetchPackages = async () => {
+          try {
+            const response = await fetch("http://localhost/Monasbtak-Backend/php/api/admin/packages/getPlannersAccepted.php", {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            const result = await response.json();
+            if (!result.data || result.data.length === 0) {
+              setPlanners(null); 
+            }
+            else if (result.status === 'error') {
+              console.error(result.message);
+              setPlanners(null); 
+            } else {
+                setPlanners(result.data);
+            }
+          } catch (error) {
+            console.error('Error fetching packages:', error);
+            setPlanners(null);
+          } finally {
+            setLoading(false); 
+          }
+        };
+      
+        fetchPackages();
+      }, []);
   return (
     <div className='page-container'>
         <div className='requests-container'>
@@ -12,59 +52,38 @@ function page() {
             </div>
             <div className="search-container">
                 <IoIosSearch className="search-icon" />
-                <input type="search" className="search-bar mid-font-size" placeholder="Search" />
+                <input 
+                  type="search" 
+                  className="search-bar mid-font-size" 
+                  placeholder="Search" 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
             </div>
         </div>
         <hr className='line'/>
         <div className='available-content'>
-            <a href='/admin/PlannerPackages'>
-            <div className='available-box'>
-                <img src='/Planner1.jpg' alt='Planner1' className='available-img'/>
-                <span className='mid-font-size'>Planner Name</span>
-            </div>
-            </a>
-            <div className='available-box'>
-                <img src='/Planner1.jpg' alt='Planner1' className='available-img'/>
-                <span className='mid-font-size'>Planner Name</span>
-            </div>
-            <div className='available-box'>
-                <img src='/Planner1.jpg' alt='Planner1' className='available-img'/>
-                <span className='mid-font-size'>Planner Name</span>
-            </div>
-            <div className='available-box'>
-                <img src='/Planner1.jpg' alt='Planner1' className='available-img'/>
-                <span className='mid-font-size'>Planner Name</span>
-            </div>
-            <div className='available-box'>
-                <img src='/Planner1.jpg' alt='Planner1' className='available-img'/>
-                <span className='mid-font-size'>Planner Name</span>
-            </div>
-            <div className='available-box'>
-                <img src='/Planner1.jpg' alt='Planner1' className='available-img'/>
-                <span className='mid-font-size'>Planner Name</span>
-            </div>
-            <div className='available-box'>
-                <img src='/Planner1.jpg' alt='Planner1' className='available-img'/>
-                <span className='mid-font-size'>Planner Name</span>
-            </div>
-            <div className='available-box'>
-                <img src='/Planner1.jpg' alt='Planner1' className='available-img'/>
-                <span className='mid-font-size'>Planner Name</span>
-            </div> <div className='available-box'>
-                <img src='/Planner1.jpg' alt='Planner1' className='available-img'/>
-                <span className='mid-font-size'>Planner Name</span>
-            </div>
-            <div className='available-box'>
-                <img src='/Planner1.jpg' alt='Planner1' className='available-img'/>
-                <span className='mid-font-size'>Planner Name</span>
-            </div>
-            <div className='available-box'>
-                <img src='/Planner1.jpg' alt='Planner1' className='available-img'/>
-                <span className='mid-font-size'>Planner Name</span>
-            </div>
+        {loading ? (
+            <div>Loading...</div> 
+        ) : (
+            !planners || planners.length === 0 ? (
+                <div>No Planners Founded</div>
+            ) : (
+                planners
+                  .filter(planner => planner.username.toLowerCase().includes(searchTerm.toLowerCase()))
+                  .map((planner, index) => (
+                    <Link href={`/admin/PlannerPackages?id=${planner.id}`} key={index}>
+                        <div className='available-box'>
+                            <img src={`data:image/jpeg;base64,${planner.image}`} alt='Planner1' className='available-img'/>
+                            <span className='mid-font-size'>{planner.username}</span>
+                        </div>
+                    </Link>
+                ))
+            )
+        )}
         </div>
         </div>
-        </div>
+    </div>
   )
 }
 
