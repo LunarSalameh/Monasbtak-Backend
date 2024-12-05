@@ -8,9 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { TiDelete } from "react-icons/ti";
 import { useSearchParams } from 'next/navigation';
 
-
 import './page.css'
-import { fail } from "assert";
 
 export default function Profile () {
     const searchParams = useSearchParams();
@@ -28,7 +26,8 @@ export default function Profile () {
                 email: "",
                 phonenumber: "",
                 age: "",
-                description: "",
+                description: " ",
+                // image: " ",
             }
         )
     // const  [planner,setPlanner] = useState(null);
@@ -81,10 +80,10 @@ export default function Profile () {
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.success) {
-                        alert('Profile updated successfully!');
+                        // alert('Profile updated successfully!');
                         handleAcceptAlert();
                     } else {
-                        alert('Failed to update profile');
+                        // alert('Failed to update profile');
                         handleFailureAlert();
                     }
                 })
@@ -162,14 +161,14 @@ export default function Profile () {
     const addCategory = () => {
         if (newCategory.trim()) {
             setNewCategory((prevCategories) => [...prevCategories, { name: newCategory }]);
-            setNewCategory(""); // Clear input
+            setNewCategory(""); 
         }
     };
     
     const addVenue = () => {
         if (newVenue.trim()) {
             setEditVenuesModal((prevVenues) => [...prevVenues, { name: newVenue }]);
-            setNewVenue(""); // Clear input
+            setNewVenue(""); 
         }
     };
     
@@ -192,30 +191,59 @@ export default function Profile () {
                     {/* Form */}
                     <div className="flex flex-col flex-wrap gap-3 mt-5">
 
-                        <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">
+                        {/* Profile Picture */}
+                        {/* <div className="flex flex-col flex-wrap">
+                                    <label htmlFor="ProfilePicture" className=" my-2 font-bold">Profile Picture</label>
+                                    {EditProfile ? (
+                                        // <input 
+                                        //     type="file"
+                                        //     id="ProfilePicture"
+                                        //     value={profileData.image}
+                                        //     onChange={handleInputChange}
+                                        //     className="px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
+                                        // />
+                                        <img src={`data:image/jpeg;base64${profileData.image}`} />
+                                    ) : (
+                                        
+                                            <input 
+                                                type="file"
+                                                id="ProfilePicture"
+                                                value={profileData.image}
+                                                className="px-5 py-2 rounded-lg bg-white border-gray-200 border-2"
+                                                disabled
+                                            />                       
+                                    )}
+                        </div> */}
+
+                        <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">                        
+
                         {/* 1st Name */}                        
                             <div className="flex flex-col flex-wrap">
-                                <label htmlFor="username" className="required-label my-2 font-bold">UserName</label>
+                                <label htmlFor="username" className=" my-2 font-bold">UserName</label>
                                 {EditProfile ? (
                                     <input 
                                         type="text"
                                         id="username"
                                         value={profileData.username}
-
                                         onChange={handleInputChange}
                                         className="px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
                                     />
                                 ) : (
-                                    <p style={{border: '1px solid lightgray', padding: '7px', borderRadius: '5px'}}>
-                                        {profileData.username}
-                                    </p>                          
-                                      )}
+                                    
+                                        <input 
+                                            type="text"
+                                            id="username"
+                                            value={profileData.username}
+                                            className="px-5 py-2 rounded-lg bg-white border-gray-200 border-2"
+                                            disabled
+                                        />                       
+                                    )}
                             </div>
 
                             
                          {/* Email*/}
                          <div className="flex flex-col flex-wrap">
-                            <label htmlFor="email" className="required-label my-2 font-bold">Email</label>
+                            <label htmlFor="email" className=" my-2 font-bold">Email</label>
                             {EditProfile ? (
                                 <input 
                                     type="email"
@@ -225,9 +253,13 @@ export default function Profile () {
                                     className="px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
                                 />
                             ) : (
-                                <p style={{border: '1px solid lightgray', padding: '7px', borderRadius: '5px'}}>
-                                    {profileData.email}
-                                </p>
+                                <input 
+                                type="email"
+                                id="email"
+                                value={profileData.email}
+                                className="px-5 py-2 rounded-lg bg-white border-gray-200 border-2"
+                                disabled
+                            />
                             )}
                         </div>
 
@@ -253,15 +285,25 @@ export default function Profile () {
                                 />
                                 ):(
                                     
-                                    <p style={{border: '1px solid lightgray', padding: '7px', borderRadius: '5px'}}>
-                                       {profileData.age}</p>
+                                    <DatePicker 
+                                    selected={profileData.age}
+                                    dateFormat="yyyy-MM-dd"
+                                    placeholderText="Enter your Birthday"
+                                    className="rounded-lg bg-white border-gray-200 border-2 w-full"
+                                    id="Birthday"
+                                    showIcon={true}
+                                    closeOnScroll={true}
+                                    calendarIconClassName="top-1/2 transform -translate-y-1/2"
+                                    disabled
+                                    
+                                />
                                 )
                                 }
                             </div>
 
                             {/* Phone Number */}
                             <div className="flex flex-col flex-wrap">
-                                <label htmlFor="phonenumber" className="required-label my-2 font-bold">Phone Number</label>
+                                <label htmlFor="phonenumber" className=" my-2 font-bold">Phone Number</label>
                                 {EditProfile ? (
                                 <input 
                                     type="tel"
@@ -271,8 +313,13 @@ export default function Profile () {
                                     className="px-5 py-1.5 rounded-lg bg-white border-[#4c1b419c] border-2"
                                 />
                             ) : (
-                                <p style={{border: '1px solid lightgray', padding: '7px', borderRadius: '5px'}}>
-                                    {profileData.phonenumber }</p>
+                                <input 
+                                    type="tel"
+                                    id="phonenumber"
+                                    value={profileData.phonenumber}
+                                    className="px-5 py-1.5 rounded-lg bg-white border-gray-200 border-2"
+                                    disabled
+                                />
                             )}
                             </div>
 
@@ -292,9 +339,13 @@ export default function Profile () {
                                     className="px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
                                 />
                             ) : (
-                                <p style={{border: '1px solid lightgray', padding: '7px', borderRadius: '5px'}}>
-                                    {profileData.description}
-                                </p>
+                                <textarea
+                                    id="description"
+                                    value={profileData.description}
+                                    placeholder="Talk about your work..."
+                                    className="px-5 py-2 rounded-lg bg-white border-gray-200 border-2"
+                                    disabled
+                                />
                             )}
                         </div>
 
