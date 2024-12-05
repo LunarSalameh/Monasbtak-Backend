@@ -41,7 +41,7 @@ const handleReject = () => {
 
 const fetchDeltePackage = async () => {
   try {
-    const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/Planner/deletePackage.php', {
+    const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/deletePackage.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
