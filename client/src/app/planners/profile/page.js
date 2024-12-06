@@ -7,6 +7,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { TiDelete } from "react-icons/ti";
 import { useSearchParams } from 'next/navigation';
+import { IoClose } from "react-icons/io5";
+
 
 import './page.css'
 
@@ -19,7 +21,9 @@ export default function Profile () {
     const [acceptAlert, setAcceptAlert] = useState(false);
     const [failureAlert, setFailureAlert] = useState(false);
 
-    
+    const [category, setCategory] = useState([])
+
+
     const [profileData,setProfileData] = useState(
             {
                 username: "",
@@ -127,12 +131,30 @@ export default function Profile () {
 
       }, [id]);
 
-    const categories =[
-        {name: "Wedding"},
-        {name: "Formal"},
-        {name: "Birthdays"},
-        {name: "Gradution"},
-    ]
+      useEffect(() => {
+
+        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getCategories.php`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.success) {
+              setCategory(data.categories);
+            } else {
+              setError(data.message);
+              console.error('Error fetching Categories:', data.message);
+            }
+          })
+          .catch((error) => {
+            setError('Failed to fetch Categories data');
+            console.error('Failed to fetch Categories:', error);
+          });
+
+      });
+
 
     const Venues = [
         {name: "Venue 1"},
@@ -297,8 +319,7 @@ export default function Profile () {
                                     disabled
                                     
                                 />
-                                )
-                                }
+                                )}
                             </div>
 
                             {/* Phone Number */}
@@ -360,7 +381,7 @@ export default function Profile () {
                                 </div>
                                 
                                 <div className="m-4 flex flex-wrap gap-2 ">
-                                    {categories.map((category,index)=>(
+                                    {category.map((category,index)=>(
                                         <div key={index} className="bg-[#D9B34D] py-2 px-4 rounded-2xl text-white shadow-lg shadow-[#4c1b4161]">
                                             {category.name}
                                         </div>
@@ -468,8 +489,9 @@ export default function Profile () {
                 {EditCategoriesModal && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                         <div className="bg-white rounded-xl w-[50%] px-10 py-8 flex flex-col gap-4">
-                            <div className="font-bold text-xl mb-2">
+                            <div className="font-bold text-xl flex mb-2 w-full relative">
                                 <p>Categories</p>
+                                <button className="absolute right-0" onClick={handleCategoriesModal}><IoClose /></button>
                                 <hr />
                             </div>
 
@@ -478,7 +500,7 @@ export default function Profile () {
                                 <select name="SelectedCategory" className="w-1/2 border-2 border-[#4c1b41] rounded-lg py-1 px-3">
                                         <option disabled className="text-gray-300" defaultValue="Choose Category To Add">Choose Category To Add</option>
                                     {
-                                        categories.map((category,index)=> (
+                                        category.map((category,index)=> (
                                             <option key={index} value={category.name}>
                                                 {category.name}
                                             </option>
@@ -495,13 +517,13 @@ export default function Profile () {
                             </div>
 
                             <div className="m-4 flex flex-wrap gap-2 justify-between">
-                                {categories.map((category, index) => (
+                                {category.map((category, index) => (
                                     <div key={index} className="flex items-center gap-4 bg-[#D9B34D] py-2 px-4 rounded-2xl text-white shadow-lg shadow-[#4c1b4161]">
                                         <p>{category.name}</p>
-                                        <TiDelete
+                                        {/* <TiDelete
                                             className="hover:text-gray-300 cursor-pointer"
                                             onClick={handleCategoriesModal}
-                                        />
+                                        /> */}
                                     </div>
                                 ))}
                             </div>
@@ -515,8 +537,9 @@ export default function Profile () {
                 {EditVenuesModal && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                     <div className="bg-white rounded-xl w-[50%] px-10 py-8 flex flex-col gap-4">
-                        <div className="font-bold text-xl mb-2">
+                    <div className="font-bold text-xl flex mb-2 w-full relative">
                             <p>Venues</p>
+                            <button className="absolute right-0" onClick={handleVenuesModal}><IoClose /></button>
                             <hr />
                         </div>
 
@@ -545,10 +568,10 @@ export default function Profile () {
                             {Venues.map((venue, index) => (
                                 <div key={index} className="flex items-center gap-4 bg-[#D9B34D] py-2 px-4 rounded-2xl text-white shadow-lg shadow-[#4c1b4161]">
                                     <p>{venue.name}</p>
-                                    <TiDelete
+                                    {/* <TiDelete
                                         className="hover:text-gray-300 cursor-pointer"
                                         onClick={handleVenuesModal}
-                                    />
+                                    /> */}
                                 </div>
                             ))}
                         </div>
