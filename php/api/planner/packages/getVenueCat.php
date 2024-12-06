@@ -13,22 +13,22 @@ error_reporting(E_ALL);
 $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
 try {
-    // Fetch all names from categories table
-    $stmt = $pdo->query('SELECT id, name FROM categories');
-    $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Fetch both name and category_id from sub_categories table
-    $stmt = $pdo->query('SELECT id, name, category_id FROM sub_categories');
-    $sub_categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Fetch id and venue_id from venue_subcategory using subCategory_id
+    $subCategory_id = $_GET['subCategory_id'];
+    $stmt = $pdo->prepare('SELECT id, venue_id FROM venue_subcategory WHERE subCategory_id = :subCategory_id');
+    $stmt->bindParam(':subCategory_id', $subCategory_id, PDO::PARAM_INT);
+    $stmt->execute();
+    $venues = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Combine results into a single array
     $result = [
-        'categories' => $categories,
-        'sub_categories' => $sub_categories
+        'venues' => $venues,
     ];
 
     // Return the result as JSON
+    http_response_code(200);
     echo json_encode($result);
 } catch (PDOException $e) {
-    echo json_encode(['error' => $e->getMessage()]);
+    http_response_code(500);
+    echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
 }

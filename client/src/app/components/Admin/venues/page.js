@@ -1,15 +1,48 @@
 'use client';
-import {React , useState} from 'react'
+import {React , useState, useEffect} from 'react'
 import './page.css'
 import { IoIosSearch } from 'react-icons/io'
 import { IoClose } from 'react-icons/io5'
 import { Icon } from '@iconify/react'
 
 function page() {
+    const [venues, setVenues] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [detailsmodal, setDetailsModal] = useState(false)
     const [AddVenue, setAddVenue] = useState(false);
     const [editVenue, setEditVenue] = useState(false);
     const [deleteVenue, setDeleteVenue] = useState(false);
+    const [selectedVenue, setSelectedVenue] = useState(null);
+
+    useEffect(() => {
+      const fetchVenues = async () => {
+        try {
+          const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/venues/getVenues.php', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+          const result = await response.json();
+          if (!result.data || result.data.length === 0) {
+            setVenues(null);
+          }
+          else if (result.status === 'error') {
+            console.error(result.message);
+            setVenues(null); 
+          } else {
+            setVenues(result.data);
+          }
+        } catch (error) {
+          console.error('Error fetching Venues:', error);
+          setVenues(null); 
+        } finally {
+          setLoading(false); 
+        }
+      };
+
+      fetchVenues();
+    }, []);
 
     const handleAddVenue = () => {
         setAddVenue(true);
@@ -18,11 +51,13 @@ function page() {
         setAddVenue(false);
     };
 
-    const openDetailsModal = () => {
-        setDetailsModal(true)
+    const openDetailsModal = (venue) => {
+        setSelectedVenue(venue);
+        setDetailsModal(true);
     }
     const closeDetailsModal = () => {
-        setDetailsModal(false)
+        setSelectedVenue(null);
+        setDetailsModal(false);
     }
     const openEditModal = () => {
         setEditVenue(true)
@@ -54,50 +89,26 @@ function page() {
         </div>
         <hr className='line'/>
         <div className='container'>
-            <div className='venue-box' onClick={openDetailsModal}>
+        {loading ? (
+                    <div>Loading...</div> 
+                ) : (
+          venues === null || venues.length === 0 ? (
+            <div>No Venues found</div>
+          ) : (
+          venues && venues.map((venue,index) => (
+            <div className='venue-box' onClick={() => openDetailsModal(venue)} key={index}>
                 <div className='img-container'>
-                    <img src='/venue1.jpg' className='venue-img'/>
+                    <img src={`data:image/jpeg;base64,${venue.image}`} className='venue-img'/>
                 </div>
-                <span className='mid-font-size'>Venue Name</span>
+                <span className='mid-font-size'>{venue.name}</span>
             </div>
-            <div className='venue-box'>
-                <img src='/venue2.jpg' className='venue-img'/>
-                <span className='mid-font-size'>Venue Name</span>
-            </div>
-            <div className='venue-box'>
-            <div className='img-container'>
-                    <img src='/venue3.jpg' className='venue-img'/>
-                </div>
-                <span className='mid-font-size'>Venue Name</span>
-            </div>
-            <div className='venue-box'>
-                <img src='/venue4.jpg' className='venue-img'/>
-                <span className='mid-font-size'>Venue Name</span>
-            </div>
-            <div className='venue-box' onClick={openDetailsModal}>
-                <div className='img-container'>
-                    <img src='/venue1.jpg' className='venue-img'/>
-                </div>
-                <span className='mid-font-size'>Venue Name</span>
-            </div>
-            <div className='venue-box'>
-                <img src='/venue2.jpg' className='venue-img'/>
-                <span className='mid-font-size'>Venue Name</span>
-            </div>
-            <div className='venue-box'>
-            <div className='img-container'>
-                    <img src='/venue3.jpg' className='venue-img'/>
-                </div>
-                <span className='mid-font-size'>Venue Name</span>
-            </div>
-            <div className='venue-box'>
-                <img src='/venue4.jpg' className='venue-img'/>
-                <span className='mid-font-size'>Venue Name</span>
-            </div>
+            ))
+          ))}
+            
         </div>
         </div>
 
-        {detailsmodal && (
+        {detailsmodal && selectedVenue && (
             <div className="modal-overlay">
                 <div className="venue-modal">
                     <button className="close-button" onClick={closeDetailsModal}><IoClose /></button>
@@ -109,16 +120,16 @@ function page() {
                     </div>
                      <div className="modal-details">
                         <div className='modal-img-container-details'>
-                        <img src='/venue1.jpg' className='venue-img-details'/>
+                        <img src={`data:image/jpeg;base64,${selectedVenue.image}`} className='venue-img-details'/>
                         </div>
                         <div className='modal-venue-details'>
-                            <span className='large-font-size'>Venue Name</span>
-                            <span className='mid-font-size'>Category:</span>
-                            <span className='mid-font-size'>Sub Category:</span>
-                            <span className='mid-font-size'>Location:</span>
-                            <span className='mid-font-size'>Email:</span>
-                            <span className='mid-font-size'>Phone Number:</span>
-                            <span className='mid-font-size'>Description:</span>
+                            <span className='large-font-size'>Venue Name: {selectedVenue.name}</span>
+                            <span className='mid-font-size'>Category: {selectedVenue.category}</span>
+                            <span className='mid-font-size'>Sub Category: {selectedVenue.subCategory}</span>
+                            <span className='mid-font-size'>Location: {selectedVenue.location}</span>
+                            <span className='mid-font-size'>Email: {selectedVenue.email}</span>
+                            <span className='mid-font-size'>Phone Number: {selectedVenue.phoneNumber}</span>
+                            <span className='mid-font-size'>Description: {selectedVenue.description}</span>
                         </div>
                     </div>
                 </div>

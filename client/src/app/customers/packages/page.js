@@ -3,8 +3,11 @@ import PackageCard from './PackageCard';
 import './Packages.css';
 import Navbar from '../../components/navbar/page';
 import Footer from '../../components/footer/page';
+// import { useSearchParams } from 'next/navigation';
 
 const Packages = () => {
+    // const searchParams = useSearchParams();
+    // const id = searchParams.get('id'); // Get user ID from the query parameters
     const packagesData = [
         { title: "Package 1", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", image: "/wedding1.png" },
         { title: "Package 2", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", image: "/wedding2.png" },
