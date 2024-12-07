@@ -11,6 +11,7 @@ import { IoClose } from "react-icons/io5";
 
 
 import './page.css'
+import { useRowState } from "react-table";
 
 export default function Profile () {
     const searchParams = useSearchParams();
@@ -27,19 +28,33 @@ export default function Profile () {
     const [acceptDeletionAlert, setAcceptDeletionAlert] = useState(false);
     const [failureDeletionAlert, setFailureDeletionAlert] = useState(false);
 
+    const [acceptDeletionVenueAlert,setAcceptDeletionVenueAlert] = useState(false);
+
+    const [changePwdAlert, setChangePwdAlert] = useState(false);
+
     const [deletedCategory,setDeletedCategory] = useState('');
 
+    const [deletedVenue,setDeletedVenue] = useState('');
+
     const [category, setCategory] = useState([])
+    const [venue,setVenue] = useState([])
+
 
     const [addPlannerCategory, setAddPlannerCategory] = useState([])
     const [plannerCategoryIds, setPlannerCategoryIds]= useState([]);
     const [plannerCategoryNames, setPlannerCategoryNames]= useState([]);
 
+    const [addPlannerVenue, setAddPlannerVenue] = useState([])
+    const [plannerVenueIds, setPlannerVenueIds]= useState([]);
+    const [plannerVenueNames, setPlannerVenueNames]= useState([]);
+
     const [EditCategoriesModal, setEditCategoriesModal] = useState(false)
+    const [EditVenuesModal, setEditVenuesModal] = useState(false)
 
     const [changePasswordModal, setChangePasswordModal] = useState(false)
     const [selectedOption, setSelectedOption] = useState("");
-
+    const [selectedOptionVen, setSelectedOptionVen] = useState("");
+    
     const [profileData,setProfileData] = useState(
         {       
             username: "",
@@ -51,9 +66,17 @@ export default function Profile () {
             // image: " ",
         }
     )
+
+    const [oldPwd, setOldPwd] = useState("");
+    const [newPwd, setNewPwd] = useState("");
+    const [retypeNewPwd, setRetypeNewPwd] = useState("");
     
     const handleChange = (event) => {
         setSelectedOption(event.target.value); 
+      };
+
+      const handleChangeVenue = (event) => {
+        setSelectedOptionVen(event.target.value); 
       };
 
 
@@ -61,8 +84,30 @@ export default function Profile () {
         setEditCategoriesModal(!EditCategoriesModal)
     }
 
+    const handleVenuesModal = () => {
+        setEditVenuesModal(!EditVenuesModal)
+    }
+
     const handlePasswordModal = () => {
+        handleClearPwdModal();
         setChangePasswordModal(!changePasswordModal)
+    }
+
+    const [venueAcceptAlert,setVenueAcceptAlert] = useState(false)
+    const [venueFailureAlert,setVenueFailureAlert] = useState(false)
+
+    const handleVenueAcceptAlert = () => {
+        setVenueAcceptAlert(true);
+        setTimeout(() => {
+            setVenueAcceptAlert(false);
+        }, 2500);
+    }
+
+    const handleVenueFailureAlert = () => {
+        setVenueFailureAlert(true);
+        setTimeout(() => {
+            setVenueFailureAlert(false);
+        }, 2500);
     }
 
     const handleAcceptAlert = () => {
@@ -100,12 +145,40 @@ export default function Profile () {
         }, 2500); 
       };
 
+      const handleDeletionAcceptVenueAlert = () => {
+        setAcceptDeletionVenueAlert(true);
+        setTimeout(() => {
+            setAcceptDeletionVenueAlert(false);
+        }, 2500); 
+      };
+
       const handleDeletionFailureAlert = () => {
         setFailureDeletionAlert(true);
         setTimeout(() => {
             setFailureDeletionAlert(false);
         }, 2500); 
       };
+
+      const handleChnagePwdAlert = () => {
+        setChangePwdAlert(true);
+        setTimeout(() => {
+            setChangePwdAlert(false);
+        }, 2500); 
+      };
+
+      const handleClearPwdModal = ()=>{
+            setOldPwd('');
+            setNewPwd('');
+            setRetypeNewPwd('');
+            setMessage('');
+      }
+
+      const [message, setMessage] = useState('');
+
+      const [showOldPassword, setShowOldPassword] = useState(false);
+
+      const [showNewPassword, setShowNewPassword] = useState(false);
+
 
 
     //   get planner info 
@@ -116,7 +189,7 @@ export default function Profile () {
           return;
         }
     
-        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/getOnePlanner.php?id=${id}`)
+        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getOnePlanner.php?id=${id}`)
           .then((response) => {
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
@@ -143,7 +216,7 @@ export default function Profile () {
     const handleProfileModal = () => {
         if (EditProfile) {
             // Send updated profile data to the server
-            fetch(`http://localhost/Monasbtak-Backend/php/api/planner/editProfile.php?id=${id}`, {
+            fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/editProfile.php?id=${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -320,6 +393,197 @@ export default function Profile () {
                 // alert('Error updating postPlannerCategories');
             });
     };
+
+    // get all venues 
+    useEffect(() => {
+    
+        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getVenues.php`)
+        .then((response) => {
+            if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then((data) => {
+            if (data.success) {
+            setVenue(data.venues);
+            } else {
+            alert("Error fetching Venues")
+            console.error('Error fetching Venues:', data.message);
+            }
+        })
+        .catch((error) => {
+            alert('Failed to fetch Venues data');
+            console.error('Failed to fetch Venues:', error);
+        });
+
+  },[]);
+
+    //  add venue to planner 
+    const handleAddVenues = (venueName, plannerName) => {
+        console.log(`vanueName: ${venueName},,,, plannerName: ${plannerName}`)
+        if (!venueName || !plannerName) return;
+    
+        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/postPlannerVenue.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ venueName, plannerName }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    // alert('postPlannerVenues successfully!');
+                    setAddPlannerVenue(data.data); 
+                    fetchPlannerVenues();
+                    handleVenuesModal();
+                    handleVenueAcceptAlert();
+                } else {
+                    // alert('Failed to update postPlannerVenues');
+                    handleVenuesModal();
+                    handleVenueFailureAlert();
+                }
+            })
+            .catch((error) => {
+                console.error('Error updating postPlannerVenues:', error);
+                // alert('Error updating postPlannerVenues');
+            });
+    };
+
+    // get Venues Id's related to planner 
+    const fetchPlannerVenues = () => {
+  
+    fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getPlannerVenues.php?planner_id=${id}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.success) {
+            setPlannerVenueIds(data.venue_ids);
+        } else {
+          setError(data.message);
+          console.error('Error fetching Venue_id:', data.message);
+        }
+      })
+      .catch((error) => {
+        setError('Failed to fetch Venue_id data');
+        console.error('Failed to fetch Venue_id:', error);
+      });
+    //   console.log(planner.age);
+    }
+    useEffect(() => {
+        fetchPlannerVenues();
+
+        
+  },[]);
+
+//   get venue names 
+  useEffect(() => {
+    if (!plannerVenueIds.length) return;
+  
+    const fetchVenueNames = async () => {
+        try {
+            const names = await Promise.all(
+                plannerVenueIds.map((id) =>
+                  
+                    fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getOneVenue.php?id=${id}`)
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then((data) => {
+                            if (data.success) {
+                                return data.venue.name;
+                            } else {
+                                console.error(`Error fetching venues for ID ${id}:`, data.message);
+                                return null;
+                            }
+                        })
+                )
+            );
+            setPlannerVenueNames(names.filter((name) => name !== null)); // Filter out null values
+        } catch (error) {
+            console.error('Failed to fetch venue names:', error);
+        }
+    };
+  
+    fetchVenueNames();
+    }, [plannerVenueIds]);
+
+    //  delete venue to table with planner ID 
+    const handleDeleteVenue = (venueName, id) => {
+        console.log(`venueName: ${venueName},,,, id: ${id}`)
+        if (!venueName || !id) return;
+    
+        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/deletePlannerVenue.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ venueName, id }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    // alert('deletePlannerVenues successfully!');
+                    setDeletedVenue(venueName);
+                    fetchPlannerVenues();
+                    handleVenuesModal();
+                    handleDeletionAcceptVenueAlert();
+                } else {
+                    // alert('Failed to delete Venues');
+                    setDeletedVenue(venueName);
+                    handleVenuesModal();
+                    // handleDeletionFailureAlert();
+                }
+            })
+            .catch((error) => {
+                console.error('Error deleting Planner Category:', error);
+                // alert('Error updating postPlannerCategories');
+            });
+    };
+
+    // change password
+    const handlePasswordChange = (id,oldPwd,newPwd,retypeNewPwd) => {
+        if (!id) return 
+        else if (!oldPwd || !newPwd || !retypeNewPwd){
+            setMessage('All fields are required');
+            return;
+        }
+        
+        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/changePassword.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id, oldPwd,newPwd, retypeNewPwd}),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    // alert('password changes successfully!');
+                    // handleClearPwdModal();
+                    handlePasswordModal();
+                    handleChnagePwdAlert();
+                } else {
+                    // alert('Failed to change password');
+                    setMessage(data.message)
+                }
+            })
+            .catch((error) => {
+                console.error('Error changing password:', error);
+                setMessage(`Error: ${error}`);
+                // alert('Error changing password');
+            });
+            handleClearPwdModal();
+
+    }
     
     const handleInputChange = (e) => {
         const {id, value} = e.target;
@@ -357,29 +621,6 @@ export default function Profile () {
                     <div className="flex flex-col flex-wrap gap-3 mt-5">
 
                         {/* Profile Picture */}
-                        {/* <div className="flex flex-col flex-wrap">
-                                    <label htmlFor="ProfilePicture" className=" my-2 font-bold">Profile Picture</label>
-                                    {EditProfile ? (
-                                        // <input 
-                                        //     type="file"
-                                        //     id="ProfilePicture"
-                                        //     value={profileData.image}
-                                        //     onChange={handleInputChange}
-                                        //     className="px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
-                                        // />
-                                        <img src={`data:image/jpeg;base64${profileData.image}`} />
-                                    ) : (
-                                        
-                                            <input 
-                                                type="file"
-                                                id="ProfilePicture"
-                                                value={profileData.image}
-                                                className="px-5 py-2 rounded-lg bg-white border-gray-200 border-2"
-                                                disabled
-                                            />                       
-                                    )}
-                        </div> */}
-
                         <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">                        
 
                         {/* userName */}                        
@@ -538,8 +779,7 @@ export default function Profile () {
                         </div>
 
 
-                        <div className="grid grid-cols-1 max-sm:grid-cols-1 gap-5 pt-5">
-                            
+                
                             {/* Categories */}
                             <div>
                                 <div className="my-2 font-bold flex justify-between gap-5 mr-7">
@@ -560,9 +800,30 @@ export default function Profile () {
                                      <div>No Categories yet</div>
                                     )}
                                     </div>
+
                             </div>
 
-                        </div>
+                              {/* Venues */}
+                              <div>
+                                    <div className="my-2 font-bold flex justify-between gap-5 mr-7">
+                                        <p className="text-xl">Venues</p>
+                                        <button className="py-1 px-2  text-[#D9B34D]" onClick={handleVenuesModal}>Edit</button>
+                                    </div>
+                                            
+                                        <div className="m-4 flex flex-wrap gap-2">
+                                        {plannerVenueNames.length > 0 ? (
+                                                plannerVenueNames.map((name, index) => (
+                                            <div key={index} className="flex flex-row flex-wrap items-center justify-center gap-4 bg-[#D9B34D] py-2 px-4 rounded-2xl text-white shadow-lg shadow-[#4c1b4161]">
+                                                <div>
+                                                    {name} 
+                                                </div>
+                                            </div>
+                                        ))
+                                        ): (
+                                        <div>No Venues yet</div>
+                                    )}
+                                        </div>
+                             </div>
 
                     </div>
                     
@@ -590,52 +851,215 @@ export default function Profile () {
                                         <p className="">Change Password</p>
                                         <hr />
                                     </div>
+                                    
+                                    {message && (
+                                        <div className=" text-red-600 border-red-600 border-solid border-2 rounded-md  bg-red-100 py-2 mx-4 text-center px-2 m-0">
+                                            {message}
+                                        </div>
+                                    )}
+                                    
 
                                     {/* Old password */}
                                     <div className="flex flex-col">
-                                        <label htmlFor="OldPassword" className="required-label my-2 font-bold">Old Password</label>
-                                        <input 
-                                            type="password"
-                                            id="OldPassword"
-                                            placeholder="Enter Your Old Password"
-                                            className="px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
-                                            required
-                                        />
+                                        <label htmlFor="oldPwd" className="required-label my-2font-bold">Old Password</label>
+                                        <div className="relative">
+                                            
+                                            <input 
+                                                type={showOldPassword ? "text" : "password"} 
+                                                id="oldPwd"
+                                                placeholder="Enter Your Old Password"
+                                                value={oldPwd}
+                                                onChange={(e)=>setOldPwd(e.target.value)}
+                                                className="px-5 py-2 rounded-lg bg-white w-full border-[#4c1b419c] border-2"
+                                                required
+                                            />
+                                            <button
+                                                type="button"
+                                                aria-label={showOldPassword ? "Password Visible" : "Password Invisible."}
+                                                className="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-400"
+                                                onClick={() => {
+                                                setShowOldPassword((prev) => !prev);
+                                            }}
+                                            >
+                                                {showOldPassword ? (
+                                                    <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth="1.5"
+                                                    stroke="currentColor"
+                                                    className="w-6 h-6"
+                                                    >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                                                    ></path>
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                                    ></path>
+                                                    </svg>
+                                                ) : (
+                                                    <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth="1.5"
+                                                    stroke="currentColor"
+                                                    className="w-6 h-6"
+                                                    >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"
+                                                    ></path>
+                                                    </svg>
+                                                )}
+                                                </button>
+                                        </div>
                                     </div>
 
                                     {/* New password */}
                                     <div className="flex flex-col">
-                                        <label htmlFor="NewPassword" className="required-label my-2 font-bold">New Password</label>
-                                        <input 
-                                            type="password"
-                                            id="NewPassword"
-                                            placeholder="Enter Your Old Password"
-                                            className="px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
-                                            required
-                                        />
+                                        <label htmlFor="newPwd" className="required-label my-2font-bold">New Password</label>
+                                        <div className="relative">
+                                            
+                                            <input 
+                                                type={showNewPassword ? "text" : "password"} 
+                                                id="newPwd"
+                                                placeholder="Enter New Password"
+                                                value={newPwd}
+                                                onChange={(e)=>setNewPwd(e.target.value)}
+                                                className="px-5 py-2 rounded-lg bg-white w-full border-[#4c1b419c] border-2"
+                                                required
+                                            />
+                                            <button
+                                                type="button"
+                                                aria-label={showNewPassword ? "Password Visible" : "Password Invisible."}
+                                                className="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-400"
+                                                onClick={() => {
+                                                setShowNewPassword((prev) => !prev);
+                                            }}
+                                            >
+                                                {showNewPassword ? (
+                                                    <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth="1.5"
+                                                    stroke="currentColor"
+                                                    className="w-6 h-6"
+                                                    >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                                                    ></path>
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                                    ></path>
+                                                    </svg>
+                                                ) : (
+                                                    <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth="1.5"
+                                                    stroke="currentColor"
+                                                    className="w-6 h-6"
+                                                    >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"
+                                                    ></path>
+                                                    </svg>
+                                                )}
+                                                </button>
+                                        </div>
                                     </div>
 
                                     {/* Re-type password */}
                                     <div className="flex flex-col">
-                                        <label htmlFor="reTypedPassword" className="required-label my-2 font-bold">Re-Type Password</label>
-                                        <input 
-                                            type="password"
-                                            id="reTypedPassword"
-                                            placeholder="Enter Your Old Password"
-                                            className="px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
-                                            required
-                                        />
+                                        <label htmlFor="retypeNewPwd" className="required-label my-2font-bold">Re-Type New Password</label>
+                                        <div className="relative">
+                                            
+                                            <input 
+                                                type={showNewPassword ? "text" : "password"} 
+                                                id="retypeNewPwd"
+                                                placeholder="Re-Type New Password"
+                                                value={retypeNewPwd}
+                                                onChange={(e)=>setRetypeNewPwd(e.target.value)}
+                                                className="px-5 py-2 rounded-lg bg-white w-full border-[#4c1b419c] border-2"
+                                                required
+                                            />
+                                            <button
+                                                type="button"
+                                                aria-label={showNewPassword ? "Password Visible" : "Password Invisible."}
+                                                className="absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-400"
+                                                onClick={() => {
+                                                setShowNewPassword((prev) => !prev);
+                                            }}
+                                            >
+                                                {showNewPassword ? (
+                                                    <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth="1.5"
+                                                    stroke="currentColor"
+                                                    className="w-6 h-6"
+                                                    >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                                                    ></path>
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                                    ></path>
+                                                    </svg>
+                                                ) : (
+                                                    <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    fill="none"
+                                                    viewBox="0 0 24 24"
+                                                    strokeWidth="1.5"
+                                                    stroke="currentColor"
+                                                    className="w-6 h-6"
+                                                    >
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"
+                                                    ></path>
+                                                    </svg>
+                                                )}
+                                                </button>
+                                        </div>
                                     </div>
 
 
                                 </div>
 
-                                <div className="flex items-end justify-end">
+                                <div className="flex gap-3 items-end justify-end">
                                     <button 
                                         className="bg-[#D9B34D] w-fit py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white"
-                                        onClick={handlePasswordModal}
+                                        onClick={()=>handlePasswordChange(id,oldPwd,newPwd,retypeNewPwd)}
                                         >
                                             Save Changes
+                                    </button>
+                                    <button 
+                                        className="bg-[#D9B34D] w-fit py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white"
+                                        onClick={()=>handlePasswordModal()}
+                                        >
+                                            Cancel Changes
                                     </button>
                                 </div>
 
@@ -645,7 +1069,7 @@ export default function Profile () {
                     )
                 }
 
-                {EditCategoriesModal && (
+                { EditCategoriesModal && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
                         <div className="bg-white rounded-xl w-[50%] px-10 py-8 flex flex-col gap-4">
                             <div className="font-bold text-xl flex mb-2 w-full relative">
@@ -692,7 +1116,68 @@ export default function Profile () {
                             </div>
                         </div>
                     </div>
+                )}
+
+                {EditVenuesModal && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                        <div className="bg-white rounded-xl w-[50%] px-10 py-8 flex flex-col gap-4">
+                            <div className="font-bold text-xl flex mb-2 w-full relative">
+                                <p>Venues</p>
+                                <button className="absolute right-0" onClick={handleVenuesModal}><IoClose /></button>
+                                <hr />
+                            </div>
+
+                            <div className="flex gap-2 justify-evenly">
+                                <label htmlFor="SelectedVenues"  className="text-lg">Venues: </label>
+                                <select value={selectedOptionVen} onChange={handleChangeVenue} name="SelectedVenues" className="w-1/2 border-2 border-[#4c1b41] rounded-lg py-1 px-3">
+                                        <option disapled="true" defaultChecked value="Choose Venue" className="text-gray-300">Choose Venue To Add</option>
+                                    {
+                                        venue.map((ven,index)=> (
+                                                <option key={index} value={ven.name}>
+                                                    {ven.name}
+                                                </option>
+                                        ))
+                                        
+                                    }
+                                     
+                                </select>
+                                <button
+                                    onClick={()=>handleAddVenues(selectedOptionVen,profileData.username)}
+                                    className="bg-[#D9B34D] px-5 py-2 rounded-lg text-white hover:bg-[#d9b44dd3]"
+                                    >
+                                        Add
+                                </button>
+                            </div>
+
+                            <div className="m-4 flex flex-wrap gap-2">
+                                    {plannerVenueNames.length > 0 ? (
+                                        plannerVenueNames.map((name, index) => (
+                                        <div key={index} className="flex flex-row flex-wrap items-center justify-center gap-4 bg-[#D9B34D] py-2 px-4 rounded-2xl text-white shadow-lg shadow-[#4c1b4161]">
+                                            <div>
+                                                {name}  
+                                            </div>
+                                            <button><TiDelete onClick={()=>handleDeleteVenue(name,id)}/></button>
+                                        </div>
+                                    ))
+                                    ): (
+                                     <div>No Venues yet</div>
+                                    )}
+                            </div>
+
+                            {/* add here a form to add new venue */}
+                                   
+                        </div>
+                    </div>
                 )}                
+
+                {changePwdAlert &&(
+                    <div className="modal-overlay-status">
+                        <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
+                        <div className="bg-green-600 p-0 rounded-l-xl"></div>
+                        <div className="p-5 bg-white  border-2 border-green-600 ">Password Changed Successfully</div>
+                        </div>
+                    </div>
+                )}
 
                 {acceptAlert &&(
                     <div className="modal-overlay-status">
@@ -701,6 +1186,17 @@ export default function Profile () {
                         <div className="p-5 bg-white  border-2 border-green-600 ">Profile Updated Successfully</div>
                         </div>
                     </div>
+                )}
+
+                {venueAcceptAlert &&(
+                <div className="modal-overlay-status">
+                    <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
+                    <div className="bg-green-600 p-0 rounded-l-xl"></div>
+                    <div className="p-5 bg-white  border-2 border-green-600 ">Venue Added to planner: 
+                            <span className="font-bold">{profileData.username}</span> Successfully</div>
+                    </div>
+                </div>
+
                 )}
 
                 {acceptCategoryAlert &&(
@@ -719,6 +1215,16 @@ export default function Profile () {
                         <div className="bg-green-600 p-0 rounded-l-xl"></div>
                         <div className="p-5 bg-white  border-2 border-green-600 ">Category:  
                             <span className="font-bold">{deletedCategory}</span> has been deleted successfully</div>
+                        </div>
+                    </div>
+                )}
+
+            {acceptDeletionVenueAlert &&(
+                    <div className="modal-overlay-status">
+                        <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
+                        <div className="bg-green-600 p-0 rounded-l-xl"></div>
+                        <div className="p-5 bg-white  border-2 border-green-600 ">Venue:  
+                            <span className="font-bold">{deletedVenue}</span> has been deleted successfully</div>
                         </div>
                     </div>
                 )}
@@ -743,6 +1249,16 @@ export default function Profile () {
                     </div>
                 )}
 
+                {venueFailureAlert &&(
+                    <div className="modal-overlay-status">
+                        <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
+                        <div className="bg-red-600 p-0 rounded-l-xl"></div>
+                        <div className="p-5 bg-white  border-2 border-red-600 ">Failed to add Venue to planner: 
+                            <span className="font-bold">{profileData.username}</span></div>
+                        </div>
+                    </div>
+                )}
+
                 {failureDeletionAlert &&(
                     <div className="modal-overlay-status">
                         <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
@@ -758,5 +1274,3 @@ export default function Profile () {
         </>
     )
 }
-
-
