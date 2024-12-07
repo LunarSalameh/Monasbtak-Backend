@@ -21,36 +21,44 @@ export default function Profile () {
     const [acceptAlert, setAcceptAlert] = useState(false);
     const [failureAlert, setFailureAlert] = useState(false);
 
+    const [acceptCategoryAlert, setAcceptCategoryAlert] = useState(false);
+    const [failureCategoryAlert, setFailureCategoryAlert] = useState(false);
+
+    const [acceptDeletionAlert, setAcceptDeletionAlert] = useState(false);
+    const [failureDeletionAlert, setFailureDeletionAlert] = useState(false);
+
+    const [deletedCategory,setDeletedCategory] = useState('');
+
     const [category, setCategory] = useState([])
 
-
-    const [profileData,setProfileData] = useState(
-            {
-                username: "",
-                email: "",
-                phonenumber: "",
-                age: "",
-                description: " ",
-                // image: " ",
-            }
-        )
-    // const  [planner,setPlanner] = useState(null);
+    const [addPlannerCategory, setAddPlannerCategory] = useState([])
+    const [plannerCategoryIds, setPlannerCategoryIds]= useState([]);
+    const [plannerCategoryNames, setPlannerCategoryNames]= useState([]);
 
     const [EditCategoriesModal, setEditCategoriesModal] = useState(false)
-    const [EditVenuesModal, setEditVenuesModal] = useState(false)
 
     const [changePasswordModal, setChangePasswordModal] = useState(false)
+    const [selectedOption, setSelectedOption] = useState("");
 
-    const [newCategory, setNewCategory] = useState("");
-    const [newVenue, setNewVenue] = useState("");
+    const [profileData,setProfileData] = useState(
+        {       
+            username: "",
+            email: "",
+            phonenumber: "",
+            age: "",
+            gender: " ",
+            description: " ",
+            // image: " ",
+        }
+    )
+    
+    const handleChange = (event) => {
+        setSelectedOption(event.target.value); 
+      };
 
 
     const handleCategoriesModal = () => {
         setEditCategoriesModal(!EditCategoriesModal)
-    }
-
-    const handleVenuesModal = () => {
-        setEditVenuesModal(!EditVenuesModal)
     }
 
     const handlePasswordModal = () => {
@@ -71,37 +79,37 @@ export default function Profile () {
         }, 2500); 
       };
 
-    const handleProfileModal = () => {
-        if (EditProfile) {
-            // Send updated profile data to the server
-            fetch(`http://localhost/Monasbtak-Backend/php/api/planner/editProfile.php?id=${id}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(profileData),
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.success) {
-                        // alert('Profile updated successfully!');
-                        handleAcceptAlert();
-                    } else {
-                        // alert('Failed to update profile');
-                        handleFailureAlert();
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error updating profile:', error);
-                    alert('Error updating profile');
-                });
-        }
-    
-        setEditProfile(!EditProfile); // Toggle profile edit mode
-    };
-    
+      const handleCategoryAcceptAlert = () => {
+        setAcceptCategoryAlert(true);
+        setTimeout(() => {
+          setAcceptCategoryAlert(false);
+        }, 2500); 
+      };
 
-      useEffect(() => {
+      const handleCategoryFailureAlert = () => {
+        setFailureCategoryAlert(true);
+        setTimeout(() => {
+            setFailureCategoryAlert(false);
+        }, 2500); 
+      };
+
+      const handleDeletionAcceptAlert = () => {
+        setAcceptDeletionAlert(true);
+        setTimeout(() => {
+            setAcceptDeletionAlert(false);
+        }, 2500); 
+      };
+
+      const handleDeletionFailureAlert = () => {
+        setFailureDeletionAlert(true);
+        setTimeout(() => {
+            setFailureDeletionAlert(false);
+        }, 2500); 
+      };
+
+
+    //   get planner info 
+    useEffect(() => {
         // console.log('User ID from URL:', id);
         if (!id) {
           setError('planner ID is missing in the URL.');
@@ -131,8 +139,38 @@ export default function Profile () {
 
       }, [id]);
 
-      useEffect(() => {
+    //   edit planner profile
+    const handleProfileModal = () => {
+        if (EditProfile) {
+            // Send updated profile data to the server
+            fetch(`http://localhost/Monasbtak-Backend/php/api/planner/editProfile.php?id=${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(profileData),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        // alert('Profile updated successfully!');
+                        handleAcceptAlert();
+                    } else {
+                        // alert('Failed to update profile');
+                        handleFailureAlert();
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error updating profile:', error);
+                    alert('Error updating profile');
+                });
+        }
+    
+        setEditProfile(!EditProfile); // Toggle profile edit mode
+    };
 
+    // get all categories 
+    useEffect(() => {
         fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getCategories.php`)
           .then((response) => {
             if (!response.ok) {
@@ -153,16 +191,136 @@ export default function Profile () {
             console.error('Failed to fetch Categories:', error);
           });
 
-      });
+      },[]);
+
+    //  add category to table with planner ID 
+    const handleAddCategory = (catName, plannerName) => {
+        console.log(`catName: ${catName},,,, plannerName: ${plannerName}`)
+        if (!catName || !plannerName) return;
+    
+        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/postPlannerCategories.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ catName, plannerName }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    // alert('postPlannerCategories successfully!');
+                    setAddPlannerCategory(data); 
+                    fetchPlannerCategories();
+                    handleCategoriesModal();
+                    handleCategoryAcceptAlert();
+                } else {
+                    // alert('Failed to update postPlannerCategories');
+                    handleCategoriesModal();
+                    handleCategoryFailureAlert();
+                }
+            })
+            .catch((error) => {
+                console.error('Error updating postPlannerCategories:', error);
+                // alert('Error updating postPlannerCategories');
+            });
+    };
+
+    // get categories Id's related to planner 
+    const fetchPlannerCategories = () => {
+        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getPlannerCategories.php?planner_id=${id}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.success) {
+                setPlannerCategoryIds(data.category_ids);
+            } else {
+              setError(data.message);
+              console.error('Error fetching category_id:', data.message);
+            }
+          })
+          .catch((error) => {
+            setError('Failed to fetch category_id data');
+            console.error('Failed to fetch category_id:', error);
+          });
+        //   console.log(planner.age);
+        }
+        useEffect(() => {
+            fetchPlannerCategories();
+
+      },[]);
 
 
-    const Venues = [
-        {name: "Venue 1"},
-        {name: "Venue 2"},
-        {name: "Venue 3"},
-        {name: "Venue 4"},
-    ];
+    //   get categories names 
+    useEffect(() => {
+    if (!plannerCategoryIds.length) return;
 
+    const fetchCategoryNames = async () => {
+        try {
+            const names = await Promise.all(
+                plannerCategoryIds.map((id) =>
+                    fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getOneCategory.php?id=${id}`)
+                        .then((response) => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return response.json();
+                        })
+                        .then((data) => {
+                            if (data.success) {
+                                return data.category.name;
+                            } else {
+                                console.error(`Error fetching category for ID ${id}:`, data.message);
+                                return null;
+                            }
+                        })
+                )
+            );
+            setPlannerCategoryNames(names.filter((name) => name !== null)); // Filter out null values
+        } catch (error) {
+            console.error('Failed to fetch category names:', error);
+        }
+    };
+
+    fetchCategoryNames();
+    }, [plannerCategoryIds]);
+
+    //  delete category to table with planner ID 
+    const handleDeleteCategory = (catName, id) => {
+        console.log(`catName: ${catName},,,, id: ${id}`)
+        if (!catName || !id) return;
+    
+        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/deletePlannerCategory.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ catName, id }),
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    // alert('deletePlannerCategories successfully!');
+                    setDeletedCategory(catName);
+                    fetchPlannerCategories();
+                    handleCategoriesModal();
+                    handleDeletionAcceptAlert();
+                } else {
+                    // alert('Failed to delete Category');
+                    setDeletedCategory(catName);
+                    handleCategoriesModal();
+                    handleDeletionFailureAlert();
+                }
+            })
+            .catch((error) => {
+                console.error('Error deleting Planner Category:', error);
+                // alert('Error updating postPlannerCategories');
+            });
+    };
+    
     const handleInputChange = (e) => {
         const {id, value} = e.target;
         setProfileData((prevData) => ({
@@ -179,21 +337,6 @@ export default function Profile () {
             age: formattedDate,
         });
     };
-
-    const addCategory = () => {
-        if (newCategory.trim()) {
-            setNewCategory((prevCategories) => [...prevCategories, { name: newCategory }]);
-            setNewCategory(""); 
-        }
-    };
-    
-    const addVenue = () => {
-        if (newVenue.trim()) {
-            setEditVenuesModal((prevVenues) => [...prevVenues, { name: newVenue }]);
-            setNewVenue(""); 
-        }
-    };
-    
 
     return (
         <>            
@@ -239,7 +382,7 @@ export default function Profile () {
 
                         <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">                        
 
-                        {/* 1st Name */}                        
+                        {/* userName */}                        
                             <div className="flex flex-col flex-wrap">
                                 <label htmlFor="username" className=" my-2 font-bold">UserName</label>
                                 {EditProfile ? (
@@ -344,6 +487,30 @@ export default function Profile () {
                             )}
                             </div>
 
+                            {/* gender */}
+                            <div className="flex flex-col flex-wrap">
+                                <label htmlFor="gender" className=" my-2 font-bold">Gender</label>
+                                {EditProfile ? (
+                                <select 
+                                    id="gender"
+                                    // value={profileData.gender}
+                                    onChange={handleInputChange}
+                                    className="px-5 py-1.5 rounded-lg bg-white border-[#4c1b419c] border-2"
+                                >
+                                    <option defaultChecked disabled value="Choose your Gender">Choose Your Gender</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Male">Male</option>
+                                </select>
+                            ) : (
+                                <input 
+                                    type="tel"
+                                    id="gender"
+                                    value={profileData.gender}
+                                    className="px-5 py-1.5 rounded-lg bg-white border-gray-200 border-2"
+                                    disabled
+                                />
+                            )}
+                            </div>
                             
 
                         </div>
@@ -371,7 +538,7 @@ export default function Profile () {
                         </div>
 
 
-                        <div className="grid grid-cols-2 max-sm:grid-cols-1 gap-5 pt-5">
+                        <div className="grid grid-cols-1 max-sm:grid-cols-1 gap-5 pt-5">
                             
                             {/* Categories */}
                             <div>
@@ -380,31 +547,19 @@ export default function Profile () {
                                     <button className="py-1 px-2  text-[#D9B34D]" onClick={handleCategoriesModal}>Edit</button>
                                 </div>
                                 
-                                <div className="m-4 flex flex-wrap gap-2 ">
-                                    {category.map((category,index)=>(
-                                        <div key={index} className="bg-[#D9B34D] py-2 px-4 rounded-2xl text-white shadow-lg shadow-[#4c1b4161]">
-                                            {category.name}
+                                    <div className="m-4 flex flex-wrap gap-2">
+                                    {plannerCategoryNames.length > 0 ? (
+                                        plannerCategoryNames.map((name, index) => (
+                                        <div key={index} className="flex flex-row flex-wrap items-center justify-center gap-4 bg-[#D9B34D] py-2 px-4 rounded-2xl text-white shadow-lg shadow-[#4c1b4161]">
+                                            <div>
+                                                 {name} 
+                                            </div>
                                         </div>
-                                    ))}
-
-                                </div>
-                            </div>
-
-
-                        {/* Venues */}
-                            <div className="">
-                                <div className="my-2 font-bold flex justify-between gap-5 mr-7 flex-wrap">
-                                    <p className="text-xl">Venues</p>
-                                    <button className="py-1 px-2  text-[#D9B34D]" onClick={handleVenuesModal}>Edit</button>
-                                </div>
-                                <div className="m-4 flex flex-wrap gap-2 ">
-                                    {Venues.map((venue,index)=>(
-                                        <div key={index} className="bg-[#D9B34D] py-2 px-4 rounded-2xl text-white shadow-lg shadow-[#4c1b4161]">
-                                            {venue.name}
-                                        </div>
-                                    ))}
-
-                                </div>
+                                    ))
+                                    ): (
+                                     <div>No Categories yet</div>
+                                    )}
+                                    </div>
                             </div>
 
                         </div>
@@ -417,6 +572,9 @@ export default function Profile () {
                         <button className="bg-[#D9B34D] py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white" onClick={handleProfileModal}> 
                             {EditProfile ? "Save Profile" : "Edit Profile"}
                         </button>
+                        {EditProfile && (
+                            <button className="bg-[#D9B34D] flex items-center gap-3 py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white" onClick={()=>setEditProfile(false)}>Cancel Edit <IoClose/></button>
+                        )}
                     </div>
                 </div>
 
@@ -426,7 +584,8 @@ export default function Profile () {
                             <div className="bg-white rounded-xl  w-[50%] px-10 py-8 flex flex-col gap-6 ">
                              
                                 <div className="flex flex-col flex-wrap gap-5">
-
+                                    
+                                    {/* TITLE */}
                                     <div className="font-bold text-xl flex flex-col ">
                                         <p className="">Change Password</p>
                                         <hr />
@@ -477,7 +636,7 @@ export default function Profile () {
                                         onClick={handlePasswordModal}
                                         >
                                             Save Changes
-                                        </button>
+                                    </button>
                                 </div>
 
                             </div>
@@ -497,88 +656,43 @@ export default function Profile () {
 
                             <div className="flex gap-2 justify-evenly">
                                 <label htmlFor="SelectedCategory"  className="text-lg">Categories: </label>
-                                <select name="SelectedCategory" className="w-1/2 border-2 border-[#4c1b41] rounded-lg py-1 px-3">
-                                        <option disabled className="text-gray-300" defaultValue="Choose Category To Add">Choose Category To Add</option>
+                                <select value={selectedOption} onChange={handleChange} name="SelectedCategory" className="w-1/2 border-2 border-[#4c1b41] rounded-lg py-1 px-3">
+                                        <option disapled="true" defaultChecked value="Choose Category" className="text-gray-300">Choose Category To Add</option>
                                     {
                                         category.map((category,index)=> (
-                                            <option key={index} value={category.name}>
-                                                {category.name}
-                                            </option>
+                                                <option key={index} value={category.name}>
+                                                    {category.name}
+                                                </option>
                                         ))
+                                        
                                     }
+                                     
                                 </select>
                                 <button
-                                    onClick={addCategory}
+                                    onClick={()=>handleAddCategory(selectedOption,profileData.username)}
                                     className="bg-[#D9B34D] px-5 py-2 rounded-lg text-white hover:bg-[#d9b44dd3]"
-                                >
-                                    Add
+                                    >
+                                        Add
                                 </button>
-
                             </div>
 
-                            <div className="m-4 flex flex-wrap gap-2 justify-between">
-                                {category.map((category, index) => (
-                                    <div key={index} className="flex items-center gap-4 bg-[#D9B34D] py-2 px-4 rounded-2xl text-white shadow-lg shadow-[#4c1b4161]">
-                                        <p>{category.name}</p>
-                                        {/* <TiDelete
-                                            className="hover:text-gray-300 cursor-pointer"
-                                            onClick={handleCategoriesModal}
-                                        /> */}
-                                    </div>
-                                ))}
-                            </div>
-
-                        </div>
-                    </div>
-                )}
-
-
-                                
-                {EditVenuesModal && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                    <div className="bg-white rounded-xl w-[50%] px-10 py-8 flex flex-col gap-4">
-                    <div className="font-bold text-xl flex mb-2 w-full relative">
-                            <p>Venues</p>
-                            <button className="absolute right-0" onClick={handleVenuesModal}><IoClose /></button>
-                            <hr />
-                        </div>
-
-                        <div className="flex gap-2 justify-evenly">
-                            <label htmlFor="SelectedCategory"  className="text-lg">Venues: </label>
-                            <select name="SelectedCategory" className="w-1/2 border-2 border-[#4c1b41] rounded-lg py-1 px-3">
-                                    <option disabled className="text-gray-300" defaultValue="Choose Category To Add">Choose Venue To Add</option>
-                                {
-                                    Venues.map((venue,index)=> (
-                                        <option key={index} value={venue.name}>
-                                            {venue.name}
-                                        </option>
+                            <div className="m-4 flex flex-wrap gap-2">
+                                    {plannerCategoryNames.length > 0 ? (
+                                        plannerCategoryNames.map((name, index) => (
+                                        <div key={index} className="flex flex-row flex-wrap items-center justify-center gap-4 bg-[#D9B34D] py-2 px-4 rounded-2xl text-white shadow-lg shadow-[#4c1b4161]">
+                                            <div>
+                                                {name}  
+                                            </div>
+                                            <button><TiDelete onClick={()=>handleDeleteCategory(name,id)}/></button>
+                                        </div>
                                     ))
-                                }
-                            </select>
-                            <button
-                                onClick={addVenue}
-                                className="bg-[#D9B34D] px-5 py-2 rounded-lg text-white hover:bg-[#d9b44dd3]"
-                            >
-                                Add
-                            </button>
-
+                                    ): (
+                                     <div>No Categories yet</div>
+                                    )}
+                            </div>
                         </div>
-
-                        <div className="m-4 flex flex-wrap gap-2 justify-between">
-                            {Venues.map((venue, index) => (
-                                <div key={index} className="flex items-center gap-4 bg-[#D9B34D] py-2 px-4 rounded-2xl text-white shadow-lg shadow-[#4c1b4161]">
-                                    <p>{venue.name}</p>
-                                    {/* <TiDelete
-                                        className="hover:text-gray-300 cursor-pointer"
-                                        onClick={handleVenuesModal}
-                                    /> */}
-                                </div>
-                            ))}
-                        </div>
-
                     </div>
-                </div>
-                )}
+                )}                
 
                 {acceptAlert &&(
                     <div className="modal-overlay-status">
@@ -589,6 +703,27 @@ export default function Profile () {
                     </div>
                 )}
 
+                {acceptCategoryAlert &&(
+                    <div className="modal-overlay-status">
+                        <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
+                        <div className="bg-green-600 p-0 rounded-l-xl"></div>
+                        <div className="p-5 bg-white  border-2 border-green-600 ">Category Added to planner: 
+                            <span className="font-bold">{profileData.username}</span> Successfully</div>
+                        </div>
+                    </div>
+                )}
+
+                {acceptDeletionAlert &&(
+                    <div className="modal-overlay-status">
+                        <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
+                        <div className="bg-green-600 p-0 rounded-l-xl"></div>
+                        <div className="p-5 bg-white  border-2 border-green-600 ">Category:  
+                            <span className="font-bold">{deletedCategory}</span> has been deleted successfully</div>
+                        </div>
+                    </div>
+                )}
+  
+
                 {failureAlert &&(
                     <div className="modal-overlay-status">
                         <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
@@ -596,11 +731,32 @@ export default function Profile () {
                         <div className="p-5 bg-white  border-2 border-red-600 ">Failed to update profile</div>
                         </div>
                     </div>
-                    )}
+                )}
 
+                {failureCategoryAlert &&(
+                    <div className="modal-overlay-status">
+                        <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
+                        <div className="bg-red-600 p-0 rounded-l-xl"></div>
+                        <div className="p-5 bg-white  border-2 border-red-600 ">Failed add category to planner: 
+                            <span className="font-bold">{profileData.username}</span></div>
+                        </div>
+                    </div>
+                )}
+
+                {failureDeletionAlert &&(
+                    <div className="modal-overlay-status">
+                        <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
+                        <div className="bg-green-600 p-0 rounded-l-xl"></div>
+                        <div className="p-5 bg-white  border-2 border-green-600 ">Category:  
+                        <span className="font-bold">{deletedCategory}</span> failed to delete</div>
+                        </div>
+                    </div>
+                )}
 
         </div>
         </div>
         </>
     )
 }
+
+

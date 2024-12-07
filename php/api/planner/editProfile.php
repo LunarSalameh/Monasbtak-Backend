@@ -21,7 +21,8 @@ if (isset($data['username']) &&
     isset($data['email']) && 
     isset($data['age']) && 
     isset($data['phonenumber']) && 
-    isset($data['description'])
+    isset($data['description']) &&
+    isset($data['gender'])
 ) {
 
     $username = $data['username'];
@@ -31,9 +32,10 @@ if (isset($data['username']) &&
 
     $phonenumber = $data['phonenumber'];
     $description = $data['description'];
+    $gender = $data['gender'];
 
     try {
-        $sql = "UPDATE planners SET username = :username, email = :email, age = :age, phonenumber = :phonenumber, description = :description WHERE id = :plannerId";
+        $sql = "UPDATE planners SET username = :username, email = :email, age = :age, phonenumber = :phonenumber, description = :description, gender = :gender WHERE id = :plannerId";
 
         $stmt = $pdo->prepare($sql);
 
@@ -43,6 +45,7 @@ if (isset($data['username']) &&
         $stmt->bindParam(':age', $formattedAge);
         $stmt->bindParam(':phonenumber', $phonenumber);
         $stmt->bindParam(':description', $description);
+        $stmt->bindParam(':gender', $gender);
 
         if ($stmt->execute()){
             echo json_encode(['success' => true, 'message' => 'Planner profile updated successfully']);

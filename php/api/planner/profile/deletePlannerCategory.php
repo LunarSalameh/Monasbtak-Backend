@@ -16,60 +16,51 @@ $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php'
 $inputData = json_decode(file_get_contents('php://input'), true);
 
 try {
-    $planner_name = $inputData['plannerName'];
+    $planner_id = $inputData['id'];
     $category_name = $inputData['catName'];
 
-    if ($planner_name && $category_name) {
-        
-        // get planner ID
-        $plannerQuery = "SELECT id FROM planners WHERE username = :planner_name";
-        $plannerStmt = $pdo->prepare($plannerQuery);
-        $plannerStmt->bindParam(':planner_name', $planner_name);
-        $plannerStmt->execute();
-        $planner = $plannerStmt->fetch(PDO::FETCH_ASSOC);
+    if ($planner_id && $category_name) {
 
-        // get category ID
+        // Get category ID
         $categoryQuery = "SELECT id FROM categories WHERE name = :category_name";
         $categoryStmt = $pdo->prepare($categoryQuery);
         $categoryStmt->bindParam(':category_name', $category_name);
         $categoryStmt->execute();
         $category = $categoryStmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($planner && $category) {
-            // Check if the category is already assigned to the planner
+        if ($category) {
+
             $checkCategoryQuery = "SELECT COUNT(*) FROM planner_category WHERE planner_id = :planner_id AND category_id = :category_id";
             $checkCategoryStmt = $pdo->prepare($checkCategoryQuery);
-            $checkCategoryStmt->bindParam(':planner_id', $planner['id']);
+            $checkCategoryStmt->bindParam(':planner_id', $planner_id);
             $checkCategoryStmt->bindParam(':category_id', $category['id']);
             $checkCategoryStmt->execute();
             $existingCategory = $checkCategoryStmt->fetchColumn();
 
-            // If the category is not already assigned to the planner, insert it
-            if ($existingCategory == 0) {
-                $sql = "INSERT INTO planner_category (planner_id, category_id) VALUES (:planner_id, :category_id)";
+            if ($existingCategory > 0) {
+                $sql = "DELETE FROM planner_category WHERE planner_id = :planner_id AND category_id = :category_id";
                 $stmt = $pdo->prepare($sql);
 
-                $stmt->bindParam(':planner_id', $planner['id']);
+                $stmt->bindParam(':planner_id', $planner_id);
                 $stmt->bindParam(':category_id', $category['id']);
 
                 if ($stmt->execute()) {
-                    echo json_encode(['success' => true, 'message' => 'Category added to planner']);
+                    echo json_encode(['success' => true, 'message' => 'Category deleted from planner']);
                 } else {
-                    echo json_encode(['success' => false, 'message' => 'Failed to add Category/Planner']);
+                    echo json_encode(['success' => false, 'message' => 'Failed to delete Category']);
                 }
             } else {
-                echo json_encode(['success' => false, 'message' => 'This category is already assigned to the planner']);
+                echo json_encode(['success' => false, 'message' => 'This category is not assigned to the planner']);
             }
         } else {
-            echo json_encode(['success' => false, 'message' => 'Invalid planner or category name']);
+            echo json_encode(['success' => false, 'message' => 'Invalid category name']);
         }
 
     } else {
-        echo json_encode(['success' => false, 'message' => 'Planner name and category name are required']);
+        echo json_encode(['success' => false, 'message' => 'Planner ID and category name are required']);
     }
 
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
 }
-
 ?>

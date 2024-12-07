@@ -24,6 +24,7 @@ export default function PlannerStatus() {
   const closeRejectModal = () => {setRejectModal(false);};
 
   const handleAcceptModal =() => {
+    console.log ("handle accept modal");
         closeAcceptModal();
         setAcceptAlert(true);
         setTimeout(() => {
@@ -56,6 +57,44 @@ export default function PlannerStatus() {
     setUserToDelete(username);
 
 };
+
+  // Handle Accept/Reject
+  const handleStatusChange = (plannerId, action) => {
+    console.log(`PlannerId: ${plannerId}`)
+    if (!planner) return;
+
+    fetch("http://localhost/Monasbtak-Backend/php/api/admin/postPlannersStatus.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: plannerId,
+        action,
+      }),
+      
+    })
+    
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Response data:", data); 
+        if (data.success) {
+          // alert(data.message);
+           setPlanners((prevPlanners) =>
+            prevPlanners.filter((planner) => planner.id !== plannerId)
+          );
+
+        } else {
+          console.error(data.message || "Failed to update planner status.");
+        }
+      })
+      .catch((error) => console.error("Error updating planner status:", error));
+  };
 
   useEffect(() => {
     fetch("http://localhost/Monasbtak-Backend/php/api/admin/getPendingPlanners.php") 
@@ -108,43 +147,6 @@ export default function PlannerStatus() {
       })
       .catch((error) => console.error("Error fetching planners:", error));
   }, []);
-
-  // Handle Accept/Reject
-  const handleStatusChange = (plannerId, action) => {
-    if (!planner) return;
-
-    fetch("http://localhost/Monasbtak-Backend/php/api/admin/postPlannersStatus.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: plannerId,
-        action,
-      }),
-      
-    })
-    
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Response data:", data); 
-        if (data.success) {
-          // alert(data.message);
-           setPlanners((prevPlanners) =>
-            prevPlanners.filter((planner) => planner.id !== plannerId)
-          );
-
-        } else {
-          console.error(data.message || "Failed to update planner status.");
-        }
-      })
-      .catch((error) => console.error("Error updating planner status:", error));
-  };
 
   const columns = [
     { Header: "Planner", accessor: "username" },

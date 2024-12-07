@@ -13,27 +13,26 @@ error_reporting(E_ALL);
 $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
 try {
-    $planner_id = isset($_GET['planner_id']) ? filter_var($_GET['planner_id'], FILTER_VALIDATE_INT) : null;
+    $category_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
 
-    if ($planner_id) {
-         $sql = "SELECT category_id FROM planner_category WHERE planner_id = :planner_id";
+    if ($category_id) {
+         $sql = "SELECT name FROM categories WHERE id = :category_id";
 
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':planner_id', $planner_id, PDO::PARAM_INT);
+        $stmt->bindParam(':category_id', $category_id, PDO::PARAM_INT); 
         $stmt->execute();
 
-        $categories = $stmt->fetchAll(PDO::FETCH_COLUMN); 
-        
-        if (!empty($categories)) {
-            echo json_encode(['success' => true, 'category_ids' => $categories]);
+        $category = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($category) {
+            echo json_encode(['success' => true, 'category' => $category]);
         } else {
-            echo json_encode(['success' => true, 'category_ids' => []]);
+            echo json_encode(['success' => false, 'message' => 'No category found for the given ID']);
         }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Invalid planner ID']);
+        echo json_encode(['success' => false, 'message' => 'Invalid category ID']);
     }
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
 }
-
 ?>

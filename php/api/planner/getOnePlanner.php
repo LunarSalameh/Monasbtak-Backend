@@ -17,7 +17,7 @@ try{
     $planner_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
 
     if ($planner_id){
-        $sql = "SELECT username, email, age, phonenumber, description FROM planners WHERE id=:id";
+        $sql = "SELECT username, email, age, phonenumber, description, gender FROM planners WHERE id=:id";
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id', $planner_id, PDO::PARAM_INT);
