@@ -33,11 +33,22 @@ const Navbar = () => {
     ? { text: "Sign In", link: "/general/signIn" }
     : { text: "Sign Up", link: "/general/signUp" };
 
+  const isValidImageUrl = (url) => {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   return (
     <nav className={stl.navbar}>
       <div className={stl.navbar_brand}>
         <Link href={id ? `/customers/landingPage?id=${id}` : "/customers/landingPage"}>
-          <img src="/Golden-logo.png" alt="logo" className={stl.logo} />
+          {isValidImageUrl("/Golden-logo.png") && (
+            <img src="/Golden-logo.png" alt="logo" className={stl.logo} />
+          )}
         </Link>
       </div>
       <ul className={stl.navbar_list}>

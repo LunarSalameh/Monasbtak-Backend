@@ -1,9 +1,51 @@
-import React from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 import './PackageDetails.css';
-
-
+import { useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 const PackageDetails = () => {
+  const searchParams = useSearchParams();
+  const id = searchParams.get('packageId');
+  const [packageDetails, setPackageDetails] = useState(null);
+  const [plannerDetails, setPlannerDetails] = useState(null);
+
+  useEffect(() => {
+    const fetchPackageDetails = async () => {
+      try {
+        const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?id=${id}`);
+        const data = await response.json();
+        if (data.status === 'success') {
+          const packageData = data.data[0];
+          setPackageDetails(packageData);
+
+          // Fetch planner details using planner_id from packageData
+          const plannerResponse = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPlanner.php?id=${packageData.planner_id}`);
+          const plannerText = await plannerResponse.text();
+          const plannerData = plannerText ? JSON.parse(plannerText).data[0] : {};
+          if (plannerData && !plannerData.error) {
+            setPlannerDetails(plannerData);
+          } else {
+            setPlannerDetails(null);
+          }
+        } else {
+          setPackageDetails(null);
+        }
+      } catch (error) {
+        console.error('Error fetching package details:', error);
+        setPackageDetails(null);
+      }
+    };
+
+    if (id) {
+      fetchPackageDetails();
+    }
+  }, [id]);
+
+  if (!packageDetails || !plannerDetails) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="package-details-container">
       <div className='headline'>
@@ -12,20 +54,34 @@ const PackageDetails = () => {
       </div>
       <div className="content">
         <div className='img-container'>
-          <img src='/wedding7.png' alt="Package" className="package-image" />
-          <img src='/wedding4.png' alt="Package" className="package-image" />
+          <img src={`data:image/jpeg;base64,${packageDetails.image}`} alt="Package" className="package-image" />
         </div>
         <div className="details">
           <div className="planner-info">
-            <img src='/planner.png' alt="Planner" className="planner-image" />
-            <div className="planner-name">Planner Name</div>
-            <div className="price">$99.9</div>
+            <Link href={`/customers/plannerProfile/?id=${plannerDetails.id}`}>
+            <div className='planner-profile'>
+              <img src={`data:image/jpeg;base64,${plannerDetails.image}`} alt="Planner" className="planner-image" />
+              {plannerDetails && <span className='bold-font mid-font-size'>{plannerDetails.username}</span>}
+            </div>
+            </Link>
+            <div className='flex-row'>
+              <span className="planner-name">{packageDetails.name}</span>
+              <span className="price">${packageDetails.price}</span>
+            </div>
           </div>
           <div className='package-details'>
-            <span className="description">Category - Sub Category</span>
-            <span className="description">Venue : Hayya Amman Hotel</span>
-            <span className="description">Location :</span>
-            <p className="description">Discription : Luxury Wedding Package</p>
+            <div className='flex-row'>
+              <span className="description bold-font">Category: </span>
+              <span className='description'>{packageDetails.subCat_name}</span>
+            </div>
+            <div className='flex-row'>
+              <span className="description bold-font">Location: </span>
+              <span className='description'>{packageDetails.location}</span>
+            </div>
+            <div className='flex-row'>
+              <span className="description bold-font">Description: </span>
+              <span className='description'>{packageDetails.description}</span>
+            </div>
           </div>
         </div>
       </div>

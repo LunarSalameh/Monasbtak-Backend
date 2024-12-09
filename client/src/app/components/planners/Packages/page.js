@@ -62,6 +62,33 @@ const fetchDeltePackage = async () => {
   }
 };
 
+  const fetchPackages = async () => {
+    try {
+      const planner_id = id;
+      const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/packages/getPlannerPackages.php?planner_id=${planner_id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      const result = await response.json();
+      if (!result.data || result.data.length === 0) {
+        setPackages(null);
+      }
+      else if (result.status === 'error') {
+        console.error(result.message);
+        setPackages(null); 
+      } else {
+        setPackages(result.data);
+      }
+    } catch (error) {
+      console.error('Error fetching packages:', error);
+      setPackages(null); 
+    } finally {
+      setLoading(false); 
+    }
+  };
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -89,33 +116,7 @@ const fetchDeltePackage = async () => {
   }, []);
 
   useEffect(() => {
-    const fetchPackages = async () => {
-      try {
-        const planner_id = id;
-        const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/packages/getPlannerPackages.php?planner_id=${planner_id}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        const result = await response.json();
-        if (!result.data || result.data.length === 0) {
-          setPackages(null);
-        }
-        else if (result.status === 'error') {
-          console.error(result.message);
-          setPackages(null); 
-        } else {
-          setPackages(result.data);
-        }
-      } catch (error) {
-        console.error('Error fetching packages:', error);
-        setPackages(null); 
-      } finally {
-        setLoading(false); 
-      }
-    };
-
+    fetchPackages();
     const fetchPlanner = async () => {
       try {
         const planner_id = id; 
@@ -141,7 +142,6 @@ const fetchDeltePackage = async () => {
       }
     };
   
-    fetchPackages();
     fetchPlanner();
   }, [id]);
 
@@ -163,6 +163,7 @@ const fetchDeltePackage = async () => {
     formData.append('subCat_name', formData.get('subCat_name'));
     formData.append('location', venues.find(venue => venue.id == formData.get('venue_id')).name);
     formData.append('status', 'Pending');
+    formData.append('subCategory_id', subCategories.find(subCategory => subCategory.name == formData.get('subCat_name')).id);
     if (planner) {
       formData.append('planner_name', planner.username); // Directly use the username from the planner object
     } else {
@@ -202,41 +203,36 @@ const fetchDeltePackage = async () => {
 
   const handleSubmitEditPackage = async (event) => {
     event.preventDefault();
-  
-    const formData = new FormData(event.target);
     
+    const formData = new FormData(event.target);
     formData.append('id', selectedPackage.id);
-    formData.append('name', formData.get('name'));
-    formData.append('description', formData.get('description'));
-    formData.append('price', formData.get('price'));
-    formData.append('venue_id', formData.get('venue_id'));
-  
-    if (formData.get('image').size > 0) {
-      formData.append('image', formData.get('image'));
-    }
+    if (formData.get('name')) formData.append('name', formData.get('name'));
+    if (formData.get('description')) formData.append('description', formData.get('description'));
+    if (formData.get('image') && formData.get('image').size > 0) formData.append('image', formData.get('image'));
+    if (formData.get('price')) formData.append('price', formData.get('price'));
+    if (formData.get('location')) formData.append('location', formData.get('location'));
 
     try {
       const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/editPackage.php', {
         method: 'POST',
-        body: formData,
+        body: formData, 
       });
-  
+
       if (response.ok) {
         const result = await response.json();
         if (result.message === 'Package updated successfully') {
           console.log('Package Updated');
+          fetchPackages(); 
           setEditPackageModal(false);
-          // Refresh packages list
-          fetchPackages();
         } else {
           console.error('Error updating package:', result.message);
         }
       } else {
         const errorText = await response.text();
-        console.error(`Error: ${errorText}`);
+        alert(`Error: ${errorText}`);
       }
     } catch (error) {
-      console.error('Error submitting package:', error);
+      console.error('Error updating package:', error);
     }
   };
 
@@ -396,11 +392,11 @@ const fetchDeltePackage = async () => {
             <form className="modal-content" onSubmit={handleSubmitEditPackage}>
               <div className='Modal-Add-package-container'>
                 <span>Package Name</span>
-                <input type='text' name='name' className='input' defaultValue={selectedPackage.name} required />
+                <input type='text' name='name' className='input' defaultValue={selectedPackage.name} />
               </div>
               <div className='Modal-Add-package-container'>
                 <span>Package Description</span>
-                <input type='text' name='description' className='input' defaultValue={selectedPackage.description} required />
+                <input type='text' name='description' className='input' defaultValue={selectedPackage.description} />
               </div>
               <div className='Modal-Add-package-container'>
                 <span>Package Photo</span>
@@ -408,7 +404,7 @@ const fetchDeltePackage = async () => {
               </div>
               <div className='Modal-Add-package-container'>
                 <span>Venue Name</span>
-                <select name='venue_id' className='input' required defaultValue={selectedPackage.venue_id}>
+                <select name='venue_id' className='input' defaultValue={selectedPackage.venue_id}>
                   <option value=''>Select Venue</option>
                   {venues.map((venue, index) => (
                     <option key={index} value={venue.id}>{venue.name}</option>
@@ -417,9 +413,9 @@ const fetchDeltePackage = async () => {
               </div>
               <div className='Modal-Add-package-container'>
                 <span>Price</span>
-                <input type='text' name='price' className='input' defaultValue={selectedPackage.price} required />
+                <input type='text' name='price' className='input' defaultValue={selectedPackage.price} />
               </div>
-              <button type='submit' className='btn' onClick={() => window.location.reload()}>
+              <button type='submit' className='btn' >
                 Submit
               </button>
             </form>

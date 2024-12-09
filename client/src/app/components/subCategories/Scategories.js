@@ -13,7 +13,8 @@ const Scategories = () => {
   const [venuesLoading, setVenuesLoading] = useState(false);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
   const searchParams = useSearchParams();
-  const category_id = searchParams.get('id'); // Get user ID from the query parameters
+  const id = searchParams.get('id'); // Get user ID from the query parameters
+  const category_id = searchParams.get('categoryId'); // Get category ID from the query parameters
 
   useEffect(() => {
     fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getSubCategories.php?category_id=${category_id}`)
@@ -118,7 +119,7 @@ const Scategories = () => {
           ) : (
             <div className={stl.venuesWrapper}>
                {venuesData.map((venue, index) => (
-                <Link href={`/customers/packages/`} key={index}>
+                <Link href={`/customers/packages?id=${id}&venueId=${venue.id}&subCategory_id=${selectedSubCategory}`} key={index}>
                   <div key={index} className={stl.venueCard}>
                     <img
                       src={`data:image/jpeg;base64,${venue.image}`}

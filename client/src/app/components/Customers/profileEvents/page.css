@@ -93,6 +93,7 @@ body {
 .Event-Box:nth-child(-n+3) {
     display: flex; /* Show only the first three Event-Box elements */
 }
+
 .Event-details{
     display: flex;
     flex-direction: column;
@@ -226,6 +227,31 @@ body {
     gap: 10px;
     align-items: center;
     margin-top: 10px;
+}
+.current-events{
+    width:50%;
+}
+.previous-events{
+    width:50%;
+}
+.current-events .Event-Box {
+    display: none; /* Hide all Event-Box elements by default */
+}
+
+.current-events .Event-Box:nth-child(-n+2) {
+    display: flex; /* Show only the first two Event-Box elements */
+}
+.previous-events .Event-Box {
+    display: none; /* Hide all Event-Box elements by default */
+}
+
+.previous-events .Event-Box:nth-child(-n+2) {
+    display: flex; /* Show only the first two Event-Box elements */
+}
+.No-Event{
+    margin-top: 30px;
+    margin-left: 25px;
+    color: #4C1B41;
 }
 /* Media queries for responsiveness */
 @media (max-width: 1200px) {

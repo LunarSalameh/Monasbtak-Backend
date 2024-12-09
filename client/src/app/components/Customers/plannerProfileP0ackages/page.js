@@ -1,10 +1,39 @@
-import React from 'react'
+'use client';
+import React, { useState, useEffect } from 'react'
 import './page.css'
 import Favorite from '../../Favorite/page'
 import { CiLocationOn } from "react-icons/ci";
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation';
 
 function PlannerPackages() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');  //planner_id
+  const [packages, setPackages] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost/Monasbtak-Backend/php/api/customer/getPlannerPackages.php?planner_id=${id}`
+        );
+        const data = await response.json();
+        if (data.status === 'success') {
+          setPackages(data.data);
+        } else {
+          console.error(data.message);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPackages();
+  }
+  , [id]);
+
   return (
     <div className='Packages-container'>
       <div className='showall'> 
@@ -18,126 +47,30 @@ function PlannerPackages() {
         <div className='Packages-types'>
 
           <div className='Planner-package-phone-view'>
-
-          <div className='Package-Box'>
-            <div className='Package-img-container'>
-              <img src="/wedding.jpg" className='Package-img' />
-              <div className='Transparent-Box'>
-                    <Favorite isFavorite={true}/>
-              </div>
-              <span className='Price-tag'>$99.9</span>
-            </div>
-            <span>Package #1</span>
-            <div className='row-felx'>
-              <CiLocationOn />
-              <span>Location</span>
-            </div>
-          </div>
-
-          <div className='Package-Box'>
-            <div className='Package-img-container'>
-              <img src="/wedding2.jpg" className='Package-img' />
-              <div className='Transparent-Box'>
-                    <Favorite isFavorite={false} />
-              </div>
-              <span className='Price-tag2'>$99.9</span>
-            </div>
-            <span>Package #1</span>
-            <div className='row-felx'>
-              <CiLocationOn />
-              <span>Location</span>
-            </div>
-          </div>
-
-          <div className='Package-Box'>
-            <div className='Package-img-container'>
-              <img src="/wedding3.jpg" className='Package-img' />
-              <div className='Transparent-Box'>
-                    <Favorite />
-              </div>
-              <span className='Price-tag2'>$99.9</span>
-            </div>
-            <span>Package #1</span>
-            <div className='row-felx'>
-              <CiLocationOn />
-              <span>Location</span>
-            </div>
-          </div>
-
-          <div className='Package-Box'>
-            <div className='Package-img-container'>
-              <img src="/wedding4.jpg" className='Package-img' />
-              <div className='Transparent-Box'>
-                    <Favorite />
-              </div>
-              <span className='Price-tag2'>$99.9</span>
-            </div>
-            <span>Package #1</span>
-            <div className='row-felx'>
-              <CiLocationOn />
-              <span>Location</span>
-            </div>
-          </div>
-
-          <div className='Package-Box'>
-            <div className='Package-img-container'>
-              <img src="/wedding5.jpg" className='Package-img' />
-              <div className='Transparent-Box'>
-                    <Favorite />
-              </div>
-              <span className='Price-tag'>$99.9</span>
-            </div>
-            <span>Package #1</span>
-            <div className='row-felx'>
-              <CiLocationOn />
-              <span>Location</span>
-            </div>
-          </div>
-
-          <div className='Package-Box'>
-            <div className='Package-img-container'>
-              <img src="/wedding6.jpg" className='Package-img' />
-              <div className='Transparent-Box'>
-                    <Favorite isFavorite={true}/>
-              </div>
-              <span className='Price-tag2'>$99.9</span>
-            </div>
-            <span>Package #1</span>
-            <div className='row-felx'>
-              <CiLocationOn />
-              <span>Location</span>
-            </div>
-          </div>
-
-          <div className='Package-Box'>
-            <div className='Package-img-container'>
-              <img src="/wedding.jpg" className='Package-img' />
-              <div className='Transparent-Box'>
-                    <Favorite />
-              </div>
-              <span className='Price-tag2'>$99.9</span>
-            </div>
-            <span>Package #1</span>
-            <div className='row-felx'>
-              <CiLocationOn />
-              <span>Location</span>
-            </div>
-          </div>
-
-          <div className='Package-Box'>
-            <div className='Package-img-container'>
-              <img src="/wedding2.jpg" className='Package-img' />
-              <div className='Transparent-Box'>
-                    <Favorite />
-              </div>
-              <span className='Price-tag2'>$99.9</span>
-            </div>
-            <span>Package #1</span>
-            <div className='row-felx'>
-              <CiLocationOn />
-              <span>Location</span>
-            </div>
-          </div>
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              packages.length > 0 ? (
+                packages.map((pkg, index) => (
+                  <div className='Package-Box' key={index}>
+                    <div className='Package-img-container'>
+                      <img src={`data:image/jpeg;base64,${pkg.image}`} className='Package-img' />
+                      {/* <div className='Transparent-Box'>
+                        <Favorite isFavorite={true}/>
+                      </div> */}
+                      <span className='Price-tag'>$ {pkg.price}</span>
+                    </div>
+                    <span>{pkg.name}</span>
+                    <div className='row-felx'>
+                      <CiLocationOn />
+                      <span>{pkg.location}</span>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No packages available.</p>
+              )
+            )}
           </div>
           
         </div>

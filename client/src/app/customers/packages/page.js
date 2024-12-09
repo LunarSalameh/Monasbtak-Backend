@@ -1,48 +1,124 @@
-import React from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import PackageCard from './PackageCard';
 import './Packages.css';
 import Navbar from '../../components/navbar/page';
 import Footer from '../../components/footer/page';
-// import { useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { Icon } from '@iconify/react';
 
 const Packages = () => {
-    // const searchParams = useSearchParams();
-    // const id = searchParams.get('id'); // Get user ID from the query parameters
-    const packagesData = [
-        { title: "Package 1", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", image: "/wedding1.png" },
-        { title: "Package 2", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", image: "/wedding2.png" },
-        { title: "Package 3", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", image: "/wedding3.png" },
-        { title: "Package 4", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", image: "/wedding4.png" },
-        { title: "Package 5", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", image: "/wedding5.png" },
-        { title: "Package 6", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", image: "/wedding6.png" },        
-        { title: "Package 3", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", image: "/wedding3.png" },
-        { title: "Package 4", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", image: "/wedding4.png" },
-        { title: "Package 5", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", image: "/wedding5.png" },
-        { title: "Package 6", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", image: "/wedding6.png" },
-       
-    ];
+    const searchParams = useSearchParams();
+    const venue_id = searchParams.get('venueId'); // Get venue from the query parameters
+    const subCategory_id = searchParams.get('subCategory_id'); // Get subCategory_id from the query parameters
+    const [venueName, setVenueName] = useState('');
+    const [packages, setPackages] = useState([]);
+    const [venue, setVenue] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [packagesLoaded, setPackagesLoaded] = useState(false); // New state variable
+
+    useEffect(() => {
+        if (venue_id) {
+            setLoading(true);
+            fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getVenues.php?id=${venue_id}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Fetched data:', data); // Log the fetched data
+                    if (data.status === 'success' && data.data.length > 0) {
+                        const venue = data.data[0]; // Access the first element of the data array
+                        setVenueName(venue.name);
+                        setVenue(venue);
+                        console.log(venue);
+                    } else {
+                        setVenueName('Venue not found');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching venue name:', error);
+                    setVenueName('Error fetching venue name');
+                })
+                .finally(() => setLoading(false));
+
+            fetchPackages(venue_id);
+        }
+        if (subCategory_id) {
+            console.log('SubCategory ID:', subCategory_id); // Log the subCategory_id for debugging
+        }
+    }, [venue_id, subCategory_id]);
+
+    const fetchPackages = async (venue_id) => {
+        try {
+            setLoading(true);
+            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackageVenue.php?venue_id=${venue_id}&subCategory_id=${subCategory_id}`);
+            const data = await response.json();
+            if (data.status === 'success') {
+                setPackages(data.data);
+            } else {
+                setPackages([]);
+            }
+        } catch (error) {
+            console.error('Error fetching packages:', error);
+            setPackages([]);
+        } finally {
+            setLoading(false);
+            setPackagesLoaded(true); // Set packagesLoaded to true when fetching is done
+        }
+    }
 
     return (
         <>
         <Navbar />
+        {/* <div className='container'> */}
         <div className='Page-Container'>
         <div className="packages-container">
-            <h1 className='large-font-size bold-font'>Venue Name</h1>
+            <h1 className='large-font-size bold-font'>{venueName}</h1>
+            <div className='venue-container'>
+                <div className='venue-image-container'>
+                    <img src={`data:image/jpeg;base64,${venue.image}`} alt='venue' className='venue-image'/>
+                </div>
+                <div className='venue-total'>
+                    <div className='venue-details'>
+                        <span className='bold-font mid-font-size'>Description</span>
+                        <span className='mid-font-size'>{venue.description}</span>
+                    </div>
+                    <div className='venue-details'>
+                      <span className='Location-gap mid-font-size bold-font' ><Icon icon="hugeicons:location-04" className="Location-icon" /> Location</span>
+                      <span className='mid-font-size'>{venue.location}</span>
+                    </div>
+                </div>
+            </div>
             <hr className='line'/>
             <h2 className='bold-font'>Packages</h2>
             <div className="packages-grid">
-                {packagesData.map((pkg, index) => (
-                    <PackageCard
-                        key={index}
-                        title={pkg.title}
-                        description={pkg.description}
-                        image={pkg.image}
-                    />
-                ))}
+                {loading ? (
+                    <div className='loading'>
+                        <div className="spinner"></div>
+                    </div>
+                ) : (
+                    packagesLoaded && (packages.length > 0 ? (
+                        packages.map((pkg, index) => (
+                            <PackageCard
+                                key={index}
+                                title={pkg.name}
+                                description={pkg.description}
+                                image={`data:image/jpeg;base64,${pkg.image}`}
+                                package_id={pkg.id}
+                            />
+                        ))
+                    ) : (
+                        <span className='mid-font-size'>No packages found for this venue.</span>
+                    ))
+                )}
             </div>
         </div>
         </div>
         <Footer />
+        {/* </div> */}
         </>
     );
 };

@@ -1,3 +1,13 @@
+.bold {
+    font-weight: bold;
+}
+.large-font-size {
+    font-size: 23px;
+}
+.mid-font-size {
+    font-size: 1.5rem;
+}
+
 .PA-container {
     display: flex;
     flex-direction: column;
@@ -31,3 +41,127 @@
 }
 
 } */
+
+.ReactModal__Overlay {
+    background-color: rgba(0, 0, 0, 0.75);
+}
+
+.ReactModal__Content {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 10px;
+    background-color: white;
+    max-width: 500px;
+    width: 100%;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 55%;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.close-button {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.btn {
+  background-color: #d9b34d;
+  color: white;
+  padding: 9px 27px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.customer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+  gap: 15px;
+  width: 95%;
+}
+.details-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.phone {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 5px;
+}
+.package {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 31px;
+  width: 95%;
+}
+.packageImg {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 5px;
+  width: 80%;
+}
+.imgPack{
+  width: 320px;
+  height: 230px;
+  border-radius: 15px;
+  object-fit: cover;
+}
+.row-flex-package {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+}
+.flexPackage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-top: 40px;
+  font-size: 19px;
+}

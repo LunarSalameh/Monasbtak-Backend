@@ -5,15 +5,15 @@
     justify-content: center; 
     margin-bottom: 3.7rem;
   }
-.PE-container{
-  width: 75%;
+  .PE-container {
+    width: 75%;
     background-color: white;
     border-radius: 30px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     padding: 2rem;
-    align-items: center;
+    align-items: flex-start;
 }
 .container-pre {
   display: flex;
@@ -27,4 +27,10 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+}
+.width{
+  width: 100%;
+}
+.noneGrid{
+  grid: none;
 }
