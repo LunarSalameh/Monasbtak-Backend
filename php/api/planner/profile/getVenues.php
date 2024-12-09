@@ -1,3 +1,5 @@
+
+
 <?php
 header('Content-Type: application/json');
 header("Access-Control-Allow-Origin: http://localhost:3000");
@@ -12,16 +14,21 @@ error_reporting(E_ALL);
 
 $pdo = include_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
-// Fetch Data the planners table
-$sql = "SELECT id,name FROM venues";
-$stmt = $pdo->prepare($sql);
-$stmt->execute();
+try{
+    $stmt = $pdo->prepare("SELECT id,name FROM venues WHERE status='Accepted'");
+    $stmt->execute();
+ 
+    $venues = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$venues = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+    
+    if (count($venues) > 0) {
+        echo json_encode(['success' => true, 'venues' => $venues]);
+    } else {
+        echo json_encode(['success' => true, 'venues' => []]);
+    }
+ 
+ } catch(PDOException $e) {
+    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+ }
 
-if (count($venues) > 0) {
-    echo json_encode(['success' => true, 'venues' => $venues]);
-} else {
-    echo json_encode(['success' => true, 'venues' => []]);
-}
-
+?>

@@ -8,10 +8,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { TiDelete } from "react-icons/ti";
 import { useSearchParams } from 'next/navigation';
 import { IoClose } from "react-icons/io5";
-
-
 import './page.css'
-import { useRowState } from "react-table";
 
 export default function Profile () {
     const searchParams = useSearchParams();
@@ -38,7 +35,9 @@ export default function Profile () {
 
     const [category, setCategory] = useState([])
     const [venue,setVenue] = useState([])
+    const [subCategory, setSubCategory] = useState([])
 
+    const [requestVenue,setRequestVenue] = useState(false)
 
     const [addPlannerCategory, setAddPlannerCategory] = useState([])
     const [plannerCategoryIds, setPlannerCategoryIds]= useState([]);
@@ -52,9 +51,36 @@ export default function Profile () {
     const [EditVenuesModal, setEditVenuesModal] = useState(false)
 
     const [changePasswordModal, setChangePasswordModal] = useState(false)
-    const [selectedOption, setSelectedOption] = useState("");
     const [selectedOptionVen, setSelectedOptionVen] = useState("");
+
+    const [selectedCategories, setSelectedCategories] = useState("");
     
+    const [oldPwd, setOldPwd] = useState("");
+    const [newPwd, setNewPwd] = useState("");
+    const [retypeNewPwd, setRetypeNewPwd] = useState("");
+    
+    const [venueAcceptAlert,setVenueAcceptAlert] = useState(false)
+    const [venueFailureAlert,setVenueFailureAlert] = useState(false)
+
+    const [message, setMessage] = useState('');
+    const [showOldPassword, setShowOldPassword] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+
+    const [selectedCategoriesVen, setSelectedCategoriesVen] = useState('');
+    const [selectedSubCategories, setSelectedSubCategories] = useState("");
+    
+    const [venueName,setVenueName] = useState('')
+    const [venueLocation,setVenueLocation] = useState('')
+    // const [venueEmail,setVenueEmail] = useState('')
+    // const [venuePhone,setVenuePhone] = useState('')
+    const [venueDescription,setVenueDescription] = useState('')
+    const [venueImage,setVenueImage] = useState('')
+
+    const [responseMessage, setResponseMessage] = useState("");
+
+    const [acceptVenueRequestAlert, setAcceptVenueRequestAlert] = useState(false);
+
+
     const [profileData,setProfileData] = useState(
         {       
             username: "",
@@ -67,18 +93,24 @@ export default function Profile () {
         }
     )
 
-    const [oldPwd, setOldPwd] = useState("");
-    const [newPwd, setNewPwd] = useState("");
-    const [retypeNewPwd, setRetypeNewPwd] = useState("");
-    
+    const handleClearVenueForm = () => {
+        setVenueName("");
+        // setVenuePhone("");
+        setVenueLocation("");
+        setVenueDescription("");
+        // setVenueEmail("");
+        setVenueImage('');
+        setSelectedCategoriesVen("");
+        setSelectedSubCategories("")
+    }
+
     const handleChange = (event) => {
-        setSelectedOption(event.target.value); 
+        setSelectedCategories(event.target.value); 
       };
 
       const handleChangeVenue = (event) => {
         setSelectedOptionVen(event.target.value); 
       };
-
 
     const handleCategoriesModal = () => {
         setEditCategoriesModal(!EditCategoriesModal)
@@ -93,13 +125,17 @@ export default function Profile () {
         setChangePasswordModal(!changePasswordModal)
     }
 
-    const [venueAcceptAlert,setVenueAcceptAlert] = useState(false)
-    const [venueFailureAlert,setVenueFailureAlert] = useState(false)
-
     const handleVenueAcceptAlert = () => {
         setVenueAcceptAlert(true);
         setTimeout(() => {
             setVenueAcceptAlert(false);
+        }, 2500);
+    }
+
+    const handleAcceptVenueRequestAlert = () => {
+        setAcceptVenueRequestAlert(true);
+        setTimeout(() => {
+            setAcceptVenueRequestAlert(false);
         }, 2500);
     }
 
@@ -173,12 +209,7 @@ export default function Profile () {
             setMessage('');
       }
 
-      const [message, setMessage] = useState('');
-
-      const [showOldPassword, setShowOldPassword] = useState(false);
-
-      const [showNewPassword, setShowNewPassword] = useState(false);
-
+    
 
 
     //   get planner info 
@@ -572,7 +603,7 @@ export default function Profile () {
                     handlePasswordModal();
                     handleChnagePwdAlert();
                 } else {
-                    // alert('Failed to change password');
+                    alert('Failed to change password');
                     setMessage(data.message)
                 }
             })
@@ -584,7 +615,89 @@ export default function Profile () {
             handleClearPwdModal();
 
     }
+
+     // get all subCategories 
+     useEffect(() => {
+        const fetchSubCategories = async () => {
+          if (!selectedCategoriesVen) return;
+      
+          try {
+            const response = await fetch(
+              `http://localhost/Monasbtak-Backend/php/api/planner/profile/getSubCategory.php?category_id=${selectedCategoriesVen}`
+            );
+      
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+      
+            const data = await response.json();
+      
+            if (data.success) {
+              setSubCategory(data.subCategories);
+            } else {
+              console.error("Error fetching subCategories:", data.message);
+            }
+          } catch (error) {
+            console.error("Failed to fetch subCategories:", error);
+          }
+        };
+      
+        fetchSubCategories();
+      }, [selectedCategoriesVen]);
+
+
+      const handleRequestVenue = async (e) => {
+        e.preventDefault();
+
+        if (!venueName || !venueLocation || !venueDescription || !selectedSubCategories) {
+            setResponseMessage("Please fill in all fields.");
+            return; // Stop the function execution if validation fails
+        }
+   
+        const formData = {
+            name: venueName,
+            location: venueLocation,
+            description: venueDescription,
+            image: venueImage,
+            subCategory_id: selectedSubCategories,
+        };
+   
+        try {
+            const response = await fetch(
+                "http://localhost/Monasbtak-Backend/php/api/planner/profile/addVenue.php",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(formData),
+                }
+            );
+   
+            // Log the response to check if the status is OK and inspect the data
+            const data = await response.json();
+            console.log('Server response:', data);
+   
+            if (response.ok) {
+                // alert(data.message || "Venue added successfully!");
+                setRequestVenue(false);
+                setEditVenuesModal(false);
+                handleAcceptVenueRequestAlert();
+                handleClearVenueForm();
+                setResponseMessage(data.message || "Venue added successfully!");
+            } else {
+                console.log('Response not OK:', data);
+                setResponseMessage(data.message || "An error occurred.");
+            }
+   
+        } catch (error) {
+            console.error(`Error occurred while connecting to the server: ${error}`);
+            setResponseMessage("An error occurred while connecting to the server.");
+        }
+    };
+   
     
+
     const handleInputChange = (e) => {
         const {id, value} = e.target;
         setProfileData((prevData) => ({
@@ -1079,8 +1192,8 @@ export default function Profile () {
                             </div>
 
                             <div className="flex gap-2 justify-evenly">
-                                <label htmlFor="SelectedCategory"  className="text-lg">Categories: </label>
-                                <select value={selectedOption} onChange={handleChange} name="SelectedCategory" className="w-1/2 border-2 border-[#4c1b41] rounded-lg py-1 px-3">
+                                <label htmlFor="selectedCategories"  className="text-lg">Categories: </label>
+                                <select value={selectedCategories} onChange={handleChange} name="selectedCategories" className="w-1/2 border-2 border-[#4c1b41] rounded-lg py-1 px-3">
                                         <option disapled="true" defaultChecked value="Choose Category" className="text-gray-300">Choose Category To Add</option>
                                     {
                                         category.map((category,index)=> (
@@ -1093,7 +1206,7 @@ export default function Profile () {
                                      
                                 </select>
                                 <button
-                                    onClick={()=>handleAddCategory(selectedOption,profileData.username)}
+                                    onClick={()=>handleAddCategory(selectedCategories,profileData.username)}
                                     className="bg-[#D9B34D] px-5 py-2 rounded-lg text-white hover:bg-[#d9b44dd3]"
                                     >
                                         Add
@@ -1120,55 +1233,228 @@ export default function Profile () {
 
                 {EditVenuesModal && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                        <div className="bg-white rounded-xl w-[50%] px-10 py-8 flex flex-col gap-4">
-                            <div className="font-bold text-xl flex mb-2 w-full relative">
-                                <p>Venues</p>
-                                <button className="absolute right-0" onClick={handleVenuesModal}><IoClose /></button>
+                        <div className="bg-white rounded-xl max-h-[85%] w-[70%] px-10 py-6 flex flex-col gap-4 overflow-hidden">
+                            {/* Modal Header */}
+                            <div>
+                                <div className="font-bold text-xl py-2 flex w-full relative">
+                                    <p>Venues</p>
+                                    <button className="absolute right-0" onClick={handleVenuesModal}>
+                                        <IoClose />
+                                    </button>
+                                </div>
                                 <hr />
                             </div>
 
-                            <div className="flex gap-2 justify-evenly">
-                                <label htmlFor="SelectedVenues"  className="text-lg">Venues: </label>
-                                <select value={selectedOptionVen} onChange={handleChangeVenue} name="SelectedVenues" className="w-1/2 border-2 border-[#4c1b41] rounded-lg py-1 px-3">
-                                        <option disapled="true" defaultChecked value="Choose Venue" className="text-gray-300">Choose Venue To Add</option>
-                                    {
-                                        venue.map((ven,index)=> (
-                                                <option key={index} value={ven.name}>
-                                                    {ven.name}
-                                                </option>
-                                        ))
-                                        
-                                    }
-                                     
-                                </select>
-                                <button
-                                    onClick={()=>handleAddVenues(selectedOptionVen,profileData.username)}
-                                    className="bg-[#D9B34D] px-5 py-2 rounded-lg text-white hover:bg-[#d9b44dd3]"
+                            {/* Scrollable Content */}
+                            <div className="flex-1 overflow-y-auto pr-4">
+                                {/* Venue Selection */}
+                                <div className="flex gap-2 justify-evenly ">
+                                    <label htmlFor="SelectedVenues" className="text-lg"> </label>
+                                    <select 
+                                        value={selectedOptionVen} 
+                                        onChange={handleChangeVenue} 
+                                        name="SelectedVenues" 
+                                        className="w-full border-2 border-[#4c1b41] rounded-lg py-1 px-3">
+                                        <option disabled defaultValue="Choose Venue" className="text-gray-300">
+                                            Choose Venue To Add
+                                        </option>
+                                        {venue.map((ven, index) => (
+                                            <option key={index} value={ven.name}>
+                                                {ven.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <button
+                                        onClick={() => handleAddVenues(selectedOptionVen, profileData.username)}
+                                        className="bg-[#D9B34D] px-5 py-2 rounded-lg text-white hover:bg-[#d9b44dd3]"
                                     >
                                         Add
-                                </button>
-                            </div>
+                                    </button>
+                                </div>
 
-                            <div className="m-4 flex flex-wrap gap-2">
-                                    {plannerVenueNames.length > 0 ? (
-                                        plannerVenueNames.map((name, index) => (
-                                        <div key={index} className="flex flex-row flex-wrap items-center justify-center gap-4 bg-[#D9B34D] py-2 px-4 rounded-2xl text-white shadow-lg shadow-[#4c1b4161]">
-                                            <div>
-                                                {name}  
+                                {/* Your Venues */}
+                                <div className="flex flex-col gap-2 mt-4">
+                                    <div className="font-bold text-xl mb-2">Your Venues</div>
+                                    <div className="flex gap-2 flex-wrap justify-center">
+                                        {plannerVenueNames.length > 0 ? (
+                                            plannerVenueNames.map((name, index) => (
+                                                <div 
+                                                    key={index} 
+                                                    className="flex items-center justify-between gap-4 border-2 border-gray-400 py-2 px-4 rounded-2xl text-black">
+                                                    <div>{name}</div>
+                                                    <button>
+                                                        <TiDelete onClick={() => handleDeleteVenue(name, id)} />
+                                                    </button>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div>No Venues yet</div>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="flex justify-end">
+                                    <button
+                                        onClick={() => setRequestVenue(!requestVenue)}
+                                        className={`btn ${
+                                            requestVenue ? "invisible" : "visible"
+                                        }`}
+                                    >
+                                        Request New Venue
+                                    </button>
+                                </div>
+
+                                {/* Request Venue */}
+                                {requestVenue && (
+                                    <div>
+                                        <div className="font-bold text-xl mb-2">Request Venue</div>
+                                        <hr />
+                                        <form className="pt-4 flex flex-col" onSubmit={handleRequestVenue}>
+                                        
+                                        {responseMessage && (
+                                            <p  className={`text-center h-fit rounded-lg border-2 p-1 mx-6 ${
+                                                responseMessage.includes("successfully") ? "text-green-500 bg-green-200 border-green-500" : "text-red-500 border-red-500 bg-red-200"
+                                              }`} >
+                                                {responseMessage}
+                                            </p>
+                                        )}
+                                            {/* venue name */}
+                                            <div className="mt-6">
+                                                <label htmlFor="name">Venue Name</label>
+                                                <input 
+                                                    type="text" id="name" className="input"
+                                                    value={venueName}
+                                                    onChange={(e)=>setVenueName(e.target.value)} />
+                                                    {/* {console.log(venueName)} */}
                                             </div>
-                                            <button><TiDelete onClick={()=>handleDeleteVenue(name,id)}/></button>
-                                        </div>
-                                    ))
-                                    ): (
-                                     <div>No Venues yet</div>
-                                    )}
-                            </div>
+                                            {/* location */}
+                                            <div>
+                                                <label htmlFor="location">Location</label>
+                                                <input 
+                                                    type="text" id="location" className="input"
+                                                    value={venueLocation}
+                                                    onChange={(e)=>setVenueLocation(e.target.value)} />
+                                                    {/* {console.log(venueLocation)} */}
+                                            </div>
 
-                            {/* add here a form to add new venue */}
-                                   
+                                            {/* email */}
+                                            {/* <div>
+                                                <label htmlFor="email">Email</label>
+                                                <input 
+                                                    type="email" id="email" className="input"
+                                                    value={venueEmail}
+                                                    onChange={(e)=>setVenueEmail(e.target.value)} />
+                                                    {console.log(venueEmail)}
+                                            </div> */}
+
+                                            {/* phone number */}
+                                            {/* <div>
+                                                <label htmlFor="phoneNumber">Phone Number</label>
+                                                <input 
+                                                    type="text" id="phoneNumber" className="input"
+                                                    value={venuePhone}
+                                                    onChange={(e)=>setVenuePhone(e.target.value)} />
+                                                    {console.log(venuePhone)}
+
+                                            </div> */}
+
+                                            {/* description */}
+                                            <div>
+                                                <label htmlFor="description">Description</label>
+                                                <input 
+                                                    type="text" id="description" className="input"
+                                                    value={venueDescription}
+                                                    onChange={(e)=>setVenueDescription(e.target.value)} />
+                                                    {/* {console.log(venueImage)} */}
+
+                                            </div>
+
+                                            {/* image  */}
+                                            <div>
+                                                <label htmlFor="image">Image</label>
+                                                <input 
+                                                    type="file" id="image" className="input" accept="image/*"
+                                                    value={venueImage}
+                                                    onChange={(e)=>setVenueImage(e.target.value)} />
+                                                    {/* {console.log(venueImage)} */}
+                                            </div>
+
+                                            {/* category list */}
+                                            <div className="flex flex-col flex-wrap">
+                                                <label htmlFor="selectedCategoriesVen" className="text-lg">Categories</label>
+                                                <select
+                                                value={selectedCategoriesVen}
+                                                onChange={(e) => {
+                                                    setSelectedCategoriesVen(e.target.value); 
+                                                }}
+                                                name="selectedCategoriesVen"
+                                                className="input"
+                                                >
+                                                <option disabled={true} value="" className="text-gray-300">
+                                                    Choose Category
+                                                </option>
+                                                {category.map((categoryItem, index) => (
+                                                    <option
+                                                        key={index}
+                                                        value={categoryItem.id}
+                                                    >
+                                                        {categoryItem.name}
+                                                    </option>
+                                                ))}
+                                                </select>
+                                            </div>
+                                            
+                                            {/* sub category */}
+                                            <div className="flex flex-col flex-wrap">
+                                                <label htmlFor="selectedSubCategories" className="text-lg">Sub Categories</label>
+                                                <select
+                                                value={selectedSubCategories}
+                                                onChange={(e) => {
+                                                        setSelectedSubCategories(e.target.value)
+                                                        // setSelectedSubCategoriesId(e.target.key)
+                                                    }}
+                                                name="selectedSubCategories"
+                                                className="input"
+                                                >
+                                                <option disabled={true} value="" className="text-gray-300">
+                                                    Choose Sub Category
+                                                </option>
+                                                {subCategory.map((sub,index) => (
+                                                    <option key={index} value={sub.id}>
+                                                        {sub.name}
+                                                    </option>
+                                                ))}
+                                                </select>
+                                               
+                                            </div>
+                                            <div className="flex flex-wrap gap-4 justify-end">
+                                                <button className="btn" type="submit">Send Request</button>
+                                                <button
+                                                    onClick={() => {
+                                                        setRequestVenue(!requestVenue)
+                                                        handleClearVenueForm();
+                                                    }}
+                                                    className={`btn ${requestVenue ? "visible" : "invisible"}`}
+                                                >
+                                                    Cancel Request
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                )}                            
+                            </div>
                         </div>
                     </div>
-                )}                
+                )}
+               
+               {acceptVenueRequestAlert &&(
+                    <div className="modal-overlay-status">
+                        <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
+                        <div className="bg-green-600 p-0 rounded-l-xl"></div>
+                        <div className="p-5 bg-white  border-2 border-green-600 ">Request Sent to admin Successfully</div>
+                        </div>
+                    </div>
+                )}
 
                 {changePwdAlert &&(
                     <div className="modal-overlay-status">
