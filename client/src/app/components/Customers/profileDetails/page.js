@@ -8,7 +8,7 @@ import { TbGenderBigender } from "react-icons/tb";
 import { Icon } from '@iconify/react';
 import { useSearchParams } from 'next/navigation';
 
-function ProfileDetails({ user }) {
+function ProfileDetails({ user, fetchUserData }) {
   const searchParams = useSearchParams();
   const id = searchParams.get('id'); 
   const [acceptAlert, setAcceptAlert] = useState(false);
@@ -62,7 +62,8 @@ function ProfileDetails({ user }) {
         setEdit(false);
         setAcceptAlert(true);
         setTimeout(() => { setAcceptAlert(false); }, 3000);
-        setUpdatedUser({ ...updatedUser, ...formData, image: user.image }); // Update user state
+        setUpdatedUser({ ...updatedUser, ...formData, image: data.user.image }); // Update user state with new image
+        fetchUserData(); // Fetch updated user data
       }
     } catch (error) {
       console.error('Error updating profile:', error);
