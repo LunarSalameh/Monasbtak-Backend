@@ -10,22 +10,13 @@ import { OrbitProgress } from 'react-loading-indicators';
 
 import './page.css';
 
-
-
-
 function Profile() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id'); // Get user ID from the query parameters
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    // console.log('User ID from URL:', id);
-    if (!id) {
-      setError('User ID is missing in the URL.');
-      return;
-    }
-
+  const fetchUserData = () => {
     fetch(`http://localhost/Monasbtak-Backend/php/api/customer/profile.php?id=${id}`)
       .then((response) => {
         if (!response.ok) {
@@ -48,6 +39,14 @@ function Profile() {
         setError('Failed to fetch user data');
         console.error('Failed to fetch user:', error);
       });
+  };
+
+  useEffect(() => {
+    if (!id) {
+      setError('User ID is missing in the URL.');
+      return;
+    }
+    fetchUserData();
   }, [id]);
 
   if (error) {
@@ -60,7 +59,7 @@ function Profile() {
       <div className='Page-Container'>
         {user ? (
           <>
-            <ProfileDetails user={user} />
+            <ProfileDetails user={user} fetchUserData={fetchUserData} />
             <Events userId={user.id} />
             <Favorite userId={user.id} />
           </>
@@ -74,6 +73,5 @@ function Profile() {
     </>
   );
 }
-
 
 export default Profile;
