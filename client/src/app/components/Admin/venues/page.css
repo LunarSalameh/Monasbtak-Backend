@@ -168,6 +168,12 @@
     align-items: center;
     z-index: 1000; 
 }
+.modal-overlay-status.top-right {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
   
 .modal {
     background: white;
@@ -184,7 +190,8 @@
     width: 55%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
-    height: 60%;
+    max-height: 85%;
+    overflow-y: scroll;
 }
 .modal-img-container {
     width: 30%;
@@ -195,7 +202,7 @@
 .Modal-Add-package-container {
     position: relative;
     display: inline-block;
-    width: 55%;
+    width: 85%;
     flex: none;
     display: flex;
     flex-direction: column;
@@ -215,6 +222,7 @@
     align-items: flex-start;
     justify-content: center;
     gap: 25px;
+    margin-top: 20px;
 }
 .modal-venue-details {
     display: flex;
@@ -259,6 +267,8 @@
     height: 41%;
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    gap: 20px;
 }
 .venue-img-details {
     width: 315px;
@@ -269,7 +279,6 @@
 .row-flex{
     display: flex;
     flex-direction: row;
-    gap: 20px;
     width: 100%;
 }
 .modal-buttons {
@@ -308,6 +317,43 @@
     align-items: center;
     /* height: 550px; */
     overflow-y: auto;
+}
+.form {
+    display: flex;
+    width: 65%;
+    flex-direction: column;
+    align-items: center;
+}
+.container-category{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+/* .catIcon {
+    display: flex;
+    align-items: center;
+    padding: 7px 15px;
+    background-color: #D9B34D;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 50%;
+} */
+.catIcon {
+    display: flex;
+    align-items: center;
+    padding: 7px 15px;
+    border-radius: 13px;
+    cursor: pointer;
+    width: 50%;
+    border: solid 2px lightgray;
+}
+.flex-category {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    justify-content: space-between;
 }
 @media (max-width:1000px){
     .container {

@@ -36,40 +36,40 @@ function page() {
         setRejected(false);
     }
 
-    useEffect(() => {
-        const fetchPackages = async () => {
-          try {
+    const fetchPackages = async () => {
+        try {
             const response = await fetch("http://localhost/Monasbtak-Backend/php/api/admin/packages/getPackagesRequest.php", {
-              method: 'GET',
-              headers: {
-                'Content-Type': 'application/json',
-              },
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
             if (!response.ok) {
-              throw new Error('Network response was not ok');
+                throw new Error('Network response was not ok');
             }
             const result = await response.json();
             if (!result.data || result.data.length === 0) {
-              setPackages(null);
+                setPackages(null);
             }
             else if (result.status === 'error') {
-              console.error(result.message);
-              setPackages(null); 
+                console.error(result.message);
+                setPackages(null); 
             } else {
-              setPackages(result.data);
+                setPackages(result.data);
             }
-          } catch (error) {
+        } catch (error) {
             console.error('Error fetching packages:', error);
             setPackages(null); 
-          } finally {
+        } finally {
             setLoading(false); 
-          }
-        };
-      
-        fetchPackages();
-      }, []); 
+        }
+    };
 
-      useEffect(() => {
+    useEffect(() => {
+        fetchPackages();
+    }, []); 
+
+    useEffect(() => {
         const fetchCategories = async () => {
             try {
                 const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/getCategorySub.php');
@@ -93,7 +93,9 @@ function page() {
                 },
                 body: JSON.stringify({
                     id: selectedPackage.id,
-                    status: packageStatus
+                    status: packageStatus,
+                    subCategory_id: selectedPackage.subCategory_id,
+                    venue_id: selectedPackage.venue_id
                 })
             });
             console.log(selectedPackage);
@@ -134,11 +136,11 @@ function page() {
         setSearchTerm(event.target.value);
     };
 
-    const filteredPackages = packages.filter(pkg =>
+    const filteredPackages = Array.isArray(packages) ? packages.filter(pkg =>
         pkg.planner_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         pkg.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        getCategoryName(pkg.category_id).toLowerCase().includes(searchTerm.toLowerCase()) 
-    );
+        getCategoryName(pkg.category_id).toLowerCase().includes(searchTerm.toLowerCase())
+    ) : [];
       
       const columns = [
         {
@@ -254,7 +256,7 @@ function page() {
           <div className="added-modal">
             <span className='added-text'>Package Accepted Successfully</span>
             <div className="modal-content">
-              <button className='btn' onClick= {() => {closeAccepted(); window.location.reload(); }}>
+              <button className='btn' onClick= {() => {closeAccepted(); fetchPackages(); }}>
                 OK
               </button>
             </div>
@@ -266,7 +268,7 @@ function page() {
           <div className="added-modal">
             <span className='added-text'>Package Rejected Successfully</span>
             <div className="modal-content">
-              <button className='btn' onClick={() => { closeRejected(); window.location.reload(); }}>
+              <button className='btn' onClick={() => { closeRejected(); fetchPackages(); }}>
                 OK
               </button>
             </div>

@@ -28,15 +28,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (
         isset($data['name'], $data['description'], $data['price'],$data['planner_id'], $data['venue_id'],
-         $data['category_id'], $data['subCat_name'], $data['location'], $data['planner_name'])
+         $data['category_id'], $data['subCat_name'], $data['location'], $data['planner_name'],$data['subCategory_id'])
     ) {
         try {
             // Set the status to 'pending'
             $status = 'Pending';
 
             // Prepare the SQL statement
-            $stmt = $pdo->prepare('INSERT INTO packeges (name, description, price, image, planner_id, venue_id, category_id, subCat_name, location, status, planner_name) 
-                                   VALUES (:name, :description, :price, :image, :planner_id, :venue_id, :category_id, :subCat_name , :location, :status, :planner_name)');
+            $stmt = $pdo->prepare('INSERT INTO packeges (name, description, price, image, planner_id, venue_id, category_id, subCat_name, location, status, planner_name, subCategory_id) 
+                                   VALUES (:name, :description, :price, :image, :planner_id, :venue_id, :category_id, :subCat_name , :location, :status, :planner_name, :subCategory_id)');
 
             // Bind the parameters
             $stmt->bindParam(':name', $data['name']);
@@ -50,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindParam(':location', $data['location']);
             $stmt->bindParam(':status', $status);
             $stmt->bindParam(':planner_name', $data['planner_name']);
+            $stmt->bindParam(':subCategory_id', $data['subCategory_id']);
 
             // Execute the query
             if ($stmt->execute()) {

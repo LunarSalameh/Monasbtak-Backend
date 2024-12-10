@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import './box.css';
 
-function NumberBox() {
+const NumberBox = forwardRef((props, ref) => {
   const [value, setValue] = useState('');
 
   const handleChange = (e) => {
@@ -12,6 +12,10 @@ function NumberBox() {
       setValue(input);
     }
   };
+
+  useImperativeHandle(ref, () => ({
+    value: value
+  }));
 
   return (
     <div className='NumberBox'>
@@ -22,9 +26,10 @@ function NumberBox() {
         onChange={handleChange}
         placeholder="Enter numbers only"
         className="box"
+        ref={ref}
       />
     </div>
   );
-}
+});
 
 export default NumberBox;

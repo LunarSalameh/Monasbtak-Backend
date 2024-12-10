@@ -13,12 +13,12 @@ error_reporting(E_ALL);
 $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
 try {
-    // Fetch all names from categories table
-    $stmt = $pdo->query('SELECT id, name FROM categories');
+    // Fetch all names from categories table except 'Customized'
+    $stmt = $pdo->query("SELECT id, name FROM categories WHERE name != 'Customized'");
     $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Fetch both name and category_id from sub_categories table
-    $stmt = $pdo->query('SELECT id, name, category_id FROM sub_categories');
+    // Fetch both name and category_id from sub_categories table except 'Coming Soon'
+    $stmt = $pdo->query("SELECT id, name, category_id FROM sub_categories WHERE name != 'Coming Soon'");
     $sub_categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Combine results into a single array

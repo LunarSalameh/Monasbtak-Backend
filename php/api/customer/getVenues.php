@@ -23,9 +23,9 @@ try {
 
         $venues = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-         foreach ($venues as &$package) {
-            if (isset($package['image'])) {
-                $package['image'] = base64_encode($package['image']);
+        foreach ($venues as &$venue) {
+            if (isset($venue['image'])) {
+                $venue['image'] = base64_encode($venue['image']);
             }
         }
 

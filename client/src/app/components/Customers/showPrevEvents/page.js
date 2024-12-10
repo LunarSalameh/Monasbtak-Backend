@@ -1,51 +1,103 @@
-import React from 'react'
+'use client';
+import React , {useState , useEffect} from 'react'
 import './page.css'
 import Link from 'next/link';
 import { CiLocationOn } from "react-icons/ci";
+import { useSearchParams } from 'next/navigation'; 
 
 function page() {
+    const searchParams = useSearchParams();
+    const id = searchParams.get("id");
+    const [prev, setPrev] = useState([]);
+    const [userId, setUserId] = useState(null); // Store userId
+    const [loadingPrev, setLoadingPrev] = useState(true);
+
+    useEffect(() => {
+        const fetchPrevEvents = async () => {
+            try {
+                setUserId(id); // Set userId in state
+                const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getProfilePrevEvents.php?user_id=${id}`);
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const text = await response.text();
+                const result = text ? JSON.parse(text) : {};
+
+                if (result.status === 'success') {
+                    const eventsWithDetails = await Promise.all(result.data.map(async (event) => {
+                        const packageDetails = await fetchPackagesDetails(event.package_id);
+                        return { ...event, ...packageDetails };
+                    }));
+                    setPrev(eventsWithDetails);
+                    console.log('events:', eventsWithDetails);
+                } else {
+                    setPrev([]); // Set events to an empty array if no events found
+                }
+                setLoadingPrev(false);
+            } catch (error) {
+                console.error("Error fetching events:", error);
+                setLoadingPrev(false);
+            }
+        };
+        fetchPrevEvents();
+    }, [id]);
+      
+    const fetchPackagesDetails = async (packageId) => {
+        try {
+          const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?id=${packageId}`);
+          const result = await response.json();
+          if (result.status === 'success' && result.data.length > 0) {
+            const packageDetails = result.data[0];
+            return {
+              ...packageDetails,
+              image: `data:image/jpeg;base64,${packageDetails.image}`,
+            };
+          }
+          return {};
+        } catch (error) {
+          console.error("Error fetching package details:", error);
+          return {};
+        }
+      }
   return (
     <div className='ShowAll-Events-container'>
         <span className='large-font-size font-color bold-font'>All Previous Events</span>
         <hr className='line'/>
 
         <div className='Event-Types'>
-                    <div className='Event-Box'>
+            {loadingPrev ? (
+                        <div className='No-Event'>Loading...</div>
+                    ) : prev.length > 0 ? (
+                        prev.map((prev, index) => (
+                    <div className='Event-Box' key={index}>
                             <div className='Event-img-container'>
-                                <img src="/wedding4.jpg" className='Event-img' />
-                                <span className='Price-tag'>$99.9</span>
+                                <img src={prev.image} className='Event-img' />
+                                <span className='Price-tag'>$ {prev.price}</span>
                             </div>
                             <div className='Event-details small-font-size'>
-                                <span>Event #1</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ultrices ornare augue non tristique. </p>
+                                <span className='bold-font'>{prev.name}</span>
+                                <span>{prev.description} </span>
+                                <div className='time'>
+                                <span className='bold-font'>Date & Time: </span>
+                                <span>{prev.eventDay}</span>
+                                <span>{prev.eventTime}</span>
+                                <span className='bold-font'>Attendings: </span>
+                                <span>{prev.attendings}</span>
+                            </div>
                                 <div className='Event-location'>
                                     <div className='row-felx'>
                                         <CiLocationOn />
-                                        <span>Location</span>
+                                        <span>{prev.location}</span>
                                     </div>
-                                    <span>Status</span>
+                                    <span>{prev.status}</span>
                                 </div>
                             </div>
                         </div>
-
-                        <div className='Event-Box'>
-                        <div className='Event-img-container'>
-                                <img src="/wedding5.jpg" className='Event-img' />
-                                <span className='Price-tag'>$99.9</span>
-                            </div>
-                            <div className='Event-details small-font-size'>
-                                <span>Event #1</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ultrices ornare augue non tristique. </p>
-                                <div className='Event-location'>
-                                    <div className='row-felx'>
-                                        <CiLocationOn />
-                                        <span>Location</span>
-                                    </div>
-                                    <span>Status</span>
-                                </div>
-                            </div>
-                        </div>
-                        
+                    ))): (
+                        <div className='No-Event'>No Events Found</div>
+                    )}  
         </div>
                     
     </div>  

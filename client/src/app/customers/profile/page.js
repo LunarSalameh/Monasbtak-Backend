@@ -35,6 +35,9 @@ function Profile() {
       })
       .then((data) => {
         if (data.success) {
+          if (data.user.image) {
+            data.user.image = `data:image/jpeg;base64,${data.user.image}`;
+          }
           setUser(data.user);
         } else {
           setError(data.message);

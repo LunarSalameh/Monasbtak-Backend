@@ -2,10 +2,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import stl from "./Categories.module.css";
+import { useSearchParams } from "next/navigation";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true); // Add loading state
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id"); // Get user ID from the query parameters
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -46,7 +49,7 @@ const Categories = () => {
               <Link
                 key={category.id}
                 className={stl.categoryCard}
-                href={`/customers/subCategories?id=${category.id}`}
+                href={`/customers/subCategories?id=${id}&categoryId=${category.id}`}
               >
                 <div className={stl.cardHeader}>
                   <img

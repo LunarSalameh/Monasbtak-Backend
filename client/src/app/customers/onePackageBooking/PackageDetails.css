@@ -27,6 +27,11 @@
 .large-font-size {
   font-size: 30px;
 }
+.mid-font-size {
+  font-size: 20px;
+  color: #4C1B41;
+}
+
 
   .line{
     height: 5% ;
@@ -50,7 +55,7 @@
 
   .content {
     display: flex;
-    gap: 30px;
+    gap: 40px;
     width: 75%;
     align-items: center;
     margin-bottom: 3%;
@@ -58,11 +63,11 @@
   }
   
   .package-image {
-    width: 453px;
-    height: 290px;
+    width: 100%;
+    height: 295px;
     border-radius: 8px;
+    object-fit: cover;
 }
-  
   .details {
     flex: 1;
     display: flex;
@@ -71,10 +76,12 @@
   
   .planner-info {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: flex-start;
+    gap: 15px;
     margin-bottom: 10px;
-  }
+    flex-direction: column;
+    margin-top: 10px;
+}
   
   .planner-image {
     width: 15%;
@@ -83,7 +90,7 @@
   }
   
   .planner-name {
-    font-size: 20px;
+    font-size: 27px;
     font-weight: bold;
     color:#4C1B41
   }
@@ -112,11 +119,23 @@
     display: flex;
     gap: 25px;
     margin-top: 20px;
-    overflow-x: scroll;
-    max-width: 52%;
+    width: 47%;
     flex-wrap: nowrap;
     white-space: nowrap;
     flex-direction: row;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 15px;
+    height: 325px;
+}
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;;
+  gap: 15px;
+}
+.planner-profile{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 22px;
 }
