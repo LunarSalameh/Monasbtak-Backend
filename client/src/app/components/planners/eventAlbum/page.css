@@ -18,79 +18,86 @@ body {
     font-weight: bold;
 }
 .font-color {
-    color: #4C1B41;
+    color: #D9B34D;
 }
-.page-container {
+/* .line{
+    height: 5% ;
+    border: none;
+    border-top: 5px solid #D9B34D; 
+    width: 100%;
+    margin-bottom: 2%;
+    border-radius: 10px;
+} */
+.Show-Button {
+    background-color: #D9B34D;
+    border: none;
+    color: white;
+    padding: 6px 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0px 7px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.page-container{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; 
+    justify-content: center; 
     margin-bottom: 3.7rem;
+
 }
-.event-album-container {
+.section-container{
     width: 75%;
     background-color: white;
     border-radius: 30px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     padding: 2rem;
-    align-items: center;
-    height: 60%;
+    align-items:normal;
 }
-.header{
+
+.Planner-album-container {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 0px 15px;
-    width: 100%;
+    flex-direction: column;
+    gap: 15px;
+    justify-content: center;
 }
-.btn {
-    display: flex;
-    align-items: center;
-    padding: 7px 15px;
-    background-color: #D9B34D;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  .btn:hover {
-    background-color: #c2a249;
-  }
-  
-  .end-icon {
-    margin-left: 10px;
-  }
-  .line{
-    width: 100%;
-    height: 1px;
-    background-color: lightgray;
-    margin-top: 20px;
-    margin-bottom: 20px;
-  }
-  .delete-icon {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    background-color: rgba(0, 0, 0, 0.500);
-    color: white;
-    padding: 5px 5px;
-    border-radius: 5px;
-    font-size: 16px;
-    width: 12%;
-    height: auto;
-}
-.delete-icon:hover {
-    background-color: rgba(0, 0, 0, 0.700);
-}
-  .Album-container {
+.Album-container {
     display: flex;
     flex-direction: row;
     gap: 18px;
+    max-width: 100%; 
     overflow-x: auto;
+    white-space: nowrap; 
+}
+.Modal-Album-container {
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+    max-width: 100%;
+    max-height: 610px;
+    overflow-y: auto;
     white-space: nowrap;
     flex-wrap: wrap;
-    width: 95%;
-    max-height: 82%;
+    justify-content: space-around;
+    align-content: space-between;
+}
+.modal-overlay-status{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: flex-end; 
+    align-items: flex-start; 
+    padding: 2%; 
+    z-index: 1000; 
 }
 /* Scrollbar styles */
 .Album-container::-webkit-scrollbar {
@@ -113,10 +120,15 @@ body {
 
 .Album-img-container {
     position: relative;
-    width: 315px;
+    width: 324px;
     height: 240px;
-    display: inline-block;
-    flex: none;
+    display: inline-block; 
+    flex: none; 
+    display: none; 
+}
+
+.Album-img-container:nth-child(-n+5) {
+    display: inline-block; 
 }
 .Album-img {
     width: 100%;
@@ -124,6 +136,20 @@ body {
     border-radius: 8px;
     display: block;
     object-fit: cover;
+}
+.showall {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 95%;
+}
+.Modal-Album-img-container {
+    position: relative;
+    width: 324px;
+    height: 240px;
+    display: inline-block; 
+    flex: none; 
 }
 .modal-overlay {
     position: fixed;
@@ -137,27 +163,16 @@ body {
     align-items: center;
     z-index: 1000; /* Ensure it appears above other content */
 }
-.modal-content {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.delete-modal {
+  
+.modal {
     background: white;
     padding: 20px;
     border-radius: 8px;
-    width: 40%;
+    width: 72%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
 }
-.delete-modal-btn {
-    display: flex;
-    flex-direction: row;
-    width: 25%;
-    justify-content: space-between;
-    margin-top: 20px;
-}
+  
 .close-button {
     background: none;
     border: none;
@@ -167,86 +182,191 @@ body {
     right: 10px;
     cursor: pointer;
 }
+  
+.modal-content {
+    margin-top: 20px;
+}
+.album-sections {
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-top: 40px;
+    width: 32%;
+    padding: 10px 10px;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    align-items: center;
+}
+.section:hover {
+    background-color: #f0f0f094;
+    border-color: #D9B34D;
+}
+.section-img {
+    width: 310px;
+    height: 200px;
+    border-radius: 8px;
+    display: block;
+    object-fit: cover;
+}
 
-@media (max-width: 1128px) {
-    .header {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        padding: 0px 15px;
-        width: 100%;
+.image-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100; /* Ensure it appears above the showModal */
+}
+.image-modal {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    width: 80%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.full-size-img {
+    width: 80%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.prev-button, .next-button {
+    background: none;
+    border: none;
+    font-size: 30px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.prev-button {
+    left: 10px;
+}
+
+.next-button {
+    right: 10px;
+}
+
+@media (max-width: 1200px) {
+    .Planner-album-container {
+        width: 85%;
     }
-    .event-album-container {
-        width: 75%;
-        background-color: white;
-        border-radius: 30px;
-        display: flex;
-        flex-direction: column;
-        padding: 2rem;
-        align-items: center;
-        height: 40%;
-    }
-    .Album-img-container {
-        position: relative;
-        width: 90%;
-        height: 18%;
-        display: inline-block;
-        flex: none;
-    }
-    .Album-container {
+    .Modal-Album-container {
         display: flex;
         flex-direction: row;
         gap: 18px;
-        overflow-x: auto;
+        max-width: 95%;
+        max-height: 610px;
+        overflow-y: auto;
         white-space: nowrap;
         flex-wrap: wrap;
-        width: 95%;
-        max-height: 78%;
-        justify-content: center;
+        justify-content: space-around;
+        align-content: space-between;
     }
-    .Album-img-container {
+}
+@media (max-width: 768px) {
+    .Planner-album-container {
+        width: 85%;
+    }
+    .Modal-Album-container {
+        display: flex;
+        flex-direction: row;
+        gap: 18px;
+        max-width: 95%;
+        max-height: 610px;
+        overflow-y: auto;
+        white-space: nowrap;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-content: space-between;
+    }
+}
+@media (max-width: 576px) {
+    .Planner-album-container {
+        width: 85%;
+    }
+    .showall {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 95%;
+    }
+    .Modal-Album-container {
+        display: flex;
+        flex-direction: row;
+        gap: 18px;
+        max-width: 100%;
+        max-height: 610px;
+        overflow-y: auto;
+        white-space: nowrap;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-content: space-between;
+    }
+    .Modal-Album-img-container {
         position: relative;
-        width: 445px;
-        height: 245px;
+        width: 226px;
+        height: 141px;
         display: inline-block;
         flex: none;
+        object-fit: cover;
     }
 }
 
-@media (max-width: 800px) {
-    .header {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 0px 15px;
-        width: 100%;
-    }
-    .event-album-container {
-        width: 75%;
-        background-color: white;
-        border-radius: 30px;
-        display: flex;
-        flex-direction: column;
-        padding: 2rem;
-        align-items: center;
-        height: 40%;
+@media (max-width: 400px) {
+    .Planner-album-container {
+        width: 85%;
     }
     .Album-img-container {
         position: relative;
-        width: 77%;
-        height: 30%;
+        width: 85%;
+        height: 195px;
         display: inline-block;
         flex: none;
     }
-    .Album-container {
+    .showall {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .Modal-Album-container {
         display: flex;
         flex-direction: row;
         gap: 18px;
-        overflow-x: auto;
+        max-width: 100%;
+        max-height: 610px;
+        overflow-y: auto;
         white-space: nowrap;
         flex-wrap: wrap;
-        width: 95%;
-        max-height: 78%;
-        justify-content: center;
+        justify-content: space-around;
+        align-content: space-between;
+    }
+    .Modal-Album-img-container {
+        position: relative;
+        width: 218px;
+        height: 141px;
+        display: inline-block;
+        flex: none;
+        object-fit: cover;
     }
 }
