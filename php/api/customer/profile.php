@@ -18,7 +18,7 @@ try {
 
     if ($user_id) {
         // Prepare the SQL query
-        $sql = "SELECT username, email, phonenumber, age, image, location, gender 
+        $sql = "SELECT id, username, email, phonenumber, age, image, location, gender 
                 FROM users 
                 WHERE id = :id";
         $stmt = $pdo->prepare($sql);
@@ -31,7 +31,7 @@ try {
         if ($user) {
             // If user image exists, convert it to base64
             if (!empty($user['image'])) {
-                $user['image'] = 'data:image/jpeg;base64,' . base64_encode($user['image']);
+                $user['image'] =  base64_encode($user['image']);
             }
 
             // Return user data as JSON

@@ -16,23 +16,23 @@ try {
     $id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
 
     if ($id) {
-        $sql = "SELECT id, name, description, image, location FROM venues WHERE id = :id"; 
+        $sql = "SELECT id, name, description, price, image, location, subCat_name, category_id, planner_id FROM packeges WHERE id = :id "; 
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
-        $venues = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $packages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        foreach ($venues as &$venue) {
-            if (isset($venue['image'])) {
-                $venue['image'] = base64_encode($venue['image']);
+         foreach ($packages as &$package) {
+            if (isset($package['image'])) {
+                $package['image'] = base64_encode($package['image']);
             }
         }
 
-        if ($venues) {
-            echo json_encode(['status' => 'success', 'data' => $venues]);
+        if ($packages) {
+            echo json_encode(['status' => 'success', 'data' => $packages]);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'No venues found for the given id']);
+            echo json_encode(['status' => 'error', 'message' => 'No packages found for the given id']);
         }
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Invalid id']);

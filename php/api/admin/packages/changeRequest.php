@@ -29,6 +29,17 @@ if (!$data || !isset($data['id']) || !isset($data['status'])) {
 $id = $data['id'];
 $status = $data['status'] === 'Accepted' ? 'Accepted' : 'Rejected';
 
+if ($status === 'Accepted') {
+    $stmt = $pdo->prepare('SELECT COUNT(*) FROM venue_subcategory WHERE subCategory_id = :subCategory_id AND venue_id = :venue_id');
+    $stmt->execute(['subCategory_id' => $data['subCategory_id'], 'venue_id' => $data['venue_id']]);
+    $count = $stmt->fetchColumn();
+
+    if ($count == 0) {
+        $stmt = $pdo->prepare('INSERT INTO venue_subcategory (subCategory_id, venue_id) VALUES (:subCategory_id, :venue_id)');
+        $stmt->execute(['subCategory_id' => $data['subCategory_id'], 'venue_id' => $data['venue_id']]);
+    }
+}
+
 $stmt = $pdo->prepare('UPDATE packeges SET status = :status WHERE id = :id');
 $stmt->execute(['status' => $status, 'id' => $id]);
 

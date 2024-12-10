@@ -14,20 +14,35 @@ error_reporting(E_ALL);
 $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
 // Get the input data
-$data = json_decode(json_encode($_POST));
+if ($_SERVER['CONTENT_TYPE'] === 'application/json') {
+    $data = json_decode(file_get_contents('php://input'));
+} else {
+    $data = (object)$_POST;
+}
 
 // Check if all required fields are provided
-if (isset($data->id, $data->name, $data->description, $_FILES['image'], $data->venue_id, $data->price)) {
+if (isset($data->id)) {
     $id = $data->id;
-    $name = $data->name;
-    $description = $data->description;
-    $image = file_get_contents($_FILES['image']['tmp_name']); // Get the image file content
-    $venue_id = $data->venue_id;
-    $price = $data->price;
+
+    // Fetch existing data
+    $stmt = $pdo->prepare("SELECT name, description, image, price, location FROM packeges WHERE id = ?");
+    $stmt->execute([$id]);
+    $existingPackage = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$existingPackage) {
+        echo json_encode(["message" => "Package not found"]);
+        exit;
+    }
+
+    $name = $data->name ?? $existingPackage['name'];
+    $description = $data->description ?? $existingPackage['description'];
+    $image = isset($_FILES['image']) && $_FILES['image']['tmp_name'] ? file_get_contents($_FILES['image']['tmp_name']) : $existingPackage['image'];
+    $price = $data->price ?? $existingPackage['price'];
+    $location = $data->location ?? $existingPackage['location'];
 
     // Prepare the SQL statement
-    $stmt = $pdo->prepare("UPDATE packeges SET name = ?, description = ?, image = ?, venue_id = ?, price = ? WHERE id = ?");
-    if ($stmt->execute([$name, $description, $image, $venue_id, $price, $id])) {
+    $stmt = $pdo->prepare("UPDATE packeges SET name = ?, description = ?, image = ?, price = ?, location = ? WHERE id = ?");
+    if ($stmt->execute([$name, $description, $image, $price, $location, $id])) {
         echo json_encode(["message" => "Package updated successfully"]);
     } else {
         echo json_encode(["message" => "Failed to update package"]);

@@ -27,36 +27,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = $_POST;
 
     if (
-        isset($data['name'], $data['description'], $data['price'],$data['planner_id'], $data['venue_id'],
-         $data['category_id'], $data['subCat_name'], $data['location'], $data['planner_name'],$data['subCategory_id'])
+        isset($data['name'], $data['description'], $data['location'], $data['subCategory_ids'])
     ) {
         try {
-            // Set the status to 'pending'
-            $status = 'Pending';
 
-            // Prepare the SQL statement
-            $stmt = $pdo->prepare('INSERT INTO packeges (name, description, price, image, planner_id, venue_id, category_id, subCat_name, location, status, planner_name, subCategory_id) 
-                                   VALUES (:name, :description, :price, :image, :planner_id, :venue_id, :category_id, :subCat_name , :location, :status, :planner_name, :subCategory_id)');
+            // Prepare the SQL statement for venues table
+            $stmt = $pdo->prepare('INSERT INTO venues (name, description, image, location) 
+                                   VALUES (:name, :description, :image, :location)');
 
             // Bind the parameters
             $stmt->bindParam(':name', $data['name']);
             $stmt->bindParam(':description', $data['description']);
-            $stmt->bindParam(':price', $data['price']);
             $stmt->bindParam(':image', $imageData, PDO::PARAM_LOB);
-            $stmt->bindParam(':planner_id', $data['planner_id']);
-            $stmt->bindParam(':venue_id', $data['venue_id']);
-            $stmt->bindParam(':category_id', $data['category_id']);
-            $stmt->bindParam(':subCat_name', $data['subCat_name']);
             $stmt->bindParam(':location', $data['location']);
-            $stmt->bindParam(':status', $status);
-            $stmt->bindParam(':planner_name', $data['planner_name']);
-            $stmt->bindParam(':subCategory_id', $data['subCategory_id']);
 
             // Execute the query
             if ($stmt->execute()) {
-                echo json_encode(['message' => 'Package created successfully']);
+                // Get the last inserted venue_id
+                $venue_id = $pdo->lastInsertId();
+
+                // Insert into venue_subcategory table
+                $subCategoryIds = explode(',', $data['subCategory_ids']);
+                foreach ($subCategoryIds as $subCategoryId) {
+                    $stmt2 = $pdo->prepare('INSERT INTO venue_subcategory (venue_id, subCategory_id) VALUES (:venue_id, :subCategory_id)');
+                    $stmt2->bindParam(':venue_id', $venue_id);
+                    $stmt2->bindParam(':subCategory_id', $subCategoryId);
+                    $stmt2->execute();
+                }
+                echo json_encode(['message' => 'Venue and venue subcategories created successfully']);
             } else {
-                echo json_encode(['message' => 'Failed to create package']);
+                echo json_encode(['message' => 'Failed to create venue']);
             }
         } catch (Exception $e) {
             echo json_encode(['message' => 'Error: ' . $e->getMessage()]);
