@@ -1,7 +1,49 @@
+"use client"
+
+import React, {useState, useEffect} from "react";
 import { CgSandClock } from "react-icons/cg";
 import { FaPersonWalking, FaCheck, FaCalendarCheck } from "react-icons/fa6";
+import { useSearchParams } from 'next/navigation';
+
 
 export default function TopSection () {
+    const searchParams = useSearchParams();
+    const planner_Id = searchParams.get('id'); 
+        
+    const [data, setData] = useState({
+        Pending: 0,
+        InProgress: 0,
+        Accepted: 0,
+        Finished: 0,
+      });
+
+    
+      const [error, setError] = useState("");
+    
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/topSection/totalEvents.php?planner_Id=${planner_Id}`);
+            const result = await response.json();
+    
+            if (result.success) {
+              setData({
+                Pending: result.Pending,
+                InProgress: result.InProgress,
+                Accepted: result.Accepted,
+                Finished: result.Finished,
+              });
+            } else {
+              setError("Failed to fetch data.");
+            }
+          } catch (error) {
+            setError("Error fetching data.");
+          }
+        };
+    
+        fetchData();
+      }, []);
+
     return (
         <>
             <section className="flex flex-col gap-8 my-2 p-8 w-full  font-bold text-xl items-center">
@@ -19,7 +61,7 @@ export default function TopSection () {
                         <div className="bg-[#FFF7E0] rounded-full p-8 flex items-center"><CgSandClock  color="#D9B34D" size={20}/></div>
                         <div className="flex flex-col gap-1 justify-center">
                             <p className="text-gray-400 font-light text-xs">Pending Events</p>
-                            <p className="font-bold text-lg">1'589</p>
+                            <p className="font-bold text-lg text-center">{data.Pending}</p>
                         </div>
                     </div>
 
@@ -28,7 +70,7 @@ export default function TopSection () {
                         <div className="bg-[#FFF7E0] rounded-full p-8 flex items-center"><FaPersonWalking color="#D9B34D"size={18} /></div>
                         <div className="flex flex-col gap-1 justify-center">
                             <p className="text-gray-400 font-light text-xs">In Progress Events</p>
-                            <p className="font-bold text-lg">189</p>
+                            <p className="font-bold text-lg text-center">{data.InProgress}</p>
                         </div>
                     </div> 
                     
@@ -37,7 +79,7 @@ export default function TopSection () {
                         <div className="bg-[#FFF7E0] rounded-full p-8 flex items-center"><FaCheck color="#D9B34D" size={18}  /></div>
                         <div className="flex flex-col gap-1 justify-center">
                             <p className="text-gray-400 font-light text-xs">Accepted Events</p>
-                            <p className="font-bold text-lg">1825</p>
+                            <p className="font-bold text-lg text-center">{data.Accepted}</p>
                         </div>
                     </div>
 
@@ -46,7 +88,7 @@ export default function TopSection () {
                         <div className="bg-[#FFF7E0] rounded-full p-8 flex items-center"><FaCalendarCheck color="#D9B34D" size={18}/></div>
                         <div className="flex flex-col gap-1 justify-center">
                             <p className="text-gray-400 font-light text-xs">Finished Events</p>
-                            <p className="font-bold text-lg">2645</p>
+                            <p className="font-bold text-lg text-center">{data.Finished}</p>
                         </div>
                     </div>
                 </div>

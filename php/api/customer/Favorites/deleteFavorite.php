@@ -33,7 +33,7 @@ $stmt = $pdo->prepare('DELETE FROM favorite WHERE id = :id');
 $stmt->execute(['id' => $id]);
 
 if ($stmt->rowCount() > 0) {
-    echo json_encode(['message' => 'Package Removed successfully']);
+    echo json_encode(['success' => true, 'message' => 'Package Removed successfully']);
 } else {
     http_response_code(404);
     echo json_encode(['message' => 'Package not found']);

@@ -72,11 +72,11 @@ function FavoritePage() {
       });
 
       const result = await response.json();
-      if (result.message === 'Package deleted successfully') {
+      if (result.success) {
         setFavorites((prevFavorites) =>
           prevFavorites.filter((fav) => fav.id !== favoriteId)
         );
-        console.error("Package Removed successfully!");
+        console.log("Package Removed successfully!");
       } else {
         console.error("Failed to remove package from favorite. Try again.");
       }

@@ -1,108 +1,217 @@
 "use client";
-import React, { useState } from 'react';
-import './page.css'
+
+import React, { useState, useEffect } from "react";
+import "./page.css";
 import { IoClose } from "react-icons/io5";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+
 
 function PlannerAlbum() {
   const [showModal, setShowModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(null);
-  const images = [
-    "/wedding.jpg",
-    "/wedding2.jpg",
-    "/wedding3.jpg",
-    "/wedding4.jpg",
-    "/wedding5.jpg",
-    "/wedding2.jpg",
-    "/wedding3.jpg",
-    "/wedding4.jpg",
-    "/wedding5.jpg",
-    "/wedding2.jpg"
-  ];
 
-  const handleShowModal = () => {
-    setShowModal(true);
+  const [name, setName] = useState("");
+  const [image, setImage] = useState(null);
+  const [successAlert, setSuccessAlert] = useState(false);
+  const [successDeletionAlert, setSuccessDeletionAlert] = useState(false);
+
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [noImagesMessage, setNoImagesMessage] = useState("");
+  const [categoryImages, setCategoryImages] = useState([]);
+
+
+  const handleSuccessAlert = () => {
+    setSuccessAlert(true);
+    setTimeout(() => {
+      setSuccessAlert(false);
+      setImage(null);
+    }, 2500);
   };
 
+  const handleSuccessDeletionAlert = () => {
+    setSuccessDeletionAlert(true);
+    setTimeout(() => {
+      setSuccessDeletionAlert(false);
+      setImage(null);
+    }, 2500);
+  };
+
+  const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => {
     setShowModal(false);
+    setNoImagesMessage("");
   };
 
-  const handleImageClick = (index) => {
-    setCurrentImageIndex(index);
+  const handleImageClick = (index) => setCurrentImageIndex(index);
+  const handleCloseImageModal = () => {
+    setImage(null);
+    // setCurrentImageIndex(null);
+  };
+
+  // Fetch categories and images
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost/Monasbtak-Backend/php/api/planner/eventAlbum/getCategories.php`
+        );
+
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const data = await response.json();
+        if (data.success) setCategories(data.categories);
+        else throw new Error("Failed to fetch categories.");
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Fetch category data
+  const fetchCategoryData = async (category_id) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const planner_id = urlParams.get("id");
+
+    try {
+      const response = await fetch(
+        `http://localhost/Monasbtak-Backend/php/api/planner/eventAlbum/getAlbumByCategory.php?category_id=${category_id}&planner_id=${planner_id}`
+      );
+      const data = await response.json();
+
+      if (data.success) {
+        if (data.data.length > 0) {
+          setCategoryImages(data.data);
+          console.log(data.data)
+          setNoImagesMessage("");
+        } else {
+          setNoImagesMessage("This planner has no photos for this category yet!");
+          setCategoryImages([]);
+        }
+      } else {
+        console.error("Error:", data.message);
+      }
+    } catch (error) {
+      console.error("Error fetching category data:", error);
+    }
+  };
+
+  const handleCategoryClick = (categoryId, categoryName) => {
+    setName(categoryName);
+    fetchCategoryData(categoryId);
+    handleShowModal();
   };
 
   const handleKeyDown = (event) => {
     if (event.key === 'ArrowRight') {
-      setCurrentImageIndex((currentImageIndex + 1) % images.length);
+      setCurrentImageIndex((currentImageIndex + 1) % categoryImages.length);
     } else if (event.key === 'ArrowLeft') {
-      setCurrentImageIndex((currentImageIndex - 1 + images.length) % images.length);
+      setCurrentImageIndex((currentImageIndex - 1 + categoryImages.length) % categoryImages.length);
     }
   };
 
-  const handleCloseImageModal = () => {
-    setCurrentImageIndex(null);
-  };
 
   return (
-    <div className='Planner-album-container' onKeyDown={handleKeyDown} tabIndex="0">
-      <div className='showall'> 
-        <span className='XL-font-size font-color bold-font'>Event Album</span>
-      </div>
-        <hr className='line'/>
-        <div className='album-sections'>
-          <div className='section' onClick={handleShowModal}>
-            <span>Weddings</span>
-            <img src="/wedding-category.jpg" className='section-img' />
-          </div>
-          <div className='section'>
-            <span>Graduations</span>
-            <img src="/grad1.jpg" className='section-img' />
-          </div>
-          <div className='section'>
-            <span>Maternity</span>
-            <img src="/genderRevel.jpg" className='section-img' />
-          </div>
-          <div className='section'>
-            <span>Birthdays</span>
-            <img src="/birthdayParty.jpg" className='section-img' />
-          </div>
-          <div className='section'>
-            <span>Formal Events</span>
-            <img src="/formalEvent.jpg" className='section-img' />
-          </div>
-        </div>
+    <div className="event-album-container">
+      <div className="">
+          <div className="Planner-album-container" tabIndex="0">
+            <span className="XL-font-size font-color bold-font">Event Album</span>
+          <hr  className="line"/>
 
-{currentImageIndex !== null && (
-        <div className="image-modal-overlay">
-          <div className="image-modal">
-            <button className="close-button" onClick={handleCloseImageModal}><IoClose /></button>
-            <button className="prev-button" onClick={() => setCurrentImageIndex((currentImageIndex - 1 + images.length) % images.length)}><IoIosArrowBack /></button>
-            <img src={images[currentImageIndex]} className='full-size-img' />
-            <button className="next-button" onClick={() => setCurrentImageIndex((currentImageIndex + 1) % images.length)}><IoIosArrowForward /></button>
+
+          <div className="album-sections">
+            {categories.length > 0 ? (
+              categories.map((category) => (
+                <div key={category.id} className="section">
+                  <h3>{category.name}</h3>
+                  {category.image && (
+                    <div>
+                      <img
+                        src={`data:image/jpeg;base64,${category.image}`}
+                        alt={category.name}
+                        className="section-img cursor-pointer"
+                        onClick={() => handleCategoryClick(category.id, category.name)}
+                      />
+
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p>No categories found.</p>
+            )}
           </div>
-        </div>
-      )}
-{showModal && (
-        <div className="modal-overlay">
-          <div className="modal">
-            <button className="close-button" onClick={handleCloseModal}><IoClose /></button>
-            <span className='XL-font-size font-color bold-font'>Category Name</span>
-            <hr className='line'/>
-            <div className="modal-content">
-              <div className='Modal-Album-container'>
-                {images.map((src, index) => (
-                  <div className='Modal-Album-img-container' key={index} onClick={() => handleImageClick(index)}>
-                    <img src={src} className='Album-img' />
+
+          {showModal && (
+            <div className="modal-overlay">
+              <div className="modal">
+                <button className="close-button" onClick={handleCloseModal}>
+                  <IoClose />
+                </button>
+                <div className="XL-font-size font-color bold-font text-center">{name}</div>
+                <hr className="line" />
+                <div className="modal-content">
+                  <div className="Modal-Album-container">
+                    {categoryImages.length > 0 ? (
+                      categoryImages.map((image) => (
+                        <div className="Modal-Album-img-container relative" key={image.id}>
+                          <img
+                            src={`data:image/jpeg;base64,${image.image}`}
+                            className="Album-img"
+                            alt="Album"
+                            onClick={() => handleImageClick(image.id)}                            
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <p>{noImagesMessage}</p>
+                    )}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
+          )}
+
+{currentImageIndex !== null && (
+  <div className="image-modal-overlay">
+    <div className="image-modal">
+      <button className="close-button" onClick={handleCloseImageModal}>
+        <IoClose />
+      </button>
+      <button
+        className="prev-button"
+        onClick={() =>
+          setCurrentImageIndex((currentImageIndex - 1 + categoryImages.length) % categoryImages.length)
+        }
+      >
+        <IoIosArrowBack />
+      </button>
+          <img
+                  src={`data:image/jpeg;base64,${categoryImages[currentImageIndex]?.image}`}
+                  className="full-size-img"
+                  alt="Album Image"
+                />
+              <button
+                className="next-button"
+                onClick={() =>
+                  setCurrentImageIndex((currentImageIndex + 1) % categoryImages.length)
+                }
+              >
+                <IoIosArrowForward />
+              </button>
+            </div>
           </div>
+        )}
+
         </div>
-      )}
+      </div>
     </div>
-  )
+  );
 }
 
 export default PlannerAlbum

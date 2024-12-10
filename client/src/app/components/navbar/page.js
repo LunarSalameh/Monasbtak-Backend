@@ -46,9 +46,7 @@ const Navbar = () => {
     <nav className={stl.navbar}>
       <div className={stl.navbar_brand}>
         <Link href={id ? `/customers/landingPage?id=${id}` : "/customers/landingPage"}>
-          {isValidImageUrl("/Golden-logo.png") && (
             <img src="/Golden-logo.png" alt="logo" className={stl.logo} />
-          )}
         </Link>
       </div>
       <ul className={stl.navbar_list}>
