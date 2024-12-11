@@ -16,7 +16,7 @@ function PlannerProfile() {
           <PlannerProfileDetails />
           <PlannerProfilePackages />
           <PlannerAlbum />  
-          <PlannerFeedback />
+          {/* <PlannerFeedback /> */}
       </div>
       <Footer />
     </>

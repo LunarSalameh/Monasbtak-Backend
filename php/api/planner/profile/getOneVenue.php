@@ -12,27 +12,27 @@ error_reporting(E_ALL);
 // Include the database connection
 $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
+try {
+    $venue_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
 
-try{
-    $planner_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
-
-    if ($planner_id){
-        $sql = "SELECT username, email, age, phonenumber, description FROM planners WHERE id=:id";
+    if ($venue_id) {
+         $sql = "SELECT name FROM venues WHERE id = :venue_id";
 
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id', $planner_id, PDO::PARAM_INT);
+        $stmt->bindParam(':venue_id', $venue_id, PDO::PARAM_INT); 
         $stmt->execute();
 
-        $planner = $stmt->fetch(PDO::FETCH_ASSOC);
+        $venue = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        echo json_encode(['success' => true, 'planner' => $planner]);
-
-    }else{
-        echo json_encode(['success' => false, 'message' => 'Invalid user ID']);
+        if ($venue) {
+            echo json_encode(['success' => true, 'venue' => $venue]);
+        } else {
+            echo json_encode(['success' => false, 'message' => [] ]);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Invalid venue ID']);
     }
-
-}catch(PDOException $e) {
+} catch (PDOException $e) {
     echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);
 }
-
 ?>

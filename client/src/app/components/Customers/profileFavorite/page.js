@@ -76,7 +76,7 @@ function FavoritePage() {
         setFavorites((prevFavorites) =>
           prevFavorites.filter((fav) => fav.id !== favoriteId)
         );
-        console.error("Package Removed successfully!");
+        console.log("Package Removed successfully!");
       } else {
         console.error("Failed to remove package from favorite. Try again.");
       }

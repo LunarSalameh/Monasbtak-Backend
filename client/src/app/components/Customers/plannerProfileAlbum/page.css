@@ -20,6 +20,13 @@ body {
 .font-color {
     color: #4C1B41;
 }
+.event-album-container{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-top: 40px;
+    width: 60%;
+}
 .line{
     height: 5% ;
     border: none;
@@ -28,6 +35,14 @@ body {
     margin-bottom: 2%;
     border-radius: 10px;
 }
+.line{
+    height: 5% ;
+    border: none;
+    border-top: 5px solid #4C1B41; 
+    width: 100%;
+    margin-bottom: 2%;
+    border-radius: 10px;
+  }
 .Show-Button {
     background-color: #4C1B41;
     border: none;
@@ -43,18 +58,10 @@ body {
 .Planner-album-container {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    padding-top: 40px;
-    width: 60%;
+    gap: 12px;
+    flex-wrap: wrap;
 }
-.Album-container {
-    display: flex;
-    flex-direction: row;
-    gap: 18px;
-    max-width: 100%; 
-    overflow-x: auto;
-    white-space: nowrap; 
-}
+
 .Modal-Album-container {
     display: flex;
     flex-direction: row;

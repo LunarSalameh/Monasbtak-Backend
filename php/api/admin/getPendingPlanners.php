@@ -13,7 +13,7 @@
    $pdo = include_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
    try{
-      $stmt = $pdo->prepare("SELECT * FROM planners WHERE action='Pending'");
+      $stmt = $pdo->prepare("SELECT id, username, email,	phonenumber, description, gender, resume, action FROM planners WHERE action='Pending'");
       $stmt->execute();
 
       $pendingPlanners = $stmt->fetchAll(PDO::FETCH_ASSOC);

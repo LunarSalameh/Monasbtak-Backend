@@ -5,16 +5,16 @@ import "./page.css";
 import Table from "../table/page";
 import { IoClose } from "react-icons/io5";
 
-export default function PlannerStatus() {
-  const [planners, setPlanners] = useState([]);
+export default function PlannerVenues() {
+  const [venues, setVenues] = useState([]);
+  const [venue, setVenue] = useState([]);
 
   const [acceptModal,setAcceptModal] = useState(false);
   const [rejectModal,setRejectModal] = useState(false);
 
   const [acceptAlert, setAcceptAlert] = useState(false);
   const [rejectAlert, setRejectAlert] = useState(false);
-
-  const [planner,setPlanner] = useState(null)
+  
   const [userToDelete, setUserToDelete] = useState(null);
 
   const openAcceptModal = () => {setAcceptModal(true);};
@@ -30,8 +30,8 @@ export default function PlannerStatus() {
         setTimeout(() => {
           setAcceptAlert(false);
         }, 2000); 
-        setPlanner(null);
-        handleStatusChange(planner, "Accepted");
+        setVenue(null);
+        handleStatusChange(venue, "Accepted");
   };
 
   const handleRejectModal =() => {
@@ -40,37 +40,37 @@ export default function PlannerStatus() {
       setTimeout(() => {
         setRejectAlert(false);
       }, 2000); 
-      setPlanner(null);
-      handleStatusChange(planner, "Rejected");
+      setVenue(null);
+      handleStatusChange(venue, "Rejected");
   };
   
 
-  const handleAcceptPlanner = (username,id) => {
+  const handleAcceptVenue = (username,id) => {
       openAcceptModal();
-      setPlanner(id);
+      setVenue(id);
       setUserToDelete(username);
   };
 
-  const handleRejectPlanner = (username,id) => {
+  const handleRejectVenue = (username,id) => {
     openRejectModal();
-    setPlanner(id);
+    setVenue(id);
     setUserToDelete(username);
 
 };
-
+  
   // Handle Accept/Reject
-  const handleStatusChange = (plannerId, action) => {
-    console.log(`PlannerId: ${plannerId}`)
-    if (!planner) return;
+  const handleStatusChange = (venueId, status) => {
+    console.log(`venueId: ${venueId}`)
+    if (!venue) return;
 
-    fetch("http://localhost/Monasbtak-Backend/php/api/admin/postPlannersStatus.php", {
-      method: "POST",
+    fetch("http://localhost/Monasbtak-Backend/php/api/admin/venues/postPendingVenues.php", {
+        method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        id: plannerId,
-        action,
+        id: venueId,
+        status,
       }),
       
     })
@@ -85,77 +85,63 @@ export default function PlannerStatus() {
         console.log("Response data:", data); 
         if (data.success) {
           // alert(data.message);
-           setPlanners((prevPlanners) =>
-            prevPlanners.filter((planner) => planner.id !== plannerId)
+           setVenues((prevVenues) =>
+            prevVenues.filter((venue) => venue.id !== venueId)
           );
 
         } else {
-          console.error(data.message || "Failed to update planner status.");
+          console.error(data.message || "Failed to update venue status.");
         }
       })
-      .catch((error) => console.error("Error updating planner status:", error));
+      .catch((error) => console.error("Error updating venue status:", error));
   };
 
-  useEffect(() => {
-    fetch("http://localhost/Monasbtak-Backend/php/api/admin/getPendingPlanners.php") 
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (data.success) {
-          const formattedData = data.planners.map((planner) => ({
-            ...planner,
-            resume: planner.resume ? (
-              <a
-                href={`http://localhost/Monasbtak-Backend/php/api/admin/fileDownload.php?resume=${planner.resume}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline"
+
+// get pending venues
+useEffect(() => {
+  fetch("http://localhost/Monasbtak-Backend/php/api/admin/venues/getPendingVenues.php") 
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.success) {
+        const formattedData = data.venues.map((venue) => ({
+          ...venue,
+          status: (
+            <div className="flex flex-row flex-wrap gap-2 justify-start">
+              <button
+                className="bg-green-700 text-white rounded-xl py-1.5 px-3 hover:bg-green-500 hover:shadow-xl"
+                onClick={()=>handleAcceptVenue(venue.name, venue.id)}
                 
               >
-                Download Resume
-              </a>
-            ) : (
-              "Not Uploaded"
-            ),
-            action: (
-              <div className="flex flex-row flex-wrap gap-2 justify-start">
-                <button
-                  className="bg-green-700 text-white rounded-xl py-1.5 px-3 hover:bg-green-500 hover:shadow-xl"
-                  onClick={()=>handleAcceptPlanner(planner.username, planner.id)}
-                  
-                >
-                  Accept
-                  
-                </button>
-                <button
-                  className="bg-red-600 text-white rounded-xl py-1.5 px-3 hover:bg-red-500 hover:shadow-xl"
-                  onClick={()=>handleRejectPlanner(planner.username, planner.id)}
-                >
-                  Reject
-                </button>
-              </div>
-            ),
-          }));
-          setPlanners(formattedData);
-        } else {
-          console.error(data.message || "Failed to fetch planners.");
-        }
-      })
-      .catch((error) => console.error("Error fetching planners:", error));
-  }, []);
+                Accept
+                
+              </button>
+              <button
+                className="bg-red-600 text-white rounded-xl py-1.5 px-3 hover:bg-red-500 hover:shadow-xl"
+                onClick={()=>handleRejectVenue(venue.name, venue.id)}
+              >
+                Reject
+              </button>
+            </div>
+          ),
+        }));
+        setVenues(formattedData);
+      } else {
+        console.error(data.message || "Failed to fetch Venues.");
+      }
+    })
+    .catch((error) => console.error("Error fetching Venues:", error));
+}, []);
 
   const columns = [
-    { Header: "Planner", accessor: "username" },
-    { Header: "Email", accessor: "email" },
-    { Header: "Phone Number", accessor: "phonenumber" },
+    { Header: "Venue", accessor: "name" },
+    { Header: "Location", accessor: "location" },
     { Header: "Description", accessor: "description" },
-    { Header: "Gender", accessor: "gender" },
-    { Header: "Resume", accessor: "resume" },
-    { Header: "Status", accessor: "action" },
+    { Header: "Status", accessor: "status" },
     ];
 
   return (
@@ -163,12 +149,12 @@ export default function PlannerStatus() {
       <div className="users-container">
         <div className="main-top">
           <div className="header">
-            <span className="large-font-size bold-font">Pending Planners</span>
+            <span className="large-font-size bold-font">Pending Venues</span>
           </div>
         </div>
         <hr className="line" />
         <div className="table-container">
-        <Table columns={columns} data={planners} />
+          <Table columns={columns} data={venues} />
         </div>
 
         {/** ACCEPT MODAL */}
@@ -192,7 +178,7 @@ export default function PlannerStatus() {
           <div className="modal-overlay-status">
             <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
               <div className="bg-green-600 p-0 rounded-l-xl"></div>
-              <div className="p-5 bg-white  border-2 border-green-600 ">Planner Has Been Accepted</div>
+              <div className="p-5 bg-white  border-2 border-green-600 ">Venue Has Been Accepted</div>
             </div>
           </div>
         )}
@@ -218,7 +204,7 @@ export default function PlannerStatus() {
           <div className="modal-overlay-status">
             <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
               <div className="bg-red-600 p-0 rounded-l-xl"></div>
-              <div className="p-5 bg-white  border-2 border-red-600 ">Planner Has Been Rejected</div>
+              <div className="p-5 bg-white  border-2 border-red-600 ">Venue Has Been Rejected</div>
             </div>
           </div>
         )}

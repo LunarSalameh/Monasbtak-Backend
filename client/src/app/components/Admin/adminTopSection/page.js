@@ -1,8 +1,44 @@
+
+"use client"
+
+import React, {useState, useEffect} from "react";
 import { CgSandClock } from "react-icons/cg";
 import { LuUsers2 } from "react-icons/lu";
 import { FaBuilding , FaUsers } from "react-icons/fa6";
 
 export default function AdminTopSection () {
+    
+    const [data, setData] = useState({
+        users: 0,
+        venues: 0,
+        planners: 0,
+      });
+    
+      const [error, setError] = useState("");
+    
+      useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await fetch("http://localhost/Monasbtak-Backend/php/api/admin/topSection/totalUsers.php");
+            const result = await response.json();
+    
+            if (result.success) {
+              setData({
+                users: result.users,
+                venues: result.venues,
+                planners: result.planners,
+              });
+            } else {
+              setError("Failed to fetch data.");
+            }
+          } catch (error) {
+            setError("Error fetching data.");
+          }
+        };
+    
+        fetchData();
+      }, []);
+
     return (
         <>
             <section className="flex flex-col gap-8 mx-5 my-2 p-8   font-bold text-xl items-center">
@@ -20,7 +56,7 @@ export default function AdminTopSection () {
                         <div className="bg-[#FFF7E0] rounded-full p-8 flex items-center"><LuUsers2  color="#D9B34D" size={20}/></div>
                         <div className="flex flex-col gap-1 justify-center">
                             <p className="text-gray-400 font-light text-s">Total Customers</p>
-                            <p className="font-bold text-lg">5,437</p>
+                            <p className="font-bold text-lg text-center">{data.users}</p>
                         </div>
                     </div>
 
@@ -29,7 +65,7 @@ export default function AdminTopSection () {
                         <div className="bg-[#FFF7E0] rounded-full p-8 flex items-center"><FaBuilding color="#D9B34D"size={18} /></div>
                         <div className="flex flex-col gap-1 justify-center">
                             <p className="text-gray-400 font-light text-s">Total Venues</p>
-                            <p className="font-bold text-lg">189</p>
+                            <p className="font-bold text-lg text-center">{data.venues}</p>
                         </div>
                     </div> 
                     {/* Total Planners */}
@@ -37,7 +73,7 @@ export default function AdminTopSection () {
                         <div className="bg-[#FFF7E0] rounded-full p-8 flex items-center"><FaUsers color="#D9B34D" size={18}  /></div>
                         <div className="flex flex-col gap-1 justify-center">
                             <p className="text-gray-400 font-light text-s">Total Planners</p>
-                            <p className="font-bold text-lg">1825</p>
+                            <p className="font-bold text-lg text-center">{data.planners}</p>
                         </div>
                     </div>
                 </div>
