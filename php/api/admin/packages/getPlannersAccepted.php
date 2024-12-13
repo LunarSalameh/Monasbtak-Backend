@@ -15,7 +15,7 @@ $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php'
 
 try {
         // Prepare the SQL query to fetch all planners with action 'Accepted'
-        $sql = "SELECT id, username, image FROM planners WHERE action = 'Accepted'"; 
+        $sql = "SELECT id, username, image FROM planners WHERE action = 'Accepted' AND IsDeleted = 0"; 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 

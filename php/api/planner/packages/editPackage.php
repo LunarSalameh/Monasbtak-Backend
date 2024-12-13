@@ -25,7 +25,7 @@ if (isset($data->id)) {
     $id = $data->id;
 
     // Fetch existing data
-    $stmt = $pdo->prepare("SELECT name, description, image, price, location FROM packeges WHERE id = ?");
+    $stmt = $pdo->prepare("SELECT name, description, image, price, location FROM packeges WHERE id = ? AND IsDeleted = 0");
     $stmt->execute([$id]);
     $existingPackage = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -41,7 +41,7 @@ if (isset($data->id)) {
     $location = $data->location ?? $existingPackage['location'];
 
     // Prepare the SQL statement
-    $stmt = $pdo->prepare("UPDATE packeges SET name = ?, description = ?, image = ?, price = ?, location = ? WHERE id = ?");
+    $stmt = $pdo->prepare("UPDATE packeges SET name = ?, description = ?, image = ?, price = ?, location = ? WHERE id = ? AND IsDeleted = 0");
     if ($stmt->execute([$name, $description, $image, $price, $location, $id])) {
         echo json_encode(["message" => "Package updated successfully"]);
     } else {

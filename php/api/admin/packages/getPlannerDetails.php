@@ -19,7 +19,7 @@ try {
 
     if ($id) {
         // Prepare the SQL query to fetch username and image based on id
-        $sql = "SELECT username, image FROM planners WHERE id = :id "; 
+        $sql = "SELECT username, image FROM planners WHERE id = :id AND IsDeleted = 0"; 
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();

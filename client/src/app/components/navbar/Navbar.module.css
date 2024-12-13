@@ -6,10 +6,15 @@
   background-color: #4c1b41;
   color: #fff;
   border-bottom: 17px solid #d9b34d;
-  border-bottom-left-radius: 12px;
-  border-bottom-right-radius: 12px;
+
   height: 95px;
 }
+
+.navbar:hover{
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
 .navbar_brand{
   display: flex;
   align-items: center;

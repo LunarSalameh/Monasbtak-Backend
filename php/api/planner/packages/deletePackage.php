@@ -29,7 +29,7 @@ if (!$data || !isset($data['id'])) {
 // Correct table name in query
 $id = $data['id'];
 
-$stmt = $pdo->prepare('DELETE FROM packeges WHERE id = :id');
+$stmt = $pdo->prepare('UPDATE packeges SET IsDeleted = 1 WHERE id = :id');
 $stmt->execute(['id' => $id]);
 
 if ($stmt->rowCount() > 0) {

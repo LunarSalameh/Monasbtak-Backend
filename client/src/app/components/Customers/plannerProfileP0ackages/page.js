@@ -48,7 +48,9 @@ function PlannerPackages() {
 
           <div className='Planner-package-phone-view'>
             {loading ? (
-              <p>Loading...</p>
+              <div className='flex w-full justify-center justify-items-center'>
+                  <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
+              </div>
             ) : (
               packages.length > 0 ? (
                 packages.map((pkg, index) => (

@@ -4,6 +4,7 @@ import './page.css'
 import Link from 'next/link';
 import { CiLocationOn } from "react-icons/ci";
 import { useSearchParams } from 'next/navigation'; 
+import { OrbitProgress } from 'react-loading-indicators';
 
 function page() {
     const searchParams = useSearchParams();
@@ -68,7 +69,9 @@ function page() {
 
         <div className='Event-Types'>
             {loadingPrev ? (
-                        <div className='No-Event'>Loading...</div>
+                        <div className='flex w-full justify-center justify-items-center'>
+                            <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
+                        </div>
                     ) : prev.length > 0 ? (
                         prev.map((prev, index) => (
                     <div className='Event-Box' key={index}>

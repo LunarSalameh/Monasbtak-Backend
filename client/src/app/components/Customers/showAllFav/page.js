@@ -4,6 +4,7 @@ import "./page.css";
 import Link from 'next/link';
 import { IoTrashOutline } from "react-icons/io5";
 import { useSearchParams } from "next/navigation";
+import { OrbitProgress } from 'react-loading-indicators';
 
 function FavoritePage() {
     const [favorites, setFavorites] = useState([]);
@@ -92,7 +93,9 @@ function FavoritePage() {
             <hr className="line" />
             <div className="Fav-container Fav-phone-view">
                 {loading ? (
-                    <p>Loading...</p> 
+                    <div className='flex w-full justify-center justify-items-center'>
+                        <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
+                    </div>
                 ) : (
                     favorites.length > 0 ? (
                         favorites.map((favorite,index) => (

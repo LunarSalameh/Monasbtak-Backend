@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { IoIosSearch } from "react-icons/io";
 import Table from '../../../components/Admin/table/page';
 import { useSearchParams } from 'next/navigation';
+import { OrbitProgress } from 'react-loading-indicators';
+
 import './page.css';
 
 export default function AllEventsPlanner() {
@@ -130,7 +132,9 @@ export default function AllEventsPlanner() {
                     <hr className='line'/>
                     <div className='table-container'>
                         {loadingCurrent ? (
-                            <div>Loading...</div> 
+                            <div className='flex w-full justify-center justify-items-center pt-16'>
+                                <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#D9B349" />
+                            </div> 
                         ) : (
                             Array.isArray(filteredEvents) && filteredEvents.length > 0 ? (
                                 <Table columns={columns} data={filteredEvents.map((event, index) => ({

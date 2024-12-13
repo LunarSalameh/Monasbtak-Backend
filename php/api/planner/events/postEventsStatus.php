@@ -14,26 +14,30 @@ $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php'
 
 try {
     $input = json_decode(file_get_contents('php://input'), true);
-    $planner_Id = isset($input['planner_Id']) ? filter_var($input['planner_Id'], FILTER_VALIDATE_INT) : null;
-    $id = isset($input['id']) ? filter_var($input['id'], FILTER_VALIDATE_INT) : null;
-    $IsDeleted = 0 ;
 
-    if ($planner_Id !== false && $id !== false) {
-        $sql = "UPDATE events SET status = 'in progress' WHERE planner_Id = :planner_Id AND id = :id AND status = 'pending' AND IsDeleted = :IsDeleted";
+    $planner_Id = isset($input['planner_Id']) ? filter_var($input['planner_Id'], FILTER_VALIDATE_INT) : null;
+    $event_Id = isset($input['event_Id']) ? filter_var($input['event_Id'], FILTER_VALIDATE_INT) : null;
+    $status = isset($input['status']) ? filter_var($input['status']) : null;
+    $IsDeleted = 0;
+
+    if ($planner_Id && $event_Id && $status) {
+        $sql = "UPDATE events SET status = :status WHERE planner_Id = :planner_Id AND id = :event_Id AND IsDeleted = :IsDeleted";
         $stmt = $pdo->prepare($sql);
+
         $stmt->bindParam(':planner_Id', $planner_Id, PDO::PARAM_INT);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->bindParam(':IsDeleted', $IsDeleted);
+        $stmt->bindParam(':event_Id', $event_Id, PDO::PARAM_INT);
+        $stmt->bindParam(':status', $status, PDO::PARAM_STR);
+        $stmt->bindParam(':IsDeleted', $IsDeleted, PDO::PARAM_INT);
 
         $stmt->execute();
 
         if ($stmt->rowCount() > 0) {
-            echo json_encode(['status' => 'success', 'message' => 'Status updated to In progress']);
+            echo json_encode(['status' => 'success', 'message' => 'Status updated']);
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'No pending events found for the given planner_Id and id']);
+            echo json_encode(['status' => 'error', 'message' => 'No events found or no rows affected']);
         }
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Invalid planner_Id or id']);
+        echo json_encode(['status' => 'error', 'message' => 'Invalid input parameters']);
     }
 } catch (PDOException $e) {
     echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);

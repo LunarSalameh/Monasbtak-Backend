@@ -4,6 +4,7 @@ import './page.css'
 import { IoIosSearch } from "react-icons/io";
 import { Icon } from '@iconify/react';
 import { useSearchParams } from 'next/navigation';
+import { OrbitProgress } from 'react-loading-indicators';
 
 
 function page() {
@@ -105,7 +106,9 @@ function page() {
           </button>
           <div className='slides'>
           {loading ? (
-                    <div>Loading...</div> 
+                <div className='flex w-full justify-center justify-items-center'>
+                    <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#D9B349" />
+                </div> 
                 ) : (
           filteredPackages.length === 0 ? (
             <div>No packages found</div>

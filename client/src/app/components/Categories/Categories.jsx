@@ -3,12 +3,14 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import stl from "./Categories.module.css";
 import { useSearchParams } from "next/navigation";
+import { OrbitProgress } from 'react-loading-indicators';
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true); // Add loading state
   const searchParams = useSearchParams();
   const id = searchParams.get("id"); // Get user ID from the query parameters
+
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -37,12 +39,14 @@ const Categories = () => {
   }, []);
 
   return (
-    <div className={stl.pageContainer}>
+    <div className={stl.pageContainer} id="categories" >
       <span className={`${stl.largeFontSize} ${stl.fontColor} ${stl.boldFont}`}>Categories</span>
       <hr className={stl.line}/>
-      <div id="categories" className={`container ${stl.wrapper}`}>
-        {loading ? ( // Show spinner while loading
-          <div className={stl.spinner}>Loading...</div>
+      <div  className={`container ${stl.wrapper}`}>
+        {loading ? ( 
+          <div className='flex w-full justify-center justify-items-center'>
+            <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
+          </div>
         ) : (
           <div className={stl.Container}>
             {categories.map((category) => (

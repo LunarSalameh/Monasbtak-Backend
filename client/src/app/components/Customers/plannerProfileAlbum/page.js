@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import "./page.css";
 import { IoClose } from "react-icons/io5";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-
+import { OrbitProgress } from 'react-loading-indicators';
 
 function PlannerAlbum() {
   const [showModal, setShowModal] = useState(false);
@@ -123,29 +123,35 @@ function PlannerAlbum() {
             <span className="XL-font-size font-color bold-font">Event Album</span>
           <hr  className="line"/>
 
+        {loading ? (
+            <div className='flex w-full justify-center justify-items-center'>
+                <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
+              </div>
+            ):(
+              <div className="album-sections">
+                  {categories.length > 0 ? (
+                    categories.map((category) => (
+                      <div key={category.id} className="section">
+                        <h3>{category.name}</h3>
+                        {category.image && (
+                          <div>
+                            <img
+                              src={`data:image/jpeg;base64,${category.image}`}
+                              alt={category.name}
+                              className="section-img cursor-pointer"
+                              onClick={() => handleCategoryClick(category.id, category.name)}
+                            />
 
-          <div className="album-sections">
-            {categories.length > 0 ? (
-              categories.map((category) => (
-                <div key={category.id} className="section">
-                  <h3>{category.name}</h3>
-                  {category.image && (
-                    <div>
-                      <img
-                        src={`data:image/jpeg;base64,${category.image}`}
-                        alt={category.name}
-                        className="section-img cursor-pointer"
-                        onClick={() => handleCategoryClick(category.id, category.name)}
-                      />
-
-                    </div>
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <p>No categories found.</p>
                   )}
                 </div>
-              ))
-            ) : (
-              <p>No categories found.</p>
-            )}
-          </div>
+            ) }
+          
 
           {showModal && (
             <div className="modal-overlay">

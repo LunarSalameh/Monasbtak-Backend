@@ -13,7 +13,7 @@ error_reporting(E_ALL);
 $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
 try {
-    $sql = "SELECT id, name, status, eventTime, attendings, eventDay, package_id, user_Id FROM events";
+    $sql = "SELECT id, name, status, eventTime, attendings, eventDay, package_id, user_Id FROM events WHERE IsDeleted=0 ";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     $events = $stmt->fetchAll(PDO::FETCH_ASSOC);

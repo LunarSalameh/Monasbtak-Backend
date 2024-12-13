@@ -19,7 +19,7 @@ try {
     if ($venue_id) {
         $sql = "SELECT id, name, description, price, image, location, subCat_name, category_id, subCategory_id, status 
                 FROM packeges 
-                WHERE venue_id = :venue_id AND status = 'Accepted'";
+                WHERE venue_id = :venue_id AND status = 'Accepted' AND IsDeleted = 0";
         
         if ($subCategory_id) {
             $sql .= " AND subCategory_id = :subCategory_id";

@@ -4,6 +4,8 @@ import { useEffect,useState } from 'react';
 import './page.css'
 import { IoIosSearch } from "react-icons/io";
 import Link from 'next/link';
+import { OrbitProgress } from 'react-loading-indicators';
+
 
 function page() {
   const [planners , setPlanners] = useState(null);
@@ -64,7 +66,9 @@ function page() {
         <hr className='line'/>
         <div className='available-content'>
         {loading ? (
-            <div>Loading...</div> 
+            <div className='flex w-full justify-center justify-items-center'>
+                <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#D9B349" />
+            </div> 
         ) : (
             !planners || planners.length === 0 ? (
                 <div>No Planners Founded</div>

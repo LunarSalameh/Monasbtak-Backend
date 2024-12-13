@@ -1,24 +1,21 @@
 .slider {
   overflow: hidden;
-  position: relative;
-  width: 70%;
+  width: 100%;
   height: auto;
+  box-shadow: inset 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .imgs {
   width: 100%;
-  height: 460px;
+  height: 500px;
   display: flex;
   transition: transform 0.5s ease;
-  border-radius: 20px;
-  border: 1px solid lightgray;
-}
-
-.imgs img {
-  width: 100%;
-  height: auto; /* Maintain aspect ratio */
-  object-fit: cover;
-
+  object-fit:fill;
+  background-repeat: no-repeat;
+  background-repeat: round;
+  background-size: 100% 100%;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 /* Navigation buttons */
@@ -46,29 +43,77 @@
   left: 2%;
 }
 
-/* Slide opacity */
-.slide {
-  opacity: 0;
+
+.textContainer {
+  text-align: center;
+  color: white;
+  background: rgba(0, 0, 0, 0.5); 
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  /* text-align: center; */
+
 }
 
-.slide.active {
-  opacity: 1;
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-/* Responsive adjustments */
+.description {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px #D9B34D;
+  font-weight: bold;
+}
+
+.containerImg {
+  width: 100%;
+  height: 500px;
+  background-attachment: fixed;
+  position: relative;
+  transition: background-image 0.5s ease-in-out; 
+  
+}
+
+.actionBtn {
+  width: fit-content;
+  background-color: #D9B34D;
+  padding: 0.5rem 2rem;
+  /* z-index: 500;  */
+  /* position: absolute; */
+  color: white; 
+  font-size: 1.25rem; 
+  border-radius: 1rem;
+  bottom: 1.25rem; 
+  /* left: 40%;  */
+  transition: all 0.3s ease; 
+}
+
+.actionBtn:hover {
+  background-color: #e6c363; /* Change background color on hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Box shadow on hover */
+}
+
 @media (max-width: 768px) {
-  .imgs {
+  .containerImg {
       height: 300px; /* Decrease height for medium screens */
+  } 
+   .prev, .nxt {
+      width: 25px; /* Smaller navigation buttons on smaller screens */
+      height: 25px;
   }
 }
 
 @media (max-width: 480px) {
-  .imgs {
+  .containerImg {
       height: 200px; /* Further decrease height for small screens */
-  }
-
-  .prev, .nxt {
-      width: 25px; /* Smaller navigation buttons on smaller screens */
-      height: 25px;
   }
 }

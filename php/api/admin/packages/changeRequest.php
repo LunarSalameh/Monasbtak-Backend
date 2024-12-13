@@ -40,7 +40,7 @@ if ($status === 'Accepted') {
     }
 }
 
-$stmt = $pdo->prepare('UPDATE packeges SET status = :status WHERE id = :id');
+$stmt = $pdo->prepare('UPDATE packeges SET status = :status WHERE id = :id AND IsDeleted = 0');
 $stmt->execute(['status' => $status, 'id' => $id]);
 
 if ($stmt->rowCount() > 0) {

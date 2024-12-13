@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './PackageDetails.css';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { OrbitProgress } from 'react-loading-indicators';
 
 const PackageDetails = () => {
   const searchParams = useSearchParams();
@@ -43,7 +44,9 @@ const PackageDetails = () => {
   }, [id]);
 
   if (!packageDetails || !plannerDetails) {
-    return <div>Loading...</div>;
+    return  <div className='flex w-full justify-center justify-items-center py-16'>
+        <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
+    </div>;
   }
 
   return (

@@ -49,6 +49,7 @@ const Navbar = () => {
             <img src="/Golden-logo.png" alt="logo" className={stl.logo} />
         </Link>
       </div>
+      
       <ul className={stl.navbar_list}>
         <li className={stl.navbar_item}>
           <Link href={id ? `/customers/landingPage?id=${id}` : "/customers/landingPage"}>

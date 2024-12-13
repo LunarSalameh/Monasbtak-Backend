@@ -4,6 +4,7 @@ import './page.css';
 import { Icon } from '@iconify/react';
 import { IoClose } from "react-icons/io5";
 import { useSearchParams } from "next/navigation";
+import { OrbitProgress } from 'react-loading-indicators';
 
 
 function Page() {
@@ -176,7 +177,9 @@ const fetchDeltePackage = async () => {
           </button>
           <div className='slides'>
           {loading ? (
-                    <div>Loading...</div> 
+                <div className='flex w-full justify-center justify-items-center'>
+                    <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#D9B349" />
+                </div>
                 ) : (
           packages === null || packages.length === 0 ? (
             <div>No packages found</div>

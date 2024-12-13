@@ -7,7 +7,7 @@ import { FaPhone } from "react-icons/fa6";
 import { GrUserManager } from "react-icons/gr";
 import { TbGenderBigender } from "react-icons/tb";
 import { useSearchParams } from 'next/navigation';
-
+import { OrbitProgress } from 'react-loading-indicators';
 
 function ProfileDetails () {
     const searchParams = useSearchParams();
@@ -57,7 +57,9 @@ function ProfileDetails () {
             </div>
         </div>
         ))): (
-            <p>Loading...</p>
+          <div className='flex w-full justify-center justify-items-center'>
+              <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
+          </div>
         )}
     </div>
   );

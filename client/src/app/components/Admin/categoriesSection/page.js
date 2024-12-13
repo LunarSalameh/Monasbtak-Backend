@@ -3,6 +3,8 @@
 import { RiDeleteBinLine } from "react-icons/ri";
 import React, { useState, useEffect } from 'react';
 import './page.css';
+import { OrbitProgress } from 'react-loading-indicators';
+
 
 export default function CategoriesSection() {
     const [categories, setCategories] = useState([]);
@@ -150,13 +152,18 @@ export default function CategoriesSection() {
                     <span className="large-font-size bold-font">Categories Section</span>
                 </div>
                 <hr className="line" />
-                <div className="grid grid-cols-3 max-md:grid-cols-2  max-sm:grid-cols-1 gap-5">
+                
                     {loading ? ( 
-                        <div className="loading-spinner">Loading...</div>
+                        <div className='flex w-full justify-center justify-items-center m-0 p-0'>
+                            <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#D9B349" />
+                        </div>
                     ) : categories === null || categories.length === 0 ? (
                         <div>No categories found</div>
-                    ) : (
-                        Array.isArray(categories) && categories.map((category, index) => (
+                    ) : ( 
+                    
+                    <div className="grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 gap-5">
+                        {Array.isArray(categories) && categories.map((category, index) => (
+                       
                             <div
                                 key={index}
                                 className="flex flex-col flex-flex-wrap  gap-2 border-gray-200 border-2 rounded-xl p-2 hover:bg-gray-100 hover:shadow-lg hover:border-[#d9b34d]"
@@ -198,9 +205,11 @@ export default function CategoriesSection() {
                                     </button>
                                 </div>
                             </div>
-                        ))
+
+                        ))  }                      
+                        </div>
+
                     )}
-                </div>
 
                 {/* Delete Confirmation Modal */}
                 {showModal && (

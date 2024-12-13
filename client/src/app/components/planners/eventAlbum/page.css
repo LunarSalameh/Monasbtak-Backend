@@ -65,6 +65,7 @@ body {
     flex-direction: column;
     gap: 15px;
     justify-content: center;
+    width: 100%;
 }
 .Album-container {
     display: flex;
@@ -265,9 +266,6 @@ body {
 }
 
 @media (max-width: 1200px) {
-    .Planner-album-container {
-        width: 85%;
-    }
     .Modal-Album-container {
         display: flex;
         flex-direction: row;
@@ -282,9 +280,7 @@ body {
     }
 }
 @media (max-width: 768px) {
-    .Planner-album-container {
-        width: 85%;
-    }
+
     .Modal-Album-container {
         display: flex;
         flex-direction: row;
@@ -299,9 +295,6 @@ body {
     }
 }
 @media (max-width: 576px) {
-    .Planner-album-container {
-        width: 85%;
-    }
     .showall {
         display: flex;
         flex-direction: row;
@@ -332,9 +325,6 @@ body {
 }
 
 @media (max-width: 400px) {
-    .Planner-album-container {
-        width: 85%;
-    }
     .Album-img-container {
         position: relative;
         width: 85%;

@@ -4,6 +4,7 @@ import stl from "./Scategories.module.css";
 import { useSearchParams } from 'next/navigation';
 import { Icon } from '@iconify/react';
 import Link from 'next/link';
+import { OrbitProgress } from 'react-loading-indicators';
 
 const Scategories = () => {
   const [subCategories, setSubCategories] = useState([]);
@@ -93,7 +94,9 @@ const Scategories = () => {
         <hr className={stl.line}/>
       </div>
       {loading ? (
-        <div className={stl.spinner}>Loading...</div>
+        <div className='flex w-full justify-center justify-items-center'>
+          <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
+        </div>
       ) : (
         <div className={stl.cardsWrapper}>
           {subCategories.map((Scategory,index) => (
@@ -115,7 +118,9 @@ const Scategories = () => {
         <hr className={stl.line}/>
       </div>
           {venuesLoading ? (
-            <div className={stl.spinner}>Loading venues...</div>
+            <div className='flex w-full justify-center justify-items-center'>
+              <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
+            </div>
           ) : (
             <div className={stl.venuesWrapper}>
                {venuesData.map((venue, index) => (

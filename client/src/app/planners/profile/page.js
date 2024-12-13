@@ -79,6 +79,7 @@ export default function Profile () {
     const [responseMessage, setResponseMessage] = useState("");
 
     const [acceptVenueRequestAlert, setAcceptVenueRequestAlert] = useState(false);
+    const [failureVenueRequestAlert, setFailureVenueRequestAlert] = useState(false);
 
 
     const [profileData,setProfileData] = useState(
@@ -125,6 +126,9 @@ export default function Profile () {
         setChangePasswordModal(!changePasswordModal)
     }
 
+
+  
+
     const handleVenueAcceptAlert = () => {
         setVenueAcceptAlert(true);
         setTimeout(() => {
@@ -136,6 +140,14 @@ export default function Profile () {
         setAcceptVenueRequestAlert(true);
         setTimeout(() => {
             setAcceptVenueRequestAlert(false);
+        }, 2500);
+    }
+
+
+    const handleFailureVenueRequestAlert = () => {
+        setFailureVenueRequestAlert(true);
+        setTimeout(() => {
+            setFailureVenueRequestAlert(false);
         }, 2500);
     }
 
@@ -209,7 +221,6 @@ export default function Profile () {
             setMessage('');
       }
 
-    
 
 
     //   get planner info 
@@ -599,11 +610,10 @@ export default function Profile () {
             .then((data) => {
                 if (data.success) {
                     // alert('password changes successfully!');
-                    // handleClearPwdModal();
                     handlePasswordModal();
                     handleChnagePwdAlert();
                 } else {
-                    alert('Failed to change password');
+                    // alert('Failed to change password');
                     setMessage(data.message)
                 }
             })
@@ -651,7 +661,7 @@ export default function Profile () {
 
         if (!venueName || !venueLocation || !venueDescription || !selectedSubCategories) {
             setResponseMessage("Please fill in all fields.");
-            return; // Stop the function execution if validation fails
+            return;  
         }
    
         const formData = {
@@ -678,15 +688,20 @@ export default function Profile () {
             const data = await response.json();
             console.log('Server response:', data);
    
-            if (response.ok) {
+            if (data.success) {
                 // alert(data.message || "Venue added successfully!");
                 setRequestVenue(false);
                 setEditVenuesModal(false);
                 handleAcceptVenueRequestAlert();
                 handleClearVenueForm();
                 setResponseMessage(data.message || "Venue added successfully!");
+            } 
+            else if (!data.success) {
+                setEditVenuesModal(false);
+                handleFailureVenueRequestAlert()
+                setResponseMessage(data.error);
+                console.log(responseMessage);
             } else {
-                console.log('Response not OK:', data);
                 setResponseMessage(data.message || "An error occurred.");
             }
    
@@ -1337,27 +1352,6 @@ export default function Profile () {
                                                     {/* {console.log(venueLocation)} */}
                                             </div>
 
-                                            {/* email */}
-                                            {/* <div>
-                                                <label htmlFor="email">Email</label>
-                                                <input 
-                                                    type="email" id="email" className="input"
-                                                    value={venueEmail}
-                                                    onChange={(e)=>setVenueEmail(e.target.value)} />
-                                                    {console.log(venueEmail)}
-                                            </div> */}
-
-                                            {/* phone number */}
-                                            {/* <div>
-                                                <label htmlFor="phoneNumber">Phone Number</label>
-                                                <input 
-                                                    type="text" id="phoneNumber" className="input"
-                                                    value={venuePhone}
-                                                    onChange={(e)=>setVenuePhone(e.target.value)} />
-                                                    {console.log(venuePhone)}
-
-                                            </div> */}
-
                                             {/* description */}
                                             <div>
                                                 <label htmlFor="description">Description</label>
@@ -1521,6 +1515,15 @@ export default function Profile () {
                         <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
                         <div className="bg-red-600 p-0 rounded-l-xl"></div>
                         <div className="p-5 bg-white  border-2 border-red-600 ">Failed to update profile</div>
+                        </div>
+                    </div>
+                )}
+
+            {failureVenueRequestAlert &&(
+                    <div className="modal-overlay-status">
+                        <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
+                        <div className="bg-red-600 p-0 rounded-l-xl"></div>
+                        <div className="p-5 bg-white  border-2 border-red-600 ">Failed to Request New Venue</div>
                         </div>
                     </div>
                 )}

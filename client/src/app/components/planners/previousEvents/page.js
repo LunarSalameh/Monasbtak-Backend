@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { FaLocationDot } from "react-icons/fa6";
 import './page.css';
 import { useSearchParams } from 'next/navigation';
+import { OrbitProgress } from 'react-loading-indicators';
 
 export default function PreviousEvents() {
     const searchParams = useSearchParams();
@@ -103,7 +104,9 @@ export default function PreviousEvents() {
                         </div>
                         <div className="mx-auto flex gap-8 my-8 justify-center">
                             {loading ? (
-                                <div className='text-center'>Loading...</div>
+                                <div className='flex w-full justify-center justify-items-center'>
+                                    <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#D9B349" />
+                                </div>
                             ) : (
                                 <>
                                     {events.length > 0 && (

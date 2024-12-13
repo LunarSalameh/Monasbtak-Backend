@@ -7,6 +7,7 @@ import { Icon } from '@iconify/react'
 import { IoIosSearch } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 import { FaRegCircleCheck } from "react-icons/fa6";
+import { OrbitProgress } from 'react-loading-indicators';
 import { MdOutlineDeleteOutline } from "react-icons/md";
 
 function page() {
@@ -190,7 +191,9 @@ function page() {
             <hr className='line'/>
             <div className='table-container'>
                 {loading ? (
-                    <div>Loading...</div> 
+                    <div className='flex w-full justify-center justify-items-center'>
+                        <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#D9B349" />
+                    </div>
                 ) : (
                     Array.isArray(filteredPackages) && filteredPackages.length > 0 ? (
                         <Table columns={columns} data={filteredPackages.map((pkg, index) => ({

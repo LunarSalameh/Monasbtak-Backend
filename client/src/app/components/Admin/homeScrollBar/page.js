@@ -3,7 +3,7 @@
 import './page.css'
 import { RiDeleteBinLine } from "react-icons/ri";
 import React,{ useState, useEffect } from "react";
-
+import { OrbitProgress } from 'react-loading-indicators';
 import { GoUpload } from "react-icons/go";
 
 export default function HomeScrollBar () {
@@ -13,6 +13,8 @@ export default function HomeScrollBar () {
     const [imageToDelete, setImageToDelete] = useState(null);
     const [acceptAlert, setAcceptAlert] = useState(false);
     const [deleteAlert, setDeleteAlert] = useState(false);
+    const [loading, setLoading] = useState(false); 
+
 
     const openModal = (image) => {
         setShowModal(true);
@@ -24,6 +26,7 @@ export default function HomeScrollBar () {
     };
 
     const fetchImages = async () => {
+        setLoading(true);
         try {
             const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/slider/getImages.php');
             const data = await response.json();
@@ -36,9 +39,13 @@ export default function HomeScrollBar () {
             console.error('Error fetching images:', error);
             setImages([]);
         }
+        finally {
+            setLoading(false); 
+        }
     }
 
     const fetchDeleteImage = async (image) => {
+        setLoading(true);
         try {
             const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/slider/deleteImage.php', {
                 method: 'POST',
@@ -58,6 +65,8 @@ export default function HomeScrollBar () {
             }
         } catch (error) {
             console.error('Error deleting image:', error);
+        }finally {
+            setLoading(false); 
         }
     }
 
@@ -67,7 +76,8 @@ export default function HomeScrollBar () {
 
         const formData = new FormData();
         formData.append('image', file);
-
+        
+        setLoading(true);
         try {
             const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/slider/addImage.php', {
                 method: 'POST',
@@ -84,6 +94,8 @@ export default function HomeScrollBar () {
             }
         } catch (error) {
             console.error('Error uploading image:', error);
+        }finally {
+            setLoading(false); 
         }
     };
 
@@ -99,19 +111,25 @@ export default function HomeScrollBar () {
                 </div>
                 <hr className='HS-line'/>
 
-                <div className='grid grid-cols-2 gap-5 max-h-[600px] overflow-y-scroll'>
-                    {images.map((image, index) => (
-                        <figure key={index} className='relative'>
-                            <img className='rounded-xl h-full object-cover' src={`data:image/jpeg;base64,${image.image}`} alt={image.alt} />
-                            <div
-                                className="bg-[#5a5a5a8e] top-2 right-2 w-fit rounded-lg text-white p-2 absolute cursor-pointer"
-                                onClick={() => openModal(image)}
-                            >
-                                <RiDeleteBinLine />
-                            </div>
-                        </figure>
-                    ))}
-                </div>
+                {loading ? (
+                    <div className='flex w-full justify-center justify-items-center pt-16'>
+                        <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#D9B349" />
+                    </div>
+                ) : (
+                    <div className='grid grid-cols-2 gap-5 max-h-[600px] overflow-y-scroll'>
+                        {images.map((image, index) => (
+                            <figure key={index} className='relative'>
+                                <img className='rounded-xl h-full object-cover' src={`data:image/jpeg;base64,${image.image}`} alt={image.alt} />
+                                <div
+                                    className="bg-[#5a5a5a8e] top-2 right-2 w-fit rounded-lg text-white p-2 absolute cursor-pointer"
+                                    onClick={() => openModal(image)}
+                                >
+                                    <RiDeleteBinLine />
+                                </div>
+                            </figure>
+                        ))}
+                    </div>
+                )}
 
                 <div className='flex w-full justify-end pt-8'>
                     <input 

@@ -15,12 +15,15 @@ $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php'
 
 try {
     $user_id = isset($_GET['user_id']) ? filter_var($_GET['user_id'], FILTER_VALIDATE_INT) : null;
+    $IsDeleted = 0;
 
     if ($user_id) {
         $sql = "SELECT id, name, status, eventTime, attendings, eventDay, package_id FROM events 
-                WHERE user_id = :user_id AND status = 'finished' || status = 'rejected' || status = 'canceled'";
+                WHERE user_id = :user_id AND IsDeleted = :IsDeleted AND status = 'finished' || status = 'rejected' || status = 'canceled'";
                  $stmt = $pdo->prepare($sql);
                  $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
+                 $stmt->bindParam(':IsDeleted', $IsDeleted);
+
                  $stmt->execute();
                  $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

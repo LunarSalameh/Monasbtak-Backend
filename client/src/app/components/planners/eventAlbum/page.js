@@ -4,6 +4,8 @@ import { IoClose } from "react-icons/io5";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { MdAddPhotoAlternate } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
+import { OrbitProgress } from 'react-loading-indicators';
+
 
 function Page() {
   const [showModal, setShowModal] = useState(false);
@@ -180,40 +182,49 @@ function Page() {
               Image Uploaded Successfully
             </div>
           )}
-          <div className="album-sections">
-            {categories.length > 0 ? (
-              categories.map((category) => (
-                <div key={category.id} className="section">
-                  <h3>{category.name}</h3>
-                  {category.image && (
-                    <div className="relative">
-                      <img
-                        src={`data:image/jpeg;base64,${category.image}`}
-                        alt={category.name}
-                        className="section-img cursor-pointer"
-                        onClick={() => handleCategoryClick(category.id, category.name)}
-                      />
-                      <input
-                        id={`file-input-${category.id}`}
-                        type="file"
-                        accept="image/*"
-                        style={{ display: "none" }}
-                        onChange={(event) => handleFileChange(event, category.id)}
-                      />
-                      <label htmlFor={`file-input-${category.id}`}>
-                        <MdAddPhotoAlternate
-                          className="absolute top-2 right-2 bg-[#5a5a5a8e] rounded-lg w-8 h-8 p-1"
-                          color="white"
-                        />
-                      </label>
-                    </div>
+
+          {loading ? (
+            <div className='flex w-full justify-center justify-items-center pt-6'>
+              <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#D9B349" />
+            </div>
+          ) : (
+              <div className="album-sections">
+                  {categories.length > 0 ? (
+                    categories.map((category) => (
+                      <div key={category.id} className="section">
+                        <h3>{category.name}</h3>
+                        {category.image && (
+                          <div className="relative">
+                            <img
+                              src={`data:image/jpeg;base64,${category.image}`}
+                              alt={category.name}
+                              className="section-img cursor-pointer"
+                              onClick={() => handleCategoryClick(category.id, category.name)}
+                            />
+                            <input
+                              id={`file-input-${category.id}`}
+                              type="file"
+                              accept="image/*"
+                              style={{ display: "none" }}
+                              onChange={(event) => handleFileChange(event, category.id)}
+                            />
+                            <label htmlFor={`file-input-${category.id}`}>
+                              <MdAddPhotoAlternate
+                                className="absolute top-2 right-2 bg-[#5a5a5a8e] rounded-lg w-8 h-8 p-1"
+                                color="white"
+                              />
+                            </label>
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <p>No categories found.</p>
                   )}
                 </div>
-              ))
-            ) : (
-              <p>No categories found.</p>
-            )}
-          </div>
+
+          )}
+         
 
           {showModal && (
             <div className="modal-overlay">

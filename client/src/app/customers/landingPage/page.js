@@ -27,12 +27,12 @@ function Page() {
     return (
         <>
         <Navbar />
-        <div className='Page-Container'>
-            {message && (
+        <div className='Container'>
+            {/* {message && (
                 <div className="fixed top-4 right-4 bg-green-500 text-white p-4 rounded">
                     {message}
                 </div>
-            )}
+            )} */}
             <Slider />
             <Categories />
             <WebsiteDesc />

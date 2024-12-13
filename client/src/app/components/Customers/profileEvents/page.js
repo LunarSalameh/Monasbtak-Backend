@@ -5,6 +5,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { IoClose } from "react-icons/io5";
 import Link from 'next/link';
 import { BrowserRouter as Router, useSearchParams } from 'react-router-dom';
+import { OrbitProgress } from 'react-loading-indicators';
 
 function ProfileEvents() {
     const [searchParams] = useSearchParams();
@@ -126,7 +127,9 @@ function ProfileEvents() {
                     </div>
                     <div className='Phone-view'>
                     {loadingCurrent ? (
-                        <div className='No-Event'>Loading...</div>
+                        <div className='flex w-full justify-center justify-items-center pt-6'>
+                            <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
+                        </div>
                     ) : current.length > 0 ? (
                         current.map((current, index) => (
                         <div className='Event-Box' key={index}>
@@ -164,7 +167,9 @@ function ProfileEvents() {
                     </div>
                     <div className='Phone-view'>
                     {loadingPrev ? (
-                        <div className='No-Event'>Loading...</div>
+                        <div className='flex w-full justify-center justify-items-center pt-6'>
+                            <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
+                        </div>
                     ) : prev.length > 0 ? (
                         prev.map((prev, index) => (
                         <div className='Event-Box' key={index}>

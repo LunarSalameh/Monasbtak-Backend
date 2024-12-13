@@ -6,6 +6,7 @@ import Navbar from '../../components/navbar/page';
 import Footer from '../../components/footer/page';
 import { useSearchParams } from 'next/navigation';
 import { Icon } from '@iconify/react';
+import { OrbitProgress } from 'react-loading-indicators';
 
 const Packages = () => {
     const searchParams = useSearchParams();
@@ -96,8 +97,8 @@ const Packages = () => {
             <h2 className='bold-font'>Packages</h2>
             <div className="packages-grid">
                 {loading ? (
-                    <div className='loading'>
-                        <div className="spinner"></div>
+                    <div className='flex w-full justify-center justify-items-center'>
+                        <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
                     </div>
                 ) : (
                     packagesLoaded && (packages.length > 0 ? (

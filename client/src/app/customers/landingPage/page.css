@@ -4,13 +4,14 @@
     box-sizing: border-box;
 }
 
-.Page-Container{
+.Container{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 3%;
+    /* justify-self: center; */
     margin-bottom: 3.7rem;
+    /* width: 70%; */
 
     
 }
