@@ -46,7 +46,11 @@ export default function AdminSignIn() {
         })
         .then((data) => {
             if (data.success) {
-                localStorage.setItem('message', `Welcome, ${data.username}!`);
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
+
+                localStorage.setItem('message', `Welcome, ${data.user.username}!`);
+
                 setTimeout(() => {
                     router.push(`/admin/dashboard?id=${data.user.id}`); // Redirect to the admin dashboard
                 }, 0);
@@ -90,10 +94,6 @@ export default function AdminSignIn() {
                                 fill="#d9b34d"
                                 />
                             </g>
-
-                            
-
-                            
                         </svg>
  
                     </div>

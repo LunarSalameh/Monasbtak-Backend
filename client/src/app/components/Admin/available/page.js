@@ -81,7 +81,7 @@ function page() {
                   .map((planner, index) => (
                     <Link href={`/admin/PlannerPackages?id=${id}&planner_id=${planner.id}`} key={index}>
                         <div className='available-box'>
-                            <img src={`data:image/jpeg;base64,${planner.image}`} alt='Planner1' className='available-img'/>
+                            <img src={`data:image/jpeg;base64,${planner.image}`} alt={planner.username} className='available-img'/>
                             <span className='mid-font-size'>{planner.username}</span>
                         </div>
                     </Link>

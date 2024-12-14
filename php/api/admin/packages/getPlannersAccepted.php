@@ -2,7 +2,7 @@
 
 // Set headers for JSON response and CORS
 header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Origin: *"); // Use wildcard for development
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Headers: Content-Type");
 
@@ -13,32 +13,40 @@ error_reporting(E_ALL);
 // Include the database connection
 $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
+$defaultImagePath = '/opt/lampp/htdocs/Monasbtak-Backend/client/public/profileimage.jpg';
+$defaultImageBase64 = file_exists($defaultImagePath) ? base64_encode(file_get_contents($defaultImagePath)) : null;
+
 try {
-        // Prepare the SQL query to fetch all planners with action 'Accepted'
-        $sql = "SELECT id, username, image FROM planners WHERE action = 'Accepted' AND IsDeleted = 0"; 
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
+    // Prepare the SQL query to fetch all planners with action 'Accepted'
+    $sql = "SELECT id, username, image FROM planners WHERE action = 'Accepted' AND IsDeleted = 0"; 
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
 
-        // Fetch the planner data
-        $planner = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Fetch the planner data
+    $planners = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    if (!empty($planners)) {
         // Base64 encode the image data
-        foreach ($planner as &$package) {
-            if (isset($package['image'])) {
-                $package['image'] = base64_encode($package['image']);
+        foreach ($planners as &$planner) {
+            if (isset($planner['image'])) {
+                $planner['image'] = base64_encode($planner['image']);
+            } elseif ($defaultImageBase64 !== null) {
+                $planner['image'] = $defaultImageBase64; // Use default image if available
+            } else {
+                $planner['image'] = null; // Fallback if no default image
             }
         }
 
-        if ($planner) {
-            // Return the planner as JSON
-            echo json_encode(['status' => 'success', 'data' => $planner]);
-        } else {
-            // No planner found
-            echo json_encode(['status' => 'error', 'message' => 'No planner found']);
-        }
+        // Return the planner as JSON
+        echo json_encode(['status' => 'success', 'data' => $planners]);
+    } else {
+        // No planner found
+        echo json_encode(['status' => 'error', 'message' => 'No planners found']);
+    }
 } catch (PDOException $e) {
     // Handle database connection or query errors
-    echo json_encode(['status' => 'error', 'message' => 'Database error: ' . $e->getMessage()]);
+    error_log('Database error: ' . $e->getMessage()); // Log the error
+    echo json_encode(['status' => 'error', 'message' => 'An error occurred while processing your request']);
 }
 
 ?>

@@ -4,8 +4,11 @@ import { FaKey, FaBuilding, FaRegCircleUser, FaRegCalendar, FaDollarSign, FaCirc
 import { FiPackage } from "react-icons/fi";
 import { LuPackageCheck, LuPackagePlus } from "react-icons/lu";
 import { HiOutlineViewList } from "react-icons/hi";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { IoPersonAddSharp } from "react-icons/io5";
+import useAuth from "@/app/general/signIn/useAuth";
+import { IoPersonCircle } from "react-icons/io5";
+
 
 export default function Sidebar() {
     const searchParams = useSearchParams();
@@ -14,6 +17,10 @@ export default function Sidebar() {
     const [openSubmenu, setOpenSubmenu] = useState(null);
     const [admin, setAdmin] = useState({});
     const [error, setError] = useState("");
+    const router = useRouter();
+    
+    const user = useAuth(); // Using the custom useAuth hook
+    
 
     const menu = [
         {title: "Home Dashboard", src:<FaKey/> , path:`/admin/dashboard?id=${id}`},
@@ -54,9 +61,29 @@ export default function Sidebar() {
             setError("Error fetching data.");
         }
     }
-    fetchAdmin();
+    if (user && user.userId.toString() === id) {
+        fetchAdmin();
+    } else if (user) {
+        setError("You are not authorized to access this Admin");
     }
-    , [id]);
+
+    }
+    , [id, user]);
+
+    const handleSignOut = () => {
+        localStorage.removeItem("token"); // Remove the token
+        localStorage.removeItem("message");
+        localStorage.removeItem("user"); // Optionally remove other user data
+        router.push("/general/adminSignIn"); // Redirect to the sign-in page
+    };
+
+    const signUpOrSignOut = id
+    ? { text: "Log Out", action: handleSignOut }
+    : currentPath === "/general/signUp"
+    ? { text: "Sign In", link: "/general/adminSignIn" }
+    : { text: "Sign Up", link: "/general/signUp" };
+
+
 
     return (
         <>
@@ -84,53 +111,72 @@ export default function Sidebar() {
                     <ul className={`flex flex-col gap-5 justify-center py-7 ${open ? "px-4" : "px-1"} text-center`}>
                         {menu.map((Menu, index) => (
                             <li key={index} className={`flex flex-col cursor-pointer items-start justify-items-center`}>
-                                <div
-                                    className="w-full p-2 active:bg-[#D9B34D] active:text-white hover:bg-gray-100 rounded-lg"
-                                    onClick={() => handleToggle(Menu.title)}
-                                >
-                                    <div className="flex gap-4">
-                                        <div className="flex justify-center items-center">{Menu.src}</div>
-                                        <span className={` ${!open && "hidden"} origin-left duration-200`}>
-                                            {Menu.title}
-                                        </span>
-                                    </div>
-                                </div>
-                                {Menu.submenu && openSubmenu === Menu.title && (
-                                    <ul className={`pl-8 ${!open && "hidden"} w-full`}>
-                                        {Menu.submenu.map((submenuItem, subIndex) => (
-                                            <li
-                                                key={subIndex}
-                                                className="flex cursor-pointer items-center justify-items-center"
-                                            >
-                                                <a
-                                                    href={submenuItem.path}
-                                                    style={{ width: "113%" }}
-                                                    className="p-2 active:bg-[#D9B34D] active:text-white hover:bg-gray-100 rounded-lg"
-                                                >
-                                                    <div className="flex gap-4" style={{ width: "170px" }}>
-                                                        <div className="flex justify-center items-center">
-                                                            {submenuItem.src}
-                                                        </div>
-                                                        <span className="origin-left duration-200">
-                                                            {submenuItem.title}
-                                                        </span>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        ))}
-                                    </ul>
+                                {!Menu.submenu ? (
+                                    <a href={Menu.path} className="w-full">
+                                        <div
+                                            className="w-full p-2 active:bg-[#D9B34D] active:text-white hover:bg-gray-100 rounded-lg"
+                                        >
+                                            <div className="flex gap-4">
+                                                <div className="flex justify-center items-center">{Menu.src}</div>
+                                                <span className={` ${!open && "hidden"} origin-left duration-200`}>
+                                                    {Menu.title}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                ) : (
+                                    <>
+                                        <div
+                                            className="w-full p-2 active:bg-[#D9B34D] active:text-white hover:bg-gray-100 rounded-lg"
+                                            onClick={() => handleToggle(Menu.title)}
+                                        >
+                                            <div className="flex gap-4">
+                                                <div className="flex justify-center items-center">{Menu.src}</div>
+                                                <span className={` ${!open && "hidden"} origin-left duration-200`}>
+                                                    {Menu.title}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        {openSubmenu === Menu.title && (
+                                            <ul className={`pl-8 ${!open && "hidden"} w-full`}>
+                                                {Menu.submenu.map((submenuItem, subIndex) => (
+                                                    <li
+                                                        key={subIndex}
+                                                        className="flex cursor-pointer items-center justify-items-center"
+                                                    >
+                                                        <a
+                                                            href={submenuItem.path}
+                                                            style={{ width: "113%" }}
+                                                            className="p-2 active:bg-[#D9B34D] active:text-white hover:bg-gray-100 rounded-lg"
+                                                        >
+                                                            <div className="flex gap-4" style={{ width: "170px" }}>
+                                                                <div className="flex justify-center items-center">
+                                                                    {submenuItem.src}
+                                                                </div>
+                                                                <span className="origin-left duration-200">
+                                                                    {submenuItem.title}
+                                                                </span>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        )}
+                                    </>
                                 )}
                             </li>
                         ))}
                     </ul>
                     </div>
                     <div className="flex items-end gap-4 p-5 ">
-                        <FaCircle color="#D9B34D" size={48} />
+                        <IoPersonCircle size={70} />
                         {open && (
-                            <div className={`text-sm flex flex-col`}>
-                                <p className="font-bold">{admin.username}</p>
-                                <p>Admin Account</p>
-                            </div>
+                        <div className="flex flex-col gap-2">
+                            <p className="font-bold text-lg">{admin.username}</p>
+                            <button onClick={signUpOrSignOut.action} className="text-white bg-[#D9B34D] py-1 px-3 rounded-lg ">
+                                {signUpOrSignOut.text}
+                            </button> 
+                        </div>
                         )}
                     </div>
                 </div>
@@ -138,3 +184,4 @@ export default function Sidebar() {
         </>
     );
 }
+

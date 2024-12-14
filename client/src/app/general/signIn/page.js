@@ -55,9 +55,7 @@ export default function SignIn() {
     
                     if (data.user.accountType === 'planner') {
                         router.push(`/planners/home?id=${data.user.id}`);
-                    } else if (data.user.accountType === 'admin') {
-                        router.push(`/admin/dashboard?id=${data.user.id}`);
-                    } else {
+                    } else if (data.user.accountType === 'customer') {
                         router.push(`/customers/landingPage?id=${data.user.id}`);
                     }
                 } else {
