@@ -747,7 +747,7 @@ export default function Profile () {
                     <div className="flex flex-col flex-wrap gap-3 mt-5">
 
                         {/* Profile Picture */}
-                        <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">                        
+                        <div className="gridR grid grid-cols-2 gap-5 max-sm:grid-cols-1">                        
 
                         {/* userName */}                        
                             <div className="flex flex-col flex-wrap">
@@ -758,7 +758,7 @@ export default function Profile () {
                                         id="username"
                                         value={profileData.username}
                                         onChange={handleInputChange}
-                                        className="px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
+                                        className="widthR px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
                                     />
                                 ) : (
                                     
@@ -766,7 +766,7 @@ export default function Profile () {
                                             type="text"
                                             id="username"
                                             value={profileData.username}
-                                            className="px-5 py-2 rounded-lg bg-white border-gray-200 border-2"
+                                            className="widthR px-5 py-2 rounded-lg bg-white border-gray-200 border-2"
                                             disabled
                                         />                       
                                     )}
@@ -782,14 +782,14 @@ export default function Profile () {
                                     id="email"
                                     value={profileData.email}
                                     onChange={handleInputChange}
-                                    className="px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
+                                    className="widthR px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
                                 />
                             ) : (
                                 <input 
                                 type="email"
                                 id="email"
                                 value={profileData.email}
-                                className="px-5 py-2 rounded-lg bg-white border-gray-200 border-2"
+                                className="widthR px-5 py-2 rounded-lg bg-white border-gray-200 border-2"
                                 disabled
                             />
                             )}
@@ -798,7 +798,7 @@ export default function Profile () {
                         </div>
 
                         
-                        <div className="grid grid-cols-2 gap-5 max-sm:grid-cols-1">
+                        <div className="gridR grid grid-cols-2 gap-5 max-sm:grid-cols-1">
                             {/* Birthday */}
                             <div className="flex flex-col flex-wrap">
                                 <label htmlFor="Birthday" className="my-2 font-bold">Birthday</label>
@@ -841,14 +841,14 @@ export default function Profile () {
                                     id="phonenumber"
                                     value={profileData.phonenumber}
                                     onChange={handleInputChange}
-                                    className="px-5 py-1.5 rounded-lg bg-white border-[#4c1b419c] border-2"
+                                    className="widthR px-5 py-1.5 rounded-lg bg-white border-[#4c1b419c] border-2"
                                 />
                             ) : (
                                 <input 
                                     type="tel"
                                     id="phonenumber"
                                     value={profileData.phonenumber}
-                                    className="px-5 py-1.5 rounded-lg bg-white border-gray-200 border-2"
+                                    className="widthR px-5 py-1.5 rounded-lg bg-white border-gray-200 border-2"
                                     disabled
                                 />
                             )}
@@ -873,7 +873,7 @@ export default function Profile () {
                                     type="tel"
                                     id="gender"
                                     value={profileData.gender}
-                                    className="px-5 py-1.5 rounded-lg bg-white border-gray-200 border-2"
+                                    className="widthR px-5 py-1.5 rounded-lg bg-white border-gray-200 border-2"
                                     disabled
                                 />
                             )}
@@ -888,7 +888,7 @@ export default function Profile () {
                                             type="file"
                                             id="image"
                                             onChange={handleFileChange}
-                                            className="px-5 py-1.5 rounded-lg bg-white border-[#4c1b419c] border-2"
+                                            className="widthR px-5 py-1.5 rounded-lg bg-white border-[#4c1b419c] border-2"
                                         />
                                     </>
                                 )}
@@ -906,14 +906,14 @@ export default function Profile () {
                                     value={profileData.description}
                                     onChange={handleInputChange}
                                     placeholder="Talk about your work..."
-                                    className="px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
+                                    className="widthR heightR px-5 py-2 rounded-lg bg-white border-[#4c1b419c] border-2"
                                 />
                             ) : (
                                 <textarea
                                     id="description"
                                     value={profileData.description}
                                     placeholder="Talk about your work..."
-                                    className="px-5 py-2 rounded-lg bg-white border-gray-200 border-2"
+                                    className="widthR heightR px-5 py-2 rounded-lg bg-white border-gray-200 border-2"
                                     disabled
                                 />
                             )}
@@ -969,18 +969,18 @@ export default function Profile () {
                     </div>
                     
                     {/* Edit & Change Password */}
-                    <div className="flex gap-4 mt-16 justify-end  flex-wrap">
+                    <div className="btnR flex gap-4 mt-16 justify-end  flex-wrap">
                         <Link href={`/planners/customerViewProfile?id=${id}`}>
                             <button className="bg-[#D9B34D] w-fit py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white">
                                 Customer View
                             </button>
                         </Link>
-                        <button className="bg-[#D9B34D] py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white" onClick={handlePasswordModal}>Change Password</button>
-                        <button className="bg-[#D9B34D] py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white" onClick={handleProfileModal}> 
+                        <button className="bg-[#D9B34D] w-fit py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white" onClick={handlePasswordModal}>Change Password</button>
+                        <button className="bg-[#D9B34D] w-fit py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white" onClick={handleProfileModal}> 
                             {EditProfile ? "Save Profile" : "Edit Profile"}
                         </button>
                         {EditProfile && (
-                            <button className="bg-[#D9B34D] flex items-center gap-3 py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white" onClick={()=>setEditProfile(false)}>Cancel Edit <IoClose/></button>
+                            <button className="bg-[#D9B34D] w-fit flex items-center gap-3 py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white" onClick={()=>setEditProfile(false)}>Cancel Edit <IoClose/></button>
                         )}
                     </div>
                 </div>
@@ -1016,7 +1016,7 @@ export default function Profile () {
                                                 placeholder="Enter Your Old Password"
                                                 value={oldPwd}
                                                 onChange={(e)=>setOldPwd(e.target.value)}
-                                                className="px-5 py-2 rounded-lg bg-white w-full border-[#4c1b419c] border-2"
+                                                className="widthR px-5 py-2 rounded-lg bg-white w-full border-[#4c1b419c] border-2"
                                                 required
                                             />
                                             <button
@@ -1078,7 +1078,7 @@ export default function Profile () {
                                                 placeholder="Enter New Password"
                                                 value={newPwd}
                                                 onChange={(e)=>setNewPwd(e.target.value)}
-                                                className="px-5 py-2 rounded-lg bg-white w-full border-[#4c1b419c] border-2"
+                                                className="widthR px-5 py-2 rounded-lg bg-white w-full border-[#4c1b419c] border-2"
                                                 required
                                             />
                                             <button
@@ -1121,7 +1121,7 @@ export default function Profile () {
                                                     <path
                                                         strokeLinecap="round"
                                                         strokeLinejoin="round"
-                                                        d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88 6.228 6.228"
+                                                        d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88 6.228 6.228"
                                                     ></path>
                                                     </svg>
                                                 )}
@@ -1140,7 +1140,7 @@ export default function Profile () {
                                                 placeholder="Re-Type New Password"
                                                 value={retypeNewPwd}
                                                 onChange={(e)=>setRetypeNewPwd(e.target.value)}
-                                                className="px-5 py-2 rounded-lg bg-white w-full border-[#4c1b419c] border-2"
+                                                className="widthR px-5 py-2 rounded-lg bg-white w-full border-[#4c1b419c] border-2"
                                                 required
                                             />
                                             <button

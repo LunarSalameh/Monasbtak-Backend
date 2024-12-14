@@ -273,7 +273,9 @@ body {
     font-weight: bold;
     margin-top: 7%;
 }
-
+.media-display{
+    display: none;
+  }
 @media (max-width: 768px) {
     .location{
         display: none;
@@ -302,7 +304,7 @@ body {
     }
 }
 
-@media (max-width:550px){
+@media (max-width:660px){
     .header {
         display: flex;
         flex-direction: column;
@@ -352,5 +354,64 @@ body {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         position: relative;
         height: 25%;
+    }
+    .media-none {
+        display: none;
+      }
+      .media-display {
+        display: block;
+      }
+      .btn-media-top {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        position: absolute;
+        top: 8px;
+        width: 100%;
+    }
+    .slides {
+        display: flex;
+        overflow: hidden;
+        width: 100%;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+    }
+    .Price-tag {
+        display: none;
+    }
+    .none{
+        display: none;
+    }
+    .Package-details {
+        display: none;
+    }
+    .Package-img-container {
+        position: relative;
+        width: 355px;
+        height: 160px;
+        margin-top: 0px;
+        margin-left: 10px;
+    }
+    .Delete-icon {
+        width: 45px;
+        height: 30px;
+        color: darkgray;
+    }
+    .Package-Box {
+        border: 1.5px solid lightgray;
+        padding: 15px 10px;
+        border-radius: 5px;
+        width: 90%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin-bottom: 15px;
+        margin-top: 15px;
+        cursor: pointer;
+        transition: background-color 0.3s, border-color 0.3s;
+        height: 190px;
     }
 }

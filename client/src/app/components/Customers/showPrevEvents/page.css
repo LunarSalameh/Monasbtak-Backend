@@ -155,8 +155,8 @@ body {
     }
     .All-Event-img-container {
         position: relative;
-        width: 94%;
-        height: 50%;
+        width: 420px;
+        height: 315px;
         margin-top: 5px;
         padding-right: 5px;
     }
@@ -203,8 +203,8 @@ body {
     }
     .All-Event-img-container {
         position: relative;
-        width: 94%;
-        height: 50%;
+        width: 330px;
+        height: 235px;
         margin-top: 5px;
         padding-right: 5px;
     }
@@ -215,6 +215,12 @@ body {
         align-items: flex-start;
         padding-top: 10px;
         margin-right: 10px;
+    }
+    .time {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
     }
 }
 
@@ -253,8 +259,8 @@ body {
     }
     .All-Event-img-container {
         position: relative;
-        width: 94%;
-        height: 50%;
+        width: 270px;
+        height: 170px;
         margin-top: 5px;
         margin-left: 10px;
     }
@@ -310,8 +316,8 @@ body {
     }
     .All-Event-img-container {
         position: relative;
-        width: 94%;
-        height: 50%;
+        width: 200px;
+        height: 150px;
         margin-top: 5px;
         margin-left: 8px;
     }

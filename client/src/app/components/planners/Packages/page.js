@@ -280,7 +280,7 @@ const fetchDeltePackage = async () => {
         </div>
         <hr className='line'/>
 
-        <div className='slider'>
+        <div className='slider media-none'>
           <button className='arrow left-arrow' onClick={prevSlide}>
             <svg className="h-8 w-8 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/>
@@ -324,6 +324,56 @@ const fetchDeltePackage = async () => {
             </svg>
           </button>
         </div>
+        
+        {/* Responsive */}
+        <div className='slider media-display'>
+          <div className="btn-media-top">
+            <button className='arrow left-arrow' onClick={prevSlide}>
+              <svg className="h-8 w-8 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/>
+              </svg>
+            </button>
+            <button className='arrow right-arrow' onClick={nextSlide}>
+              <svg className="h-8 w-8 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </button>
+          </div>
+          <div className='slides'>
+          {loading ? (
+                    <div>Loading...</div> 
+                ) : (
+          packages === null || packages.length === 0 ? (
+            <div>No packages found</div>
+          ) : (
+            Array.isArray(packages) && packages.slice(currentSlide * 2, currentSlide * 2 + 2).map((pkg, index) => (
+              <div className='Package-Box' key={index}>
+                <div className='Package-img-container'>
+                  <img src={`data:image/jpeg;base64,${pkg.image}`} className='Package-img'/>
+                  <span className='Price-tag'>JD {pkg.price}</span>
+                </div>
+                <div className='Package-details'>
+                  <span className='mid-font-size none'>{pkg.name}</span>
+                  <span className='display'>{pkg.description}</span>
+                  <div className='row-flex'>
+                    <div className='location'>
+                      <Icon icon="hugeicons:location-04" className="Location-icon" />
+                      <span>{pkg.location}</span>
+                    </div>
+                    <button className='btn' onClick={() => handleEditPackageModal(pkg)}>
+                      Edit
+                      <Icon icon="hugeicons:edit" className='end-icon' />
+                    </button>
+                  </div>
+                </div>
+                <Icon icon="hugeicons:delete-02" className='Delete-icon' onClick={() => openDeleteModel(pkg)}/>
+              </div>
+            ))
+          ))}
+          </div>
+        </div>
+
+
       </div>
       {AddPackageModal && (
         <div className="modal-overlay">

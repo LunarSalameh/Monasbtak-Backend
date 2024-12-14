@@ -148,7 +148,7 @@ export default function PendingOffers () {
                     </div>
 
                     {/* Card List */}
-                    <div className="mx-auto flex gap-8 my-8 justify-center">
+                    <div className="mx-auto flex gap-8 my-8 justify-center media-none">
                         {loadingCurrent ? (
                             <div className='text-center'>Loading...</div>
                         ) : (
@@ -158,7 +158,7 @@ export default function PendingOffers () {
                                         {/* Prev Button */}
                                         <button onClick={() => handleSlider(true)}>
                                             <svg className="h-8 w-8 text-[#4C1B41]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/>
                                             </svg>
                                         </button>
                                     </>
@@ -177,7 +177,7 @@ export default function PendingOffers () {
                                                         </div>
                                                         <div className="px-8 mb-2 flex max-lg:flex-col max-lg:gap-3">
                                                             <p className="pr-3 max-md:hidden max-sm:hidden">{offers[0].description}</p>
-                                                            <button className="bg-[#d9b34d] rounded-lg px-5 py-2 text-white shadow-md shadow-[#d9b34d]" onClick={() => openModal(offers[0])}>Details</button>
+                                                            <button className="h-[45px] bg-[#d9b34d] rounded-lg px-5 py-2 text-white shadow-md shadow-[#d9b34d] " onClick={() => openModal(offers[0])}>Details</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -194,7 +194,7 @@ export default function PendingOffers () {
                                                             </div>
                                                             <div className="px-8 mb-2 flex max-lg:flex-col max-lg:gap-3">
                                                                 <p className="pr-3 max-md:hidden max-sm:hidden">{offers[(slider + offset) % offers.length].description}</p>
-                                                                <button className="bg-[#d9b34d] rounded-lg px-5 py-2 text-white shadow-md shadow-[#d9b34d]" onClick={() => openModal(offers[(slider + offset) % offers.length])}>Details</button>
+                                                                <button className=" h-[45px] bg-[#d9b34d] rounded-lg px-5 py-2 text-white shadow-md shadow-[#d9b34d]" onClick={() => openModal(offers[(slider + offset) % offers.length])}>Details</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -208,14 +208,90 @@ export default function PendingOffers () {
                                         {/* Next Button */}
                                         <button onClick={() => handleSlider(false)}>
                                             <svg className="h-8 w-8 text-[#4C1B41]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/>
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                                             </svg>
                                         </button>
                                     </>
                                 )}
+                                
                             </>
                         )}
                     </div>
+
+                    {/* responsive List */}
+                    <div className="mx-auto flex gap-8 my-8 justify-center media-display">
+                        {loadingCurrent ? (
+                            <div className='text-center'>Loading...</div>
+                        ) : (
+                            <>
+                            <div className="btn-media-top">
+                                {offers.length > 0 && (
+                                        <>
+                                            {/* Prev Button */}
+                                            <button onClick={() => handleSlider(true)}>
+                                                <svg className="h-8 w-8 text-[#4C1B41]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/>
+                                                </svg>
+                                            </button>
+                                        </>
+                                    )}
+                                {offers.length > 0 && (
+                                        <>
+                                            {/* Next Button */}
+                                            <button onClick={() => handleSlider(false)}>
+                                                <svg className="h-8 w-8 text-[#4C1B41]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                </svg>
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                                {/* CARD MAP */}
+                                <div className="grid grid-rows-2 max-lg:grid-cols-1 items-center justify-items-center gap-6">
+                                    {offers.length > 0 ? (
+                                        offers.length === 1 ? (
+                                            <div className="border-gray-200 border-2 rounded-xl hover:bg-gray-100 h hover:border-[#d9b34d]">
+                                                <div className="p-2 w-full flex flex-row max-md:flex-col max-md:items-center gap-3">
+                                                    <img src={`data:image/jpeg;base64,${offers[0].userImage}`} alt='image' className="object-cover rounded-full w-20 h-20 items-start" />
+                                                    <div className="flex flex-col gap-2 max-md:text-xs">
+                                                        <div className="px-2 pt-3">
+                                                            <p className="font-semibold">{offers[0].customer_name}</p>
+                                                            <div className="flex items-center gap-2"><FaPhoneAlt /> {offers[0].phoneNumber}</div>
+                                                        </div>
+                                                        <div className="px-8 mb-2 flex max-lg:flex-col max-lg:gap-3">
+                                                            <p className="pr-3 max-md:hidden max-sm:hidden">{offers[0].description}</p>
+                                                            <button className="h-[45px] bg-[#d9b34d] rounded-lg px-5 py-2 text-white shadow-md shadow-[#d9b34d] " onClick={() => openModal(offers[0])}>Details</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            [0, 1].map((offset) => (
+                                                <div key={offset} className="border-gray-200 border-2 rounded-xl hover:bg-gray-100 h hover:border-[#d9b34d]">
+                                                    <div className="p-2 w-full flex flex-row max-md:flex-col max-md:items-center gap-3">
+                                                        <img src={`data:image/jpeg;base64,${offers[(slider + offset) % offers.length].userImage}`} alt='image' className="object-cover rounded-full w-20 h-20 items-start" />
+                                                        <div className="flex flex-col gap-2 max-md:text-xs">
+                                                            <div className="px-2 pt-3">
+                                                                <p className="font-semibold">{offers[(slider + offset) % offers.length].customer_name}</p>
+                                                                <div className="flex items-center gap-2"><FaPhoneAlt /> {offers[(slider + offset) % offers.length].phoneNumber}</div>
+                                                            </div>
+                                                            <div className="px-8 mb-2 flex max-lg:flex-col max-lg:gap-3">
+                                                                <p className="pr-3 max-md:hidden max-sm:hidden">{offers[(slider + offset) % offers.length].description}</p>
+                                                                <button className=" h-[45px] bg-[#d9b34d] rounded-lg px-5 py-2 text-white shadow-md shadow-[#d9b34d]" onClick={() => openModal(offers[(slider + offset) % offers.length])}>Details</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        )
+                                    ) : <div className='text-center'>No Current Events</div>}
+                                </div>
+                                
+                            </>
+                        )}
+                    </div>
+
+
                 </div>
             </div>
             {modalIsOpen && selectedOffer && (
@@ -232,6 +308,10 @@ export default function PendingOffers () {
                             </div>
                                 </div>
                                 <div className="package">
+                                <div className="packageImg">
+                                    <img src={selectedOffer.image} alt='Package Image' className="imgPack" />
+                                    <span className="mid-font-size">{selectedOffer.name}</span>
+                                </div>
                                 <div className="flexPackage">
                                 <span>{selectedOffer.description}</span>
                                 <div className="row-flex-package">
@@ -243,16 +323,12 @@ export default function PendingOffers () {
                                     <span>{selectedOffer.attendings}</span>
                                 </div>
                                 </div>
-                                <div className="packageImg">
-                                    <img src={selectedOffer.image} alt='Package Image' className="imgPack" />
-                                    <span className="mid-font-size">{selectedOffer.name}</span>
-                                </div>
                                 </div>
                             </div>
                             <div className="flex flex-wrap font-bold justify-center text-center mt-4 large-font-size"> 
-                                Are you sure you want to accept <span className="text-[#D9B34D] "></span>? 
+                                 <span className="text-[#D9B34D] ">Are you sure you want to accept?</span> 
                             </div>
-                            <div className='flex gap-5 justify-between w-[20%] items-center mt-4'>
+                            <div className='flex gap-5 justify-between w-[20%] items-center mt-4 widthR'>
                                 <button className='btn' onClick={() => handleStatusUpdate('accepted')}>Yes</button>
                                 <button className='btn' onClick={closeModal}>No</button>
                             </div>

@@ -123,11 +123,12 @@ const Scategories = () => {
         </div>
       )}
       {selectedSubCategory && (
-        <div className={stl.container}>
+        <>
           <div className={stl.headLine}>
             <span className={`${stl.largeFontSize} ${stl.fontColor} ${stl.boldFont}`}>All Venues</span>
             <hr className={stl.line}/>
           </div>
+        <div className={stl.container}>
           {venuesLoading ? (
             <div className={stl.spinner}>Loading venues...</div>
           ) : (
@@ -151,6 +152,7 @@ const Scategories = () => {
             </div>
           )}
         </div>
+        </>
       )}
     </div>
   );

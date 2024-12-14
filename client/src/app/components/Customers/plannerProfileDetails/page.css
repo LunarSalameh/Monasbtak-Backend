@@ -109,7 +109,8 @@ body {
     .Planner-Name {
         display: flex;
         flex-direction: column;
-        width: 85%;
+        width: 35%;
+        align-items: center;
     }
     .Rating-container {
         display: flex;

@@ -34,25 +34,25 @@ function PlannerPackages() {
     , [id]);
 
   return (
-    <div className='Packages-container'>
+    <div className='All-Packages-container'>
         <span className='XL-font-size font-color bold-font'>Packages</span>
-        <hr className='line'/>
-        <div className='Packages-types'>
+        <hr className='All-line'/>
+        <div className='All-Packages-types'>
         {loading ? (
               <p>Loading...</p>
             ) : (
               packages.length > 0 ? (
                 packages.map((pkg, index) => (
-          <div className='Package-Box' key={index}>
-            <div className='Package-img-container'>
-              <img src={`data:image/jpeg;base64,${pkg.image}`} className='Package-img' />
+          <div className='All-Package-Box' key={index}>
+            <div className='All-Package-img-container'>
+              <img src={`data:image/jpeg;base64,${pkg.image}`} className='All-Package-img' />
               {/* <div className='Transparent-Box'>
                     <Favorite isFavorite={true}/>
               </div> */}
-              <span className='Price-tag'>JD {pkg.price}</span>
+              <span className='All-Price-tag'>JD {pkg.price}</span>
             </div>
             <span className='mid-font-size bold-font'>{pkg.name}</span>
-            <div className='row-felx'>
+            <div className='All-row-felx'>
               <CiLocationOn />
               <span>{pkg.location}</span>
             </div>

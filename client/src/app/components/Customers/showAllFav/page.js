@@ -98,7 +98,7 @@ function FavoritePage() {
                         favorites.map((favorite,index) => (
                             <div className="Fav-Box" key={index} >
                                 <img src={favorite.image} className="Fav-img" alt={favorite.name} />
-                                <span className="mid-font-size">{favorite.name}</span> 
+                                <span className="mid-font-size break-text">{favorite.name}</span> 
                                 <div className="Transparent-Box">
                                 <button className="delete-btn" onClick={() => handleDelete(favorite.id)}>
                                     <IoTrashOutline className="trash-icon" />
