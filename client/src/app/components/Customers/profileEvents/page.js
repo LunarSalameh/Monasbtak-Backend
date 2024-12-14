@@ -120,9 +120,11 @@ function ProfileEvents() {
                 <div className='current-events'>
                     <div className='showall'> 
                         <span className='large-font-size font-color bold-font'>Current Events</span>
+                        {current.length > 0 && (
                         <Link href={`/customers/showCurrentEvents?id=${id}`}>
                             <span className='small-font-size bold-font Show-Button'>Show All</span>
                         </Link>
+                        )}
                     </div>
                     <div className='Phone-view'>
                     {loadingCurrent ? (
@@ -132,17 +134,17 @@ function ProfileEvents() {
                         <div className='Event-Box' key={index}>
                             <div className='Event-img-container'>
                                 <img src={current.image} className='Event-img' />
-                                <span className='Price-tag'>$ {current.price}</span>
+                                <span className='Price-tag'>JD {current.price}</span>
                             </div>
                             <div className='Event-details small-font-size'>
-                                <span>{current.name}</span>
+                                <span className='pkg-title'>{current.name}</span>
                                 <p>{current.description} </p>
                                 <div className='Event-location'>
                                     <div className='row-felx'>
                                         <CiLocationOn />
                                         <span>{current.location}</span>
                                     </div>
-                                    <span>{current.status}</span>
+                                    <span className='pkg-status'>{current.status}</span>
                                 </div>
                             </div>
                         </div>
@@ -158,9 +160,11 @@ function ProfileEvents() {
                 <div className='previous-events'>
                     <div className='showall'> 
                         <span className='large-font-size font-color bold-font'>Previous Events</span> 
-                        <Link href={`/customers/showPrevEvents?id=${id}`}>
-                            <span className='small-font-size bold-font Show-Button'>Show All</span>
-                        </Link>
+                        {prev.length > 0 && (
+                            <Link href={`/customers/showPrevEvents?id=${id}`}>
+                                <span className='small-font-size bold-font Show-Button'>Show All</span>
+                            </Link>
+                        )}
                     </div>
                     <div className='Phone-view'>
                     {loadingPrev ? (
@@ -170,17 +174,17 @@ function ProfileEvents() {
                         <div className='Event-Box' key={index}>
                             <div className='Event-img-container'>
                                 <img src={prev.image} className='Event-img' />
-                                <span className='Price-tag'>$ {prev.price}</span>
+                                <span className='Price-tag'>JD {prev.price}</span>
                             </div>
                             <div className='Event-details small-font-size'>
-                                <span>{prev.name}</span>
+                                <span className='pkg-title'>{prev.name}</span>
                                 <p>{prev.description} </p>
                                 <div className='Event-location'>
                                     <div className='row-felx'>
                                         <CiLocationOn />
                                         <span>{prev.location}</span>
                                     </div>
-                                    <span>{prev.status}</span>
+                                    <span className='pkg-status'>{prev.status}</span>
                                 </div>
                             </div>
                         </div>
@@ -194,7 +198,7 @@ function ProfileEvents() {
                 </div>
             </div>
 
-            {showModal && (
+            {/* {showModal && (
                 <div className="modal-overlay">
                     <div className="modal">
                         <button className="close-button" onClick={handleCloseModal}><IoClose /></button>
@@ -227,7 +231,7 @@ function ProfileEvents() {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
         </div>
     );
 }

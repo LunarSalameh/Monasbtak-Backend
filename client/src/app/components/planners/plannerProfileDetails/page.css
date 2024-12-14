@@ -1,0 +1,235 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+body {
+    font-family: 'Playfair Display', serif;
+}
+.XL-font-size {
+    font-size: 36px;
+}
+.large-font-size {
+    font-size: 30px;
+}
+.mid-font-size {
+    font-size: 20px;
+}
+.small-font-size {
+    font-size: 12px;
+}
+
+.bold-font {
+    font-weight: bold;
+}
+.font-color {
+    color: #4C1B41;
+}
+
+.Box-Border {
+    border: 2px solid lightgray;
+    padding: 20px;
+    border-radius: 5px;
+    width: 60%;
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.1), 
+        inset 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+.Profile-Container {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-left: 65px;
+    align-items: flex-start;
+}
+
+.Planner-Name {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.Info-Details {
+    display: flex;
+    flex-direction: column;
+    font-size: 20px;
+    padding-top: 15px;
+    padding-left: 22px;
+    gap: 10px;
+}
+
+.Info-Details span {
+    align-items: center;
+}
+
+.Profile-Image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.Button{
+    background-color: #4C1B41;
+    border: none;
+    color: white;
+    padding: 8px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 12px 45px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.rating-stars {
+    color: gold;
+    margin-left: 10px;
+  }
+.Rating-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10%;
+}
+
+@media (max-width: 1200px) {
+    .Box-Border {
+        width: 85%;
+    }
+
+    .Profile-Container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        padding-left: 0px;
+        align-items: center;
+    }
+    .Planner-Name {
+        display: flex;
+        flex-direction: column;
+        width: 85%;
+    }
+    .Rating-container {
+        display: flex;
+        flex-direction: row;
+        gap: 6%;
+        align-items: center;
+        justify-content: center;
+    }
+    .Info-Details {
+        display: flex;
+        flex-direction: column;
+        font-size: 20px;
+        padding-top: 15px;
+        padding-left: 0px;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 768px) {
+    .Box-Border {
+        width: 85%;
+    }
+
+    .Profile-Container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        padding-left: 0px;
+        align-items: center;
+    }
+    .Planner-Name {
+        display: flex;
+        flex-direction: column;
+        width: 85%;
+    }
+    .Rating-container {
+        display: flex;
+        flex-direction: column;
+        gap: 6%;
+        align-items: center;
+    }
+    .Info-Details {
+        display: flex;
+        flex-direction: column;
+        font-size: 20px;
+        padding-top: 15px;
+        padding-left: 0px;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 576px) {
+    .Box-Border {
+        width: 85%;
+    }
+
+    .Profile-Container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        padding-left: 0px;
+        align-items: center;
+    }
+    .Planner-Name {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .Rating-container {
+        display: flex;
+        flex-direction: column;
+        gap: 6%;
+        align-items: center;
+    }
+    .Info-Details {
+        display: flex;
+        flex-direction: column;
+        font-size: 20px;
+        padding-top: 15px;
+        padding-left: 0px;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 400px) {
+    .Box-Border {
+        width: 85%;
+    }
+
+    .Profile-Container {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        padding-left: 12px;
+        align-items: center;
+    }
+    .Planner-Name {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+    .Rating-container {
+        display: flex;
+        flex-direction: column;
+        gap: 6%;
+        align-items: center;
+    }
+    .Info-Details {
+        display: flex;
+        flex-direction: column;
+        font-size: 20px;
+        padding-top: 15px;
+        padding-left: 0px;
+        gap: 8px;
+    }
+
+}

@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 const PackageDetails = () => {
   const searchParams = useSearchParams();
+  const userId = searchParams.get('id');
   const id = searchParams.get('packageId');
   const [packageDetails, setPackageDetails] = useState(null);
   const [plannerDetails, setPlannerDetails] = useState(null);
@@ -54,31 +55,35 @@ const PackageDetails = () => {
       </div>
       <div className="content">
         <div className='img-container'>
-          <img src={`data:image/jpeg;base64,${packageDetails.image}`} alt="Package" className="package-image" />
+          <img src={`data:image/jpeg;base64,${packageDetails.image}`} alt="Package" className="one-package-image" />
         </div>
         <div className="details">
           <div className="planner-info">
-            <Link href={`/customers/plannerProfile/?id=${plannerDetails.id}`}>
+            <Link href={`/customers/plannerProfile/?id=${userId}&planner_id=${plannerDetails.id}`}>
             <div className='planner-profile'>
               <img src={`data:image/jpeg;base64,${plannerDetails.image}`} alt="Planner" className="planner-image" />
               {plannerDetails && <span className='bold-font mid-font-size'>{plannerDetails.username}</span>}
             </div>
             </Link>
-            <div className='flex-row'>
+            <div className='flexRow flexRow2 '>
               <span className="planner-name">{packageDetails.name}</span>
-              <span className="price">${packageDetails.price}</span>
+              <span className="price">JD {packageDetails.price}</span>
             </div>
           </div>
           <div className='package-details'>
-            <div className='flex-row'>
+            <div className='flexRow'>
               <span className="description bold-font">Category: </span>
               <span className='description'>{packageDetails.subCat_name}</span>
             </div>
-            <div className='flex-row'>
+            <div className='flexRow '>
               <span className="description bold-font">Location: </span>
               <span className='description'>{packageDetails.location}</span>
             </div>
-            <div className='flex-row'>
+            <div className='flexRow '>
+              <span className="description bold-font">Venue Details: </span>
+              <span className='description'>{packageDetails.venueDetails}</span>
+            </div>
+            <div className='flexRow '>
               <span className="description bold-font">Description: </span>
               <span className='description'>{packageDetails.description}</span>
             </div>

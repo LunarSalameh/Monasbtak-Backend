@@ -89,7 +89,7 @@ function FavoritePage() {
     <div className="Favorite-container">
       <div className="showall">
         <h1 className="large-font-size font-color bold-font">Favorite</h1>
-        {userId && ( // Ensure userId is available
+        {userId && favorites.length > 0 && ( // Ensure userId is available
           <Link href={`/customers/showAllFav?id=${userId}`}>
             <span className="small-font-size bold-font Show-Button">
               Show All
@@ -110,7 +110,7 @@ function FavoritePage() {
             </div>
           ))
         ) : (
-          <p>No favorites found.</p>
+          <p>No favorites added.</p>
         )}
       </div>
     </div>

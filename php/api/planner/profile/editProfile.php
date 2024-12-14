@@ -22,7 +22,8 @@ if (isset($data['username']) &&
     isset($data['age']) && 
     isset($data['phonenumber']) && 
     isset($data['description']) &&
-    isset($data['gender'])
+    isset($data['gender']) &&
+    isset($data['image']) 
 ) {
 
     $username = $data['username'];
@@ -33,9 +34,13 @@ if (isset($data['username']) &&
     $phonenumber = $data['phonenumber'];
     $description = $data['description'];
     $gender = $data['gender'];
+    $image = $data['image']; 
+
+    // Decode base64 image
+    $decodedImage = base64_decode($image);
 
     try {
-        $sql = "UPDATE planners SET username = :username, email = :email, age = :age, phonenumber = :phonenumber, description = :description, gender = :gender WHERE id = :plannerId";
+        $sql = "UPDATE planners SET username = :username, email = :email, age = :age, phonenumber = :phonenumber, description = :description, gender = :gender, image = :image WHERE id = :plannerId";
 
         $stmt = $pdo->prepare($sql);
 
@@ -46,6 +51,7 @@ if (isset($data['username']) &&
         $stmt->bindParam(':phonenumber', $phonenumber);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':gender', $gender);
+        $stmt->bindParam(':image', $decodedImage); 
 
         if ($stmt->execute()){
             echo json_encode(['success' => true, 'message' => 'Planner profile updated successfully']);

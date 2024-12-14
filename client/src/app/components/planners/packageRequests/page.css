@@ -57,7 +57,16 @@ body {
   .btn:hover {
     background-color: #c2a249;
   }
-  
+  .status-btn {
+    display: flex;
+    align-items: center;
+    padding: 7px 15px;
+    background-color: #D9B34D;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
   .end-icon {
     margin-left: 10px;
   }

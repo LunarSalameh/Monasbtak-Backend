@@ -16,7 +16,7 @@ try {
     $id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
 
     if ($id) {
-        $sql = "SELECT id, name, description, price, image, location, subCat_name, category_id, planner_id FROM packeges WHERE id = :id "; 
+        $sql = "SELECT id, name, description, price, image, location, subCat_name, category_id, planner_id, venueDetails FROM packeges WHERE id = :id "; 
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();

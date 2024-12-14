@@ -1,6 +1,5 @@
 "use client";
-import { React, useState } from "react";
-
+import { React, useEffect, useState } from "react";
 import { FaKey, FaBuilding, FaRegCircleUser, FaRegCalendar, FaDollarSign, FaCircle } from "react-icons/fa6";
 import { FiPackage } from "react-icons/fi";
 import { LuPackageCheck, LuPackagePlus } from "react-icons/lu";
@@ -13,6 +12,8 @@ export default function Sidebar() {
     const id = searchParams.get("id"); 
     const [open, setOpen] = useState(true);
     const [openSubmenu, setOpenSubmenu] = useState(null);
+    const [admin, setAdmin] = useState({});
+    const [error, setError] = useState("");
 
     const menu = [
         {title: "Home Dashboard", src:<FaKey/> , path:`/admin/dashboard?id=${id}`},
@@ -38,13 +39,33 @@ export default function Sidebar() {
         setOpenSubmenu((prev) => (prev === title ? null : title)); // Toggle submenu
     };
 
+    useEffect(() => {
+    const fetchAdmin = async () => {
+        try {
+            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/admin/getAdmin.php?id=${id}`);
+            const result = await response.json();
+
+            if (result.success) {
+                setAdmin(result.admin);
+            } else {
+                setError("Failed to fetch admin.");
+            }
+        } catch (error) {
+            setError("Error fetching data.");
+        }
+    }
+    fetchAdmin();
+    }
+    , [id]);
+
     return (
         <>
             <aside className="flex h-full">
                 <div
-                    style={{ height: "100%", position: "fixed", zIndex: 1 }}
+                    style={{ height: "100%", position: "fixed", zIndex: 1, display: "flex", flexDirection: "column", justifyContent:"space-between" }}
                     className={` ${open ? "w-64" : "w-20"} bg-white shadow-lg text-[#D9B34D] p-5 duration-300`}
                 >
+                    <div className="flex-col justify-center items-center">
                     {open ? (
                         <img
                             src="/Monasbtak-EN.png"
@@ -102,12 +123,13 @@ export default function Sidebar() {
                             </li>
                         ))}
                     </ul>
-                    <div style={{ marginTop: "295px" }} className="flex items-end gap-4 p-5 ">
+                    </div>
+                    <div className="flex items-end gap-4 p-5 ">
                         <FaCircle color="#D9B34D" size={48} />
                         {open && (
                             <div className={`text-sm flex flex-col`}>
-                                <p className="font-bold">UserName</p>
-                                <p>Planner/Vendor</p>
+                                <p className="font-bold">{admin.username}</p>
+                                <p>Admin Account</p>
                             </div>
                         )}
                     </div>

@@ -5,8 +5,12 @@ import React, {useState, useEffect} from "react";
 import { CgSandClock } from "react-icons/cg";
 import { LuUsers2 } from "react-icons/lu";
 import { FaBuilding , FaUsers } from "react-icons/fa6";
+import { useSearchParams } from 'next/navigation';
 
 export default function AdminTopSection () {
+    const searchParams = useSearchParams();
+    const id = searchParams.get('id');  //admin_id
+  const [admin, setAdmin] = useState({});
     
     const [data, setData] = useState({
         users: 0,
@@ -35,8 +39,24 @@ export default function AdminTopSection () {
             setError("Error fetching data.");
           }
         };
+
+        const fetchAdmin = async () => {
+            try {
+              const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/admin/getAdmin.php?id=${id}`);
+              const result = await response.json();
+      
+              if (result.success) {
+                setAdmin(result.admin);
+              } else {
+                setError("Failed to fetch admin.");
+              }
+            } catch (error) {
+              setError("Error fetching data.");
+            }
+          }
     
         fetchData();
+        fetchAdmin();
       }, []);
 
     return (
@@ -44,7 +64,7 @@ export default function AdminTopSection () {
             <section className="flex flex-col gap-8 mx-5 my-2 p-8   font-bold text-xl items-center">
                 {/** Welcome section */}
                 <div className="flex justify-between gap-5" style={{width:'80%'}}>
-                    <div>Hello Admin #1👋🏼,</div>
+                    <div>Hello {admin.username} 👋🏼,</div>
                     <input type="search" className="rounded-xl font-normal max-md:hidden text-sm pl-3" placeholder="Search"/>
                 </div>
 

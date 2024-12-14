@@ -4,8 +4,11 @@ import { useEffect,useState } from 'react';
 import './page.css'
 import { IoIosSearch } from "react-icons/io";
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 function page() {
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');  //admin_id
   const [planners , setPlanners] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(""); 
@@ -72,7 +75,7 @@ function page() {
                 planners
                   .filter(planner => planner.username.toLowerCase().includes(searchTerm.toLowerCase()))
                   .map((planner, index) => (
-                    <Link href={`/admin/PlannerPackages?id=${planner.id}`} key={index}>
+                    <Link href={`/admin/PlannerPackages?id=${id}&planner_id=${planner.id}`} key={index}>
                         <div className='available-box'>
                             <img src={`data:image/jpeg;base64,${planner.image}`} alt='Planner1' className='available-img'/>
                             <span className='mid-font-size'>{planner.username}</span>

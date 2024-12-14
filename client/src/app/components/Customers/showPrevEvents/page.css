@@ -42,14 +42,14 @@ body {
     flex-direction: row;
     align-items: center;
 }
-.Event-Types {
+.All-Event-Types {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.Event-Box {
+.All-Event-Box {
     border: 2px solid lightgray;
     padding: 10px;
     border-radius: 5px;
@@ -61,7 +61,7 @@ body {
     width: 90%;
 }
 
-.Event-details {
+.All-Event-details {
     display: flex;
     flex-direction: column;
     gap: 9px;
@@ -70,7 +70,7 @@ body {
     padding-top: 12px;
     font-size: 14px;
 }
-.Event-location {
+.All-Event-location {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -78,13 +78,13 @@ body {
     align-items: flex-start;
 }
 
-.Event-img-container {
+.All-Event-img-container {
     position: relative;
     width: 300px;
     height: 190px;
 }
 
-.Event-img {
+.All-Event-img {
     width: 100%;
     height: 100%;
     border-radius: 8px;
@@ -113,7 +113,6 @@ body {
     align-items: center;
     gap: 15px;
 }
-
 /* Media queries for responsiveness */
 @media (max-width: 1200px) {
     .Events-container {
@@ -125,16 +124,24 @@ body {
         justify-content: center;
         align-items: center;
     }
-    .Event-Box {
-        padding: 2px;
-        width: 100%;
+    .All-Event-Box {
+        border: 2px solid lightgray;
+        padding: 10px;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+        margin-top: 15px;
+        display: Flex;
+        width: 90%;
+        align-items: center;
     }
-    .Events-Types {
+    .All-Events-Types {
         flex-direction: column;
         align-items: center;
         gap: 20px;
     }
-    .Event-details {
+    .All-Event-details {
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -146,14 +153,14 @@ body {
     .previous-events{
         width: 90%;
     }
-    .Event-img-container {
+    .All-Event-img-container {
         position: relative;
         width: 94%;
         height: 50%;
         margin-top: 5px;
         padding-right: 5px;
     }
-    .Event-location {
+    .All-Event-location {
         display: flex;
         flex-direction: row;
         gap: 5px;
@@ -164,25 +171,25 @@ body {
     }
 }
 @media (max-width: 768px) {
-    .Events-container {
+    .All-Events-container {
         width: 85%;
     }
-    .Event-Types {
+    .All-Event-Types {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
-    .Event-Box {
+    .All-Event-Box {
         padding: 2px;
         width: 100%;
     }
-    .Events-Types {
+    .All-Events-Types {
         flex-direction: column;
         align-items: center;
         gap: 20px;
     }
-    .Event-details {
+    .All-Event-details {
         display: flex;
         flex-direction: column;
         gap: 5px;
@@ -194,14 +201,14 @@ body {
     .previous-events{
         width: 90%;
     }
-    .Event-img-container {
+    .All-Event-img-container {
         position: relative;
         width: 94%;
         height: 50%;
         margin-top: 5px;
         padding-right: 5px;
     }
-    .Event-location {
+    .All-Event-location {
         display: flex;
         flex-direction: column;
         gap: 5px;
@@ -212,27 +219,27 @@ body {
 }
 
 @media (max-width: 576px) {
-    .Events-container {
+    .All-Events-container {
         width: 85%;
     }
-    .Event-Types {
+    .All-Event-Types {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
-    .Event-Box {
+    .All-Event-Box {
         padding: 2px;
         width: 100%;
         display: Flex;
         flex-direction: column;
     }
-    .Events-Types {
+    .All-Events-Types {
         flex-direction: column;
         align-items: center;
         gap: 20px;
     }
-    .Event-details {
+    .All-Event-details {
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -244,14 +251,14 @@ body {
     .previous-events{
         width: 90%;
     }
-    .Event-img-container {
+    .All-Event-img-container {
         position: relative;
         width: 94%;
         height: 50%;
         margin-top: 5px;
         margin-left: 10px;
     }
-    .Event-location {
+    .All-Event-location {
         display: flex;
         flex-direction: row;
         gap: 5px;
@@ -260,30 +267,36 @@ body {
         padding-top: 10px;
         margin-right: 10px;
     }
+    .time {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
 }
 
 @media (max-width: 400px) {
-    .Events-container {
+    .All-Events-container {
         width: 85%;
     }
-    .Event-Types {
+    .All-Event-Types {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
-    .Event-Box {
+    .All-Event-Box {
         padding: 2px;
         width: 100%;
         display: Flex;
         flex-direction: column;
     }
-    .Events-Types {
+    .All-Events-Types {
         flex-direction: column;
         align-items: center;
         gap: 20px;
     }
-    .Event-details {
+    .All-Event-details {
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -295,21 +308,21 @@ body {
     .previous-events{
         width: 90%;
     }
-    .Event-img-container {
+    .All-Event-img-container {
         position: relative;
         width: 94%;
         height: 50%;
         margin-top: 5px;
         margin-left: 8px;
     }
-    .Event-location {
+    .All-Event-location {
         display: flex;
-        flex-direction: row;
-        gap: 5px;
-        align-items: center;
+        gap: 10px;
+        align-items: flex-start;
         justify-content: space-between;
         padding-top: 10px;
         margin-right: 10px;
+        flex-direction: column;
     }
 
 }

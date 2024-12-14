@@ -243,8 +243,16 @@ function page() {
                                 <span className='mid-font-size'>{selectedPackage.location}</span>
                             </div>
                             <div className='package-detail'>
+                                <span className='mid-font-size bold-font'>Venue Details:  </span>
+                                <span className='mid-font-size'>{selectedPackage.venueDetails}</span>
+                            </div>
+                            <div className='package-detail'>
                                 <span className='mid-font-size bold-font'>Description:  </span>
                                 <span className='mid-font-size'>{selectedPackage.description}</span>
+                            </div>
+                            <div className='package-detail'>
+                                <span className='mid-font-size bold-font'>Price:  </span>
+                                <span className='mid-font-size'>{selectedPackage.price} JD</span>
                             </div>
                         </div>
                 </div>

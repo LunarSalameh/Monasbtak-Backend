@@ -126,7 +126,9 @@ body {
     border-left-color: #4C1B41;
     animation: spin 1s ease infinite;
 }
-
+.text-align{
+    text-align: left;
+}
 @keyframes spin {
     0% {
         transform: rotate(0deg);
@@ -139,6 +141,40 @@ body {
 @media (max-width: 1200px) {
     .Page-Container {
         margin-top: 5%;
+    }
+    .venue-image-container {
+        width: 100%;
+        height: 315px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .venue-container {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        align-items: center;
+        border: solid 2px #4c1b417d;
+        border-radius: 25px;
+        margin-bottom: 25px;
+        width: 100%;
+        margin-left: 0px;
+    }
+    .venue-total {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 85%;
+        margin-left: 35px;
+        gap: 25px;
+        margin-top: 2%;
+    }
+    .venue-details {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+        justify-content: flex-start;
     }
 }
 
@@ -157,6 +193,13 @@ body {
 @media (max-width: 576px) {
     .Page-Container {
         margin-top: 5%;
+    }
+    .venue-image-container {
+        width: 100%;
+        height: 245px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 }
 

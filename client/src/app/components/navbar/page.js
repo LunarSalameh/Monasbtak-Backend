@@ -99,7 +99,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li className={stl.sidebar_item}>
-              <Link href="/general/aboutUs" onClick={toggleSidebar}>
+              <Link href={id ?`/general/aboutUs?id=${id}` : "/general/aboutUs"} onClick={toggleSidebar}>
                 About Us
               </Link>
             </li>

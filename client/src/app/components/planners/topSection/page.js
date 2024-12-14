@@ -9,6 +9,8 @@ import { useSearchParams } from 'next/navigation';
 export default function TopSection () {
     const searchParams = useSearchParams();
     const planner_Id = searchParams.get('id'); 
+    const [planner, setPlanner] = useState({});
+    const [error, setError] = useState("");
         
     const [data, setData] = useState({
         Pending: 0,
@@ -18,7 +20,6 @@ export default function TopSection () {
       });
 
     
-      const [error, setError] = useState("");
     
       useEffect(() => {
         const fetchData = async () => {
@@ -40,8 +41,24 @@ export default function TopSection () {
             setError("Error fetching data.");
           }
         };
+
+        const fetchplanner = async () => {
+            try {
+              const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getOnePlanner.php?id=${planner_Id}`);
+              const result = await response.json();
+      
+              if (result.success) {
+                setPlanner(result.planner);
+              } else {
+                setError("Failed to fetch planner.");
+              }
+            } catch (error) {
+              setError("Error fetching data.");
+            }
+          };
     
         fetchData();
+        fetchplanner();
       }, []);
 
     return (
@@ -49,7 +66,7 @@ export default function TopSection () {
             <section className="flex flex-col gap-8 my-2 p-8 w-full  font-bold text-xl items-center">
                 {/** Welcome section */}
                 <div className="flex justify-between gap-5" style={{width:'75%'}}>
-                    <div>Hello Planner #1👋🏼,</div>
+                    <div>Hello {planner.username} 👋🏼,</div>
                     <input type="search" className="rounded-xl font-normal max-md:hidden text-sm pl-3" placeholder="Search"/>
                 </div>
 

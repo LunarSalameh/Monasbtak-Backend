@@ -12,6 +12,7 @@ const Scategories = () => {
   const [venuesData, setVenuesData] = useState([]);
   const [venuesLoading, setVenuesLoading] = useState(false);
   const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+  const [showSubCategories, setShowSubCategories] = useState(true);
   const searchParams = useSearchParams();
   const id = searchParams.get('id'); // Get user ID from the query parameters
   const category_id = searchParams.get('categoryId'); // Get category ID from the query parameters
@@ -84,41 +85,54 @@ const Scategories = () => {
     setSelectedSubCategory(subCategory_id);
     fetchVenues(subCategory_id);
     setVenuesLoading(true);
+    setShowSubCategories(false); // Hide other subcategories
+  };
+
+  const toggleSubCategories = () => {
+    setShowSubCategories(!showSubCategories);
+    if (!showSubCategories) {
+      setSelectedSubCategory(null); // Reset selected subcategory when showing subcategories
+    }
   };
 
   return (
     <div className={stl.container}>
       <div className={stl.headLine}>
-        <span className={`${stl.largeFontSize} ${stl.fontColor} ${stl.boldFont}`}>Sub Categories</span>
+        <div className={stl.flexHeadline}>
+          <span className={`${stl.largeFontSize} ${stl.fontColor} ${stl.boldFont} ${stl.showArrow}`} onClick={toggleSubCategories}>
+            Sub Categories
+          </span>
+          <Icon icon="mdi:chevron-down" className={stl.downArrow} onClick={toggleSubCategories} />
+        </div>
         <hr className={stl.line}/>
       </div>
       {loading ? (
         <div className={stl.spinner}>Loading...</div>
       ) : (
         <div className={stl.cardsWrapper}>
-          {subCategories.map((Scategory,index) => (
-              <div key={index} className={stl.sCategoryCard} onClick={() => handleSubCategoryClick(Scategory.id)}>
-                <img
-                  src={`data:image/jpeg;base64,${Scategory.image}`} 
-                  alt={Scategory.name}
-                  className={stl.sCategoryImage}
-                />
-                <h3 className={stl.sCategoryName}>{Scategory.name}</h3>
-              </div>
+          {subCategories.map((Scategory, index) => (
+            <div key={index} className={`${stl.sCategoryCard} ${selectedSubCategory && selectedSubCategory !== Scategory.id && !showSubCategories ? stl.hidden : ''}`} onClick={() => handleSubCategoryClick(Scategory.id)}>
+              <img
+                src={`data:image/jpeg;base64,${Scategory.image}`} 
+                alt={Scategory.name}
+                className={stl.sCategoryImage}
+              />
+              <h3 className={stl.sCategoryName}>{Scategory.name}</h3>
+            </div>
           ))}
         </div>
       )}
       {selectedSubCategory && (
         <div className={stl.container}>
           <div className={stl.headLine}>
-        <span className={`${stl.largeFontSize} ${stl.fontColor} ${stl.boldFont}`}>All Venues</span>
-        <hr className={stl.line}/>
-      </div>
+            <span className={`${stl.largeFontSize} ${stl.fontColor} ${stl.boldFont}`}>All Venues</span>
+            <hr className={stl.line}/>
+          </div>
           {venuesLoading ? (
             <div className={stl.spinner}>Loading venues...</div>
           ) : (
             <div className={stl.venuesWrapper}>
-               {venuesData.map((venue, index) => (
+              {venuesData.map((venue, index) => (
                 <Link href={`/customers/packages?id=${id}&venueId=${venue.id}&subCategory_id=${selectedSubCategory}`} key={index}>
                   <div key={index} className={stl.venueCard}>
                     <img
@@ -133,7 +147,7 @@ const Scategories = () => {
                     </div>
                   </div>
                 </Link>
-                ))}
+              ))}
             </div>
           )}
         </div>

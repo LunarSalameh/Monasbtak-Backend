@@ -15,7 +15,7 @@ $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php'
 
 try {
     // Prepare the SQL query to fetch packages
-    $sql = "SELECT id, name, description, price, image, location, subCat_name, category_id, planner_name, venue_id, subCategory_id FROM packeges WHERE status = 'Pending'"; 
+    $sql = "SELECT id, name, description, price, image, location, subCat_name, category_id, planner_name, venue_id, subCategory_id, venueDetails FROM packeges WHERE status = 'Pending'"; 
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
 

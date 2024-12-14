@@ -11,7 +11,7 @@ import { useSearchParams } from 'next/navigation';
 
 function ProfileDetails () {
     const searchParams = useSearchParams();
-    const id = searchParams.get('planner_id');  //planner_id
+    const id = searchParams.get('id');  //planner_id
     const [planner, setPlanner] = useState([]);
     const [loading, setLoading] = useState(true);
   

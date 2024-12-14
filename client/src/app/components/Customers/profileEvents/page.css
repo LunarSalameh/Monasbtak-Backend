@@ -53,12 +53,13 @@ body {
     cursor: pointer;
     border-radius: 5px;
 }
-  .Events-container {
+.Events-container {
     display: flex;
     flex-direction: column;
     gap: 15px;
     padding-top: 40px;
     width: 60%;
+    padding-bottom: 80px;
 }
 
 .Events-Types {
@@ -253,6 +254,14 @@ body {
     margin-left: 25px;
     color: #4C1B41;
 }
+.pkg-title{    
+    font-weight: bold;
+    font-size: 15px;
+}
+.pkg-status{
+    font-weight: bold;
+    font-size: 13px;
+}
 /* Media queries for responsiveness */
 @media (max-width: 1200px) {
     .Events-container {
@@ -305,8 +314,8 @@ body {
         display: flex;
         flex-direction: column;
         gap: 10px;
-        padding-left: 20px;
-        width: 227px;
+        padding-left: 0px;
+        width: fit-content;
         margin-bottom: 5px;
     }
     .previous-events{
@@ -375,8 +384,8 @@ body {
         display: flex;
         flex-direction: column;
         gap: 10px;
-        padding-left: 20px;
-        width: 227px;
+        padding-left: 10px;
+        width: 100%;
         margin-bottom: 5px;
     }
     .previous-events{
@@ -455,7 +464,7 @@ body {
         flex-direction: column;
         gap: 10px;
         padding-left: 20px;
-        width: 227px;
+        width: 95%;
         margin-bottom: 5px;
     }
     .previous-events{
@@ -476,6 +485,7 @@ body {
         padding-top: 10px;
         margin-right: 10px;
     }
+    
 }
 
 @media (max-width: 400px) {

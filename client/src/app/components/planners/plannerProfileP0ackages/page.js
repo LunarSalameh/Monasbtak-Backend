@@ -8,8 +8,7 @@ import { useSearchParams } from 'next/navigation';
 
 function PlannerPackages() {
   const searchParams = useSearchParams();
-  const userId = searchParams.get('id');  //user_id
-  const id = searchParams.get('planner_id');  //planner_id
+  const id = searchParams.get('id');  //planner_id
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,7 +38,7 @@ function PlannerPackages() {
     <div className='Packages-container'>
       <div className='showall'> 
         <span className='XL-font-size font-color bold-font'>Packages</span>
-        <Link href={`/customers/plannerAllPackages?id=${userId}&planner_id=${id}`} >
+        <Link href={`/customers/plannerAllPackages?id=${id}`} >
           <span className='small-font-size bold-font Show-Button'>Show All</span>
         </Link>
       </div>

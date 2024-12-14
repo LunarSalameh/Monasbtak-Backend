@@ -82,7 +82,7 @@ function PlannerAlbum() {
   // Fetch category data
   const fetchCategoryData = async (category_id) => {
     const urlParams = new URLSearchParams(window.location.search);
-    const planner_id = urlParams.get("planner_id");
+    const planner_id = urlParams.get("id");
 
     try {
       const response = await fetch(

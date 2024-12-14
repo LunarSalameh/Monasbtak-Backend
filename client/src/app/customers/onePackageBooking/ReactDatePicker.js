@@ -128,7 +128,7 @@ maxdate.setDate(maxdate.getDate() +365)
             </div>
         </div>
 
-        <button onClick={handleBooking} className="bg-[#4C1B41] w-[10%] py-2 rounded-lg text-white ">Book</button>
+        <button onClick={handleBooking} className="bg-[#4C1B41] py-2 rounded-lg text-white width ">Book</button>
 
         </div>
     )

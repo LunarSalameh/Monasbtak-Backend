@@ -14,22 +14,18 @@ $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php'
 
 
 try{
-    $planner_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
+    $admin_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
 
-    if ($planner_id){
-        $sql = "SELECT username, email, age, phonenumber, description, gender, image FROM planners WHERE id=:id";
+    if ($admin_id){
+        $sql = "SELECT username, email FROM admin WHERE id=:id";
 
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id', $planner_id, PDO::PARAM_INT);
+        $stmt->bindParam(':id', $admin_id, PDO::PARAM_INT);
         $stmt->execute();
 
-        $planner = $stmt->fetch(PDO::FETCH_ASSOC);
+        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (isset($planner['image'])) {
-            $planner['image'] = base64_encode($planner['image']);
-        }
-
-        echo json_encode(['success' => true, 'planner' => $planner]);
+        echo json_encode(['success' => true, 'admin' => $admin]);
 
     }else{
         echo json_encode(['success' => false, 'message' => 'Invalid user ID']);

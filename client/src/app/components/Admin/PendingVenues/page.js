@@ -84,7 +84,6 @@ export default function PlannerVenues() {
       .then((data) => {
         console.log("Response data:", data); 
         if (data.success) {
-          // alert(data.message);
            setVenues((prevVenues) =>
             prevVenues.filter((venue) => venue.id !== venueId)
           );
