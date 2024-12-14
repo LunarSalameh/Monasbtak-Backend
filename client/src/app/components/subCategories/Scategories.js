@@ -126,11 +126,12 @@ const Scategories = () => {
         </div>
       )}
       {selectedSubCategory && (
-        <div className={stl.container}>
+        <>
           <div className={stl.headLine}>
             <span className={`${stl.largeFontSize} ${stl.fontColor} ${stl.boldFont}`}>All Venues</span>
             <hr className={stl.line}/>
           </div>
+        <div className={stl.container}>
           {venuesLoading ? (
             <div className='flex w-full justify-center justify-items-center'>
               <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
@@ -156,6 +157,7 @@ const Scategories = () => {
             </div>
           )}
         </div>
+        </>
       )}
     </div>
   );

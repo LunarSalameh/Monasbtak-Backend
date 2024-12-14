@@ -106,7 +106,7 @@ function FavoritePage() {
               <div className='Transparent-Box'>
               <button className="delete-btn" onClick={() => handleDelete(favorite.id)}> <IoTrashOutline /> </button>
               </div>
-              <span className="mid-font-size">{favorite.name}</span>
+              <span className="mid-font-size break-text">{favorite.name}</span>
             </div>
           ))
         ) : (

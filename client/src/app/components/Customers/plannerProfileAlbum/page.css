@@ -240,9 +240,9 @@ body {
     right: 10px;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1500px) {
     .Planner-album-container {
-        width: 85%;
+        width: 100%;
     }
     .Modal-Album-container {
         display: flex;
@@ -255,11 +255,30 @@ body {
         flex-wrap: wrap;
         justify-content: space-around;
         align-content: space-between;
+    }
+    .album-sections {
+        display: flex;
+        flex-direction: row;
+        gap: 18px;
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .section {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding-top: 40px;
+        width: 45%;
+        padding: 10px 10px;
+        border: 1px solid lightgray;
+        border-radius: 8px;
+        align-items: center;
     }
 }
 @media (max-width: 768px) {
     .Planner-album-container {
-        width: 85%;
+        width: 100%;
     }
     .Modal-Album-container {
         display: flex;
@@ -273,10 +292,21 @@ body {
         justify-content: space-around;
         align-content: space-between;
     }
+    .section {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding-top: 40px;
+        width: 80%;
+        padding: 10px 10px;
+        border: 1px solid lightgray;
+        border-radius: 8px;
+        align-items: center;
+    }
 }
 @media (max-width: 576px) {
     .Planner-album-container {
-        width: 85%;
+        width: 100%;
     }
     .showall {
         display: flex;
@@ -309,7 +339,7 @@ body {
 
 @media (max-width: 400px) {
     .Planner-album-container {
-        width: 85%;
+        width: 100%;
     }
     .Album-img-container {
         position: relative;
@@ -343,6 +373,24 @@ body {
         height: 141px;
         display: inline-block;
         flex: none;
+        object-fit: cover;
+    }
+    .section {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding-top: 40px;
+        width: 100%;
+        padding: 10px 10px;
+        border: 1px solid lightgray;
+        border-radius: 8px;
+        align-items: center;
+    }
+    .section-img {
+        width: 225px;
+        height: 145px;
+        border-radius: 8px;
+        display: block;
         object-fit: cover;
     }
 }

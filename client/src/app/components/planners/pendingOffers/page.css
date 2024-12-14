@@ -27,40 +27,26 @@
     align-items:normal;
 }
 
-/* @media (max-width: 767px){
-  .PO-container{
-    width: 75%;
-    background-color: white;
-    border-radius: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 2rem;
-    align-items: normal;
-    
-}
-
-} */
 
 .ReactModal__Overlay {
-    background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0.75);
 }
 
 .ReactModal__Content {
-    top: 50%;
-    left: 50%;
-    right: auto;
-    bottom: auto;
-    margin-right: -50%;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
     transform: translate(-50%, -50%);
     padding: 20px;
     border-radius: 10px;
     background-color: white;
     max-width: 500px;
     width: 100%;
-}
-
-.modal-overlay {
+  }
+  
+  .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -71,32 +57,32 @@
     justify-content: center;
     align-items: center;
     z-index: 5;
-}
-
-.modal {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 55%;
-}
-
-.modal-content {
+  }
+  
+  .modal {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 55%;
+  }
+  
+  .modal-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.close-button {
+  }
+  
+  .close-button {
     align-self: flex-end;
     background: none;
     border: none;
     font-size: 1.5rem;
     cursor: pointer;
-}
-
-.btn {
-  background-color: #d9b34d;
-  color: white;
+  }
+  
+  .btn {
+    background-color: #d9b34d;
+    color: white;
   padding: 9px 27px;
   border: none;
   border-radius: 5px;
@@ -164,4 +150,64 @@
   gap: 20px;
   margin-top: 40px;
   font-size: 19px;
+}
+.media-display{
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .package {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 31px;
+    width: 95%;
+}
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 70%;
+  overflow-y: scroll;
+  max-height: 70%;
+}
+}
+@media (max-width: 768px) {
+.media-none {
+  display: none;
+}
+.media-display {
+  display: block;
+}
+.btn-media-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.widthR {
+  width: 60%;
+}
+}
+@media (max-width: 560px){
+  .widthR {
+    width: 75%;
+}
+}
+@media (max-width: 400px) {
+  .imgPack {
+    width: 180px;
+    height: 115px;
+    border-radius: 15px;
+    object-fit: cover;
+}
+.mid-font-size {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+.widthR{
+  width: 85%;
+}
 }

@@ -29,13 +29,13 @@ body {
     color: #4C1B41;
 }
 
-.row-felx{
+.All-row-felx{
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 8px;
 }
-.line{
+.All-line{
     height: 5% ;
     border: none;
     border-top: 5px solid #4C1B41; 
@@ -44,7 +44,7 @@ body {
     border-radius: 10px;
   }
 
-  .Packages-container{
+  .All-Packages-container{
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -52,7 +52,7 @@ body {
     width: 60%;
   }
 
-.Packages-types {
+.All-Packages-types {
     display: flex;
     flex-direction: row;
     gap: 12px;
@@ -61,7 +61,7 @@ body {
     justify-content: center;
 }
 
-.Package-Box {
+.All-Package-Box {
   border: 2px solid lightgray;
   padding: 10px;
   border-radius: 5px;
@@ -73,19 +73,19 @@ body {
   gap: 2px;
   margin-right: 10px;
 }
-.Package-Box:hover {
+.All-Package-Box:hover {
   border: 2px solid #4C1B41;
   transition: 0.5s;
   transform: scale(1.05);
 }
-.Package-details{
+.All-Package-details{
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding-left: 20px;
     width: 225px;
 }
-.Package-location{
+.All-Package-location{
     display: flex;
     flex-direction: row;
     gap: 5px;
@@ -94,13 +94,13 @@ body {
     padding-top: 10px;
 }
 
-.Package-img-container {
+.All-Package-img-container {
   position: relative;
   width: 100%;
   height: 145px;
 }
 
-.Package-img {
+.All-Package-img {
   width: 100%;
   height: 100%;
   border-radius: 8px;
@@ -108,7 +108,7 @@ body {
   object-fit: cover;
 }
 
-.Price-tag {
+.All-Price-tag {
   position: absolute;
   bottom: 10px; 
   left: 10px; 
@@ -118,7 +118,7 @@ body {
   border-radius: 5px;
   font-size: 16px;
 }
-.Price-tag2 {
+.All-Price-tag2 {
   position: absolute;
   bottom: 10px; 
   left: 10px; 
@@ -128,7 +128,7 @@ body {
   border-radius: 5px;
   font-size: 16px;
 }
-.Transparent-Box {
+.All-Transparent-Box {
   position: absolute;
   top: 16px;
   right: 16px;
@@ -139,7 +139,7 @@ body {
   align-items: center;
   justify-content: center;
 }
-.showall {
+.All-showall {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -147,46 +147,55 @@ body {
   width: 85%;
 }
 
-@media (max-width: 1200px) {
-  .Packages-container {
+@media (max-width: 1300px) {
+  .All-Packages-container {
     width: 85%;
 }
-.Package-img-container {
+.All-Package-img-container {
   position: relative;
   width: 100%;
-  height: 75%;
+  height: 175px;
 }
-.Package-Box {
-  width: 40%;
+.All-Package-Box {
+  border: 2px solid lightgray;
+  padding: 10px;
+  border-radius: 5px;
+  width: 34%;
+  display: inline-block;
+  flex: none;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  gap: 2px;
+  margin-right: 10px;
 }
 }
 
 @media (max-width: 768px) {
-  .Packages-container {
+  .All-Packages-container {
     width: 85%;
 }
-.Package-img-container {
+.All-Package-img-container {
   position: relative;
   width: 100%;
-  height: 75%;
+  height: 220px;
 }
-.Package-Box {
+.All-Package-Box {
     width: 65%;
 }
 }
 @media (max-width: 576px) {
-  .Packages-container {
+  .All-Packages-container {
     width: 85%;
 }
-.Package-img-container {
+.All-Package-img-container {
   position: relative;
   width: 100%;
-  height: 75%;
+  height: 210px;
 }
-.Package-Box {
+.All-Package-Box {
   width: 75%;
 }
-.showall {
+.All-showall {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -197,14 +206,14 @@ body {
 
 @media (max-width: 400px) {
 
-  .Packages-container {
+  .All-Packages-container {
     display: flex;
     flex-direction: column;
     gap: 15px;
     padding-top: 40px;
     width: 85%;
 }
-.Package-Box {
+.All-Package-Box {
   border: 2px solid lightgray;
   padding: 10px;
   border-radius: 5px;
@@ -216,19 +225,19 @@ body {
   gap: 2px;
   margin-right: 10px;
 }
-.Package-img-container {
+.All-Package-img-container {
   position: relative;
   width: 100%;
-  height: 70%;
+  height: 185px;
 }
-.row-felx {
+.All-row-felx {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 8px;
   padding-top: 5px;
 }
-.showall {
+.All-showall {
   display: flex;
   flex-direction: row;
   align-items: center;

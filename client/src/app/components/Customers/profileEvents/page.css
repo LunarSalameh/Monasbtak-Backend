@@ -542,7 +542,7 @@ body {
         display: flex;
         flex-direction: column;
         gap: 10px;
-        padding-left: 20px;
+        padding-left: 6px;
         width: 185px;
         margin-bottom: 5px;
         word-break: break-word;

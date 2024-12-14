@@ -9,30 +9,30 @@
 /* Media queries for responsiveness */
 @media (max-width: 1200px) {
     .Page-Container {
-        margin-top: 5%;
+        margin-top: 0%;
     }
 }
 
 @media (max-width: 992px) {
     .Page-Container {
-        margin-top: 5%;
+        margin-top: 0%;
     }
 }
 
 @media (max-width: 768px) {
     .Page-Container {
-        margin-top: 5%;
+        margin-top: 0%;
     }
 }
 
 @media (max-width: 576px) {
     .Page-Container {
-        margin-top: 5%;
+        margin-top: 0%;
     }
 }
 
 @media (max-width: 400px) {
     .Page-Container {
-        margin-top: 5%;
+        margin-top: 0%;
     }
 }
