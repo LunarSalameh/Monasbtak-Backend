@@ -1,7 +1,20 @@
+"use client"
+
 import React from 'react';
+import { useRouter } from 'next/navigation';
+
 import Navbar from './components/navbar/page';
+import { IoMdArrowRoundBack } from "react-icons/io";
+
 
 const UnauthorizedPage = () => {
+  const router = useRouter();
+  
+
+  const handleGoBack = () => {
+    router.back();  // Goes to the previous page
+  };
+
   return (
     <>
     <Navbar />
@@ -21,6 +34,12 @@ const UnauthorizedPage = () => {
           Sorry, you do not have permission to access this page or the page does not exist.
         </p>
         <div className="flex justify-center space-x-4">
+        <button
+          onClick={handleGoBack}
+          className="px-6 py-3 bg-gray-200 text-gray-800 font-medium text-lg rounded-lg shadow hover:bg-gray-300 transition-colors"
+          >
+            <IoMdArrowRoundBack  size={20}/>
+        </button>
           <a
             href="/"
             className="px-6 py-3 bg-gray-200 text-gray-800 font-medium text-lg rounded-lg shadow hover:bg-gray-300 transition-colors"

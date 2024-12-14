@@ -7,8 +7,11 @@ import { OrbitProgress } from 'react-loading-indicators';
 
 export default function CurrentEvents () {
     const searchParams = useSearchParams();
-    const id = searchParams.get('id');
+
+    const id = searchParams.get('id'); //planner id
+
     const [userId, setUserId] = useState(id);
+
     const [offers, setOffers] = useState([]);
     const [loadingCurrent, setLoadingCurrent] = useState(true);
     const [slider,setSlider] = useState(0);
@@ -48,10 +51,12 @@ export default function CurrentEvents () {
     }, [id]);
     
     const fetchCustomerName = async (userId) => {
+        console.log(`user id : ${userId}`)
         try {
             const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/profile.php?id=${userId}`);
             const result = await response.json();
             if (result.success && result.user) {
+                console.log(result.user.username,)
                 return {
                     username: result.user.username,
                     userImage: result.user.image,
@@ -67,10 +72,11 @@ export default function CurrentEvents () {
     
     const fetchPackagesDetails = async (packageId) => {
         try {
-          const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?id=${packageId}`);
+          const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?id=${id}&packageId=${packageId}`);
           const result = await response.json();
           if (result.status === 'success' && result.data.length > 0) {
             const packageDetails = result.data[0];
+            console.log(`package details : ${packageDetails.description}`)
             return {
               ...packageDetails,
               image: `data:image/jpeg;base64,${packageDetails.image}`,
@@ -152,7 +158,8 @@ export default function CurrentEvents () {
 
                                                             {/* Description  */}
                                                             <div className='px-2 max-lg:hidden'>
-                                                                {offer.description}
+                                                                {console.log(`offer.description: ${offer.description}`)}
+                                                                <p>{offer.description}</p>
                                                             </div>
 
                                                             {/* Location  */}

@@ -9,8 +9,10 @@ import { OrbitProgress } from 'react-loading-indicators';
 export default function PendingOffers () { 
     const searchParams = useSearchParams();
     const id = searchParams.get('id');
+
     const [userId, setUserId] = useState(id);
     const [offers, setOffers] = useState([]);
+
     const [loadingCurrent, setLoadingCurrent] = useState(true);
     const [slider,setSlider] = useState(0);
     const [selectedOffer, setSelectedOffer] = useState(null);
@@ -70,7 +72,7 @@ export default function PendingOffers () {
     
     const fetchPackagesDetails = async (packageId) => {
         try {
-          const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?id=${packageId}`);
+          const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?id=${id}&packageId=${packageId}`);
           const result = await response.json();
           if (result.status === 'success' && result.data.length > 0) {
             const packageDetails = result.data[0];

@@ -17,7 +17,7 @@ try {
     $IsDeleted = 0 ;
 
     if ($planner_Id) {
-        $sql = "SELECT id, name, status, eventTime, attendings, eventDay, package_id FROM events 
+        $sql = "SELECT id, name, status, eventTime, attendings, eventDay, package_id, user_Id FROM events 
                 WHERE planner_Id = :planner_Id AND IsDeleted = :IsDeleted AND ( status = 'Accepted' OR status = 'in progress')";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':planner_Id', $planner_Id, PDO::PARAM_INT);

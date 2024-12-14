@@ -10,7 +10,7 @@ const Unauthorized = () => {
 
   const handleNavigation = (event) => {
     event.preventDefault(); // Prevent the default anchor behavior
-    router.push('/general/ignUp'); // Navigate programmatically
+    router.push('/general/signUp'); // Navigate programmatically
   };
   const handleGoBack = () => {
     router.back();  // Goes to the previous page

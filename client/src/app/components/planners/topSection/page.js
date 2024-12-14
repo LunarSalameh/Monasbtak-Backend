@@ -67,7 +67,7 @@ export default function TopSection () {
                 {/** Welcome section */}
                 <div className="flex justify-between gap-5" style={{width:'75%'}}>
                     <div>Hello {planner.username} 👋🏼,</div>
-                    <input type="search" className="rounded-xl font-normal max-md:hidden text-sm pl-3" placeholder="Search"/>
+                    {/* <input type="search" className="rounded-xl font-normal max-md:hidden text-sm pl-3" placeholder="Search"/> */}
                 </div>
 
                 {/**Status Section */}
