@@ -85,7 +85,7 @@ const Packages = () => {
                 <div className='venue-total'>
                     <div className='venue-details'>
                         <span className='bold-font mid-font-size'>Description</span>
-                        <span className='mid-font-size'>{venue.description}</span>
+                        <span className='mid-font-size text-align'>{venue.description}</span>
                     </div>
                     <div className='venue-details'>
                       <span className='Location-gap mid-font-size bold-font' ><Icon icon="hugeicons:location-04" className="Location-icon" /> Location</span>

@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (
         isset($data['name'], $data['description'], $data['price'],$data['planner_id'], $data['venue_id'],
-         $data['category_id'], $data['subCat_name'], $data['location'], $data['planner_name'],$data['subCategory_id'])
+         $data['category_id'], $data['subCat_name'], $data['location'], $data['planner_name'],$data['subCategory_id'], $data['venueDetails'])
     ) {
         try {
             // Set the status to 'pending'
@@ -36,8 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $IsDeleted = 0 ;
 
             // Prepare the SQL statement
-            $stmt = $pdo->prepare('INSERT INTO packeges (name, description, price, image, planner_id, venue_id, category_id, subCat_name, location, status, planner_name, subCategory_id) 
-                                   VALUES (:name, :description, :price, :image, :planner_id, :venue_id, :category_id, :subCat_name , :location, :status, :planner_name, :subCategory_id)');
+            $stmt = $pdo->prepare('INSERT INTO packeges (name, description, price, image, planner_id, venue_id, category_id, subCat_name, location, status, planner_name, subCategory_id, venueDetails) 
+                                   VALUES (:name, :description, :price, :image, :planner_id, :venue_id, :category_id, :subCat_name , :location, :status, :planner_name, :subCategory_id, :venueDetails)');
 
             // Bind the parameters
             $stmt->bindParam(':name', $data['name']);
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->bindParam(':status', $status);
             $stmt->bindParam(':planner_name', $data['planner_name']);
             $stmt->bindParam(':subCategory_id', $data['subCategory_id']);
-            // $stmt->bindParam(':IsDeleted', $data['IsDeleted']);
+            $stmt->bindParam(':venueDetails', $data['venueDetails']);
 
             // Execute the query
             if ($stmt->execute()) {

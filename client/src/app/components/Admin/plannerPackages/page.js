@@ -10,6 +10,7 @@ import { OrbitProgress } from 'react-loading-indicators';
 function page() {
   const searchParams = useSearchParams();
     const id = searchParams.get('id'); 
+    const plannerId = searchParams.get('planner_id');
     const [currentSlide, setCurrentSlide] = useState(0);
     const [packages, setPackages] = useState(null);
     const [loading, setLoading] = useState(true); 
@@ -27,7 +28,7 @@ function page() {
       useEffect(() => {
         const fetchPackages = async () => {
           try {
-            const planner_id = id; 
+            const planner_id = plannerId; 
             const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/packages/getPlannerPackages.php?planner_id=${planner_id}`, {
               method: 'GET',
               headers: {
@@ -53,7 +54,7 @@ function page() {
         };
 
         fetchPackages();
-      }, [id]);
+      }, [plannerId]);
 
       useEffect(() => {
         const fetchCategories = async () => {
@@ -117,13 +118,14 @@ function page() {
               <div className='Package-Box' key={index}>
                 <div className='Package-img-container'>
                   <img src={`data:image/jpeg;base64,${pkg.image}`} className='Package-img'/>
-                  <span className='Price-tag'>$ {pkg.price}</span>
+                  <span className='Price-tag'> JD {pkg.price}</span>
                 </div>
                 <div className='Package-details'>
                   <span className='mid-font-size'>{pkg.name}</span>
                   <span className='display'>{pkg.description}</span>
                   <span className='display'>{getCategoryName(pkg.category_id)}</span>                  
                   <span className='display'>{pkg.subCat_name}</span>
+                  <span className='display'>{pkg.venueDetails}</span>
                   <div className='row-flex'>
                     <div className='location'>
                       <Icon icon="hugeicons:location-04" className="Location-icon" />

@@ -10,67 +10,85 @@ error_reporting(E_ALL);
 
 $pdo = include_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
-$data = json_decode(file_get_contents('php://input'), true);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Check if the file was uploaded
+    if (isset($_FILES['image']) && is_uploaded_file($_FILES['image']['tmp_name'])) {
+        // Get the image binary data
+        $imageData = file_get_contents($_FILES['image']['tmp_name']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Image file is required']);
+        exit;
+    }
 
-if (isset($data['name'], $data['image'], $data['location'], $data['description'], $data['subCategory_id'])) {
-    $name = $data['name'];
-    $image = $data['image'];
-    $location = $data['location'];
-    $description = $data['description'];
-    $subCategory_id = $data['subCategory_id'];
-    $status = "Pending";
+    // Get the POST data
+    $data = $_POST;
 
-    try {
-        $sql = "SELECT COUNT(*) FROM venues WHERE name = :name";
-        $stmtCheck = $pdo->prepare($sql);
-        $stmtCheck->bindParam(':name', $name);
-        $stmtCheck->execute();
-        $totalCount = $stmtCheck->fetchColumn();
+    if (isset($data['name'], $data['description'], $data['location'], $data['subCategory_id'])) {
+        $name = $data['name'];
+        $location = $data['location'];
+        $description = $data['description'];
+        $subCategory_id = $data['subCategory_id'];
+        $status = "Pending";
 
-        if ($totalCount > 0) {
-            echo json_encode(['success' => false, 'error' => 'Venue already exists']);
-            exit;
-        }
+        try {
+            // Check if venue already exists 
+            $sql = "SELECT COUNT(*) FROM venues WHERE name = :name";
+            $stmtCheck = $pdo->prepare($sql);
+            $stmtCheck->bindParam(':name', $name);
+            $stmtCheck->execute();
 
-        $sqlVenues = "INSERT INTO venues (name, location, description, image, status) 
-                      VALUES (:name, :location, :description, :image, :status)";
-        $stmtVenues = $pdo->prepare($sqlVenues);
-        $stmtVenues->bindParam(':name', $name);
-        $stmtVenues->bindParam(':location', $location);
-        $stmtVenues->bindParam(':description', $description);
-        $stmtVenues->bindParam(':image', $image);
-        $stmtVenues->bindParam(':status', $status);
+            $results = $stmtCheck->fetchAll(PDO::FETCH_COLUMN);
+            $totalCount = array_sum($results);
 
-        if ($stmtVenues->execute()) {
-            $venue_id = $pdo->lastInsertId();
-
-            $sqlSubCategories = "INSERT INTO venue_subcategory (venue_id, subCategory_id) 
-                                 VALUES (:venue_id, :subCategory_id)";
-            $stmtSubCategories = $pdo->prepare($sqlSubCategories);
-            $stmtSubCategories->bindParam(':venue_id', $venue_id);
-            $stmtSubCategories->bindParam(':subCategory_id', $subCategory_id);
-
-            if ($stmtSubCategories->execute()) {
-                http_response_code(200);
-                echo json_encode(['success' => true, 'message' => 'Venue added successfully and subcategory connected']);
-            } else {
-                echo json_encode(['success' => false, 'message' => 'Failed to connect subcategory with venue']);
+            if ($totalCount > 0) {
+                echo json_encode(['success' => false, 'error' => 'venue already exists']);
+                exit;
             }
-        } else {
-            error_log('Venue insert failed: ' . json_encode($stmtVenues->errorInfo()));
-            echo json_encode(['success' => false, 'message' => 'Failed to add venue']);
+
+            $sqlVenues = "INSERT INTO venues (name, location, description, image, status) 
+                        VALUES (:name, :location, :description, :image, :status)";
+
+            $stmtVenues = $pdo->prepare($sqlVenues);
+            $stmtVenues->bindParam(':name', $name);
+            $stmtVenues->bindParam(':location', $location);
+            $stmtVenues->bindParam(':description', $description);
+            $stmtVenues->bindParam(':image', $imageData, PDO::PARAM_LOB);
+            $stmtVenues->bindParam(':status', $status);
+
+            if ($stmtVenues->execute()) {
+                $venue_id = $pdo->lastInsertId();
+
+                $sqlSubCategories = "INSERT INTO venue_subcategory (venue_id, subCategory_id) 
+                            VALUES (:venue_id, :subCategory_id)";
+
+                $stmtSubCategories = $pdo->prepare($sqlSubCategories);
+                $stmtSubCategories->bindParam(':venue_id', $venue_id);
+                $stmtSubCategories->bindParam(':subCategory_id', $subCategory_id);
+
+                if ($stmtSubCategories->execute()) {
+                    http_response_code(200);
+                    echo json_encode(['success' => true, 'message' => 'venues Added successfully and subCategories Connected']);
+                } else {
+                    echo json_encode(['success' => false, 'message' => 'Failed to connect subCategory with venue']);
+                }
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Failed to add venue']);
+            }
+
+        } catch (PDOException $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
         }
 
-    } catch (PDOException $e) {
-        error_log('PDOException: ' . $e->getMessage());
-        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    } else {
+        $missing_fields = [];
+        if (!isset($data['name'])) $missing_fields[] = 'name';
+        if (!isset($data['location'])) $missing_fields[] = 'location';
+        if (!isset($data['description'])) $missing_fields[] = 'description';
+        if (!isset($data['subCategory_id'])) $missing_fields[] = 'subCategory_id';
+        error_log('Missing fields: ' . implode(', ', $missing_fields));
+        echo json_encode(['success' => false, 'message' => 'Invalid input']);
     }
 } else {
-    $missing_fields = [];
-    foreach (['name', 'image', 'location', 'description', 'subCategory_id'] as $field) {
-        if (!isset($data[$field])) $missing_fields[] = $field;
-    }
-    error_log('Missing fields: ' . implode(', ', $missing_fields));
-    echo json_encode(['success' => false, 'message' => 'Invalid input', 'missing_fields' => $missing_fields]);
+    echo json_encode(['success' => false, 'message' => 'Method not allowed']);
 }
 ?>

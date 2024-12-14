@@ -123,20 +123,87 @@
   height: 25px;
   color: rgb(98, 98, 98);
 }
-
+.flexHeadline{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.downArrow{
+  display: none;
+}
 /* Responsive adjustments */
-@media (max-width: 768px) {
-  .sCategoryCard {
-    width: 45%; /* Change to fit 2 cards per row */
-  }
+
+@media (max-width: 1676px) {
+  .cardsWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    width: 95%;
+}
+.headLine{
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+}
+}
+@media (max-width: 1245px) {
+  .cardsWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    width: 95%;
+}
+.headLine{
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+}
+.hidden {
+  display: none;
+}
+.showArrow {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.downArrow {
+  display: block;
+  margin-left: 10px;
+  font-size: 20px;
+}
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .sCategoryCard {
-    width: 90%; /* Stack cards on smaller screens */
+    width: 85%;
   }
-
-  .container h2 {
-    font-size: 28px; /* Adjust title font size for smaller screens */
+  .cardsWrapper{
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      width: 100%;
+  }
+  .sCategoryImage{
+    width: 320px;
+    height: 175px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    object-fit: cover;
+  }
+  .hidden {
+    display: none;
+  }
+  .showArrow {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  .downArrow {
+    display: block;
+    margin-left: 10px;
+    font-size: 20px;
   }
 }

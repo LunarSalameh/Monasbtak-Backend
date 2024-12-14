@@ -48,6 +48,7 @@ function ProfileDetails () {
                 <div className='Rating-container'>
                     <span className='bold-font large-font-size'>{planner.username}</span>
                     {/* <RatingStars rating={3} /> */}
+                    {/* <RatingStars rating={3} /> */}
                 </div>
                     <div className='Info-Details mid-font-size'>
                         <span className='flex gap-2'><MdEmail />&nbsp;&nbsp;{planner.email}</span>

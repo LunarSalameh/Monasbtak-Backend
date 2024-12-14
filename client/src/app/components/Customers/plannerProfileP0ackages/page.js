@@ -9,7 +9,8 @@ import { OrbitProgress } from 'react-loading-indicators';
 
 function PlannerPackages() {
   const searchParams = useSearchParams();
-  const id = searchParams.get('id');  //planner_id
+  const userId = searchParams.get('id');  //user_id
+  const id = searchParams.get('planner_id');  //planner_id
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,7 +24,7 @@ function PlannerPackages() {
         if (data.status === 'success') {
           setPackages(data.data);
         } else {
-          console.log(data.message);
+          setPackages([]);
         }
       } catch (error) {
         console.log(error);
@@ -39,7 +40,7 @@ function PlannerPackages() {
     <div className='Packages-container'>
       <div className='showall'> 
         <span className='XL-font-size font-color bold-font'>Packages</span>
-        <Link href='/customers/plannerAllPackages' >
+        <Link href={`/customers/plannerAllPackages?id=${userId}&planner_id=${id}`} >
           <span className='small-font-size bold-font Show-Button'>Show All</span>
         </Link>
       </div>
@@ -61,7 +62,7 @@ function PlannerPackages() {
                       {/* <div className='Transparent-Box'>
                         <Favorite isFavorite={true}/>
                       </div> */}
-                      <span className='Price-tag'>$ {pkg.price}</span>
+                      <span className='Price-tag'>JD {pkg.price}</span>
                     </div>
                     <span>{pkg.name}</span>
                     <div className='row-felx'>

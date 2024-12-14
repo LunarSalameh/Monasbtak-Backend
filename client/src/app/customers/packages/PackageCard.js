@@ -82,7 +82,7 @@ const PackageCard = ({ title, description, image, package_id,planner_Id }) => {
             </div>
             <img src={image} alt={title} className="package-image" />
             <div className="package-info">
-                <h3>{title}</h3>
+                <h3 className='bold-font mid-font-size'>{title}</h3>
                 <p className='padding'>{description}</p>
                 <div className="card-actions">
                     <Link href={`/customers/onePackageBooking?id=${userId}&packageId=${package_id}&plannerId=${planner_Id}`}>

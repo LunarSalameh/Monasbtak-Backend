@@ -16,7 +16,7 @@ body {
     font-size: 30px;
 }
 .mid-font-size {
-    font-size: 20px;
+    font-size: 18px;
 }
 .small-font-size {
     font-size: 12px;
@@ -72,6 +72,11 @@ body {
   margin-top: 15px;
   gap: 2px;
   margin-right: 10px;
+}
+.Package-Box:hover {
+  border: 2px solid #4C1B41;
+  transition: 0.5s;
+  transform: scale(1.05);
 }
 .Package-details{
     display: flex;

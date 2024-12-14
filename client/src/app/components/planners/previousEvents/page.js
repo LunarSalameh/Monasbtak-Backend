@@ -130,7 +130,7 @@ export default function PreviousEvents() {
                                                                     alt={event.Name}
                                                                     className='rounded-lg w-64 h-40 max-md:h-40 max-md:w-40 object-cover'
                                                                 />
-                                                                <div className='bg-[#5a5a5a8e] bottom-2 left-2 w-fit px-3 rounded-lg text-white py-1 absolute'>{event.price}</div>
+                                                                <div className='bg-[#5a5a5a8e] bottom-2 left-2 w-fit px-3 rounded-lg text-white py-1 absolute'>{event.price} JD</div>
                                                             </figure>
                                                             <div className='pre-details'>
                                                                 <div className='font-semibold p-2 text-lg mt-1 max-lg:text-sm'>

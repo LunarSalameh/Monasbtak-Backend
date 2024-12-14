@@ -9,6 +9,7 @@ import { TiDelete } from "react-icons/ti";
 import { useSearchParams } from 'next/navigation';
 import { IoClose } from "react-icons/io5";
 import './page.css'
+import Link from "next/link";
 
 export default function Profile () {
     const searchParams = useSearchParams();
@@ -664,23 +665,19 @@ export default function Profile () {
             return;  
         }
    
-        const formData = {
-            name: venueName,
-            location: venueLocation,
-            description: venueDescription,
-            image: venueImage,
-            subCategory_id: selectedSubCategories,
-        };
+        const formData = new FormData();
+        formData.append('name', venueName);
+        formData.append('location', venueLocation);
+        formData.append('description', venueDescription);
+        formData.append('image', venueImage);
+        formData.append('subCategory_id', selectedSubCategories);
    
         try {
             const response = await fetch(
                 "http://localhost/Monasbtak-Backend/php/api/planner/profile/addVenue.php",
                 {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(formData),
+                    body: formData,
                 }
             );
    
@@ -721,6 +718,18 @@ export default function Profile () {
         }))
     }
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setProfileData((prevData) => ({
+                ...prevData,
+                image: reader.result.split(',')[1], // Get base64 string without the prefix
+            }));
+        };
+        reader.readAsDataURL(file);
+    };
+
     const handleDateChange = (date) => {
         const formattedDate = date.toISOString().split('T')[0]; // 'YYYY-MM-DD'        
         
@@ -730,9 +739,13 @@ export default function Profile () {
         });
     };
 
+    const handleImageChange = () => {
+        // Logic to recall the fetch in the Sidebar component
+    };
+
     return (
         <>            
-            <Sidebar id={id}/>
+            <Sidebar id={id} handleImageChange={handleImageChange} />
             <div className="flex flex-col " style={{width:'90%', marginLeft:'auto'}}>
             <TopSection />
             <div className="page-container" >
@@ -880,6 +893,21 @@ export default function Profile () {
                                 />
                             )}
                             </div>
+
+                            {/* image */}
+                            <div className="flex flex-col flex-wrap">
+                                {EditProfile && (
+                                    <>
+                                        <label htmlFor="image" className="my-2 font-bold">Image</label>
+                                        <input 
+                                            type="file"
+                                            id="image"
+                                            onChange={handleFileChange}
+                                            className="px-5 py-1.5 rounded-lg bg-white border-[#4c1b419c] border-2"
+                                        />
+                                    </>
+                                )}
+                            </div>
                             
 
                         </div>
@@ -957,6 +985,11 @@ export default function Profile () {
                     
                     {/* Edit & Change Password */}
                     <div className="flex gap-4 mt-16 justify-end  flex-wrap">
+                        <Link href={`/planners/customerViewProfile?id=${id}`}>
+                            <button className="bg-[#D9B34D] w-fit py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white">
+                                Customer View
+                            </button>
+                        </Link>
                         <button className="bg-[#D9B34D] py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white" onClick={handlePasswordModal}>Change Password</button>
                         <button className="bg-[#D9B34D] py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white" onClick={handleProfileModal}> 
                             {EditProfile ? "Save Profile" : "Edit Profile"}
@@ -1021,7 +1054,7 @@ export default function Profile () {
                                                     <path
                                                         strokeLinecap="round"
                                                         strokeLinejoin="round"
-                                                        d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                                                        d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178z"
                                                     ></path>
                                                     <path
                                                         strokeLinecap="round"
@@ -1041,7 +1074,7 @@ export default function Profile () {
                                                     <path
                                                         strokeLinecap="round"
                                                         strokeLinejoin="round"
-                                                        d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"
+                                                        d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88 6.228 6.228"
                                                     ></path>
                                                     </svg>
                                                 )}
@@ -1083,7 +1116,7 @@ export default function Profile () {
                                                     <path
                                                         strokeLinecap="round"
                                                         strokeLinejoin="round"
-                                                        d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                                                        d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178z"
                                                     ></path>
                                                     <path
                                                         strokeLinecap="round"
@@ -1103,7 +1136,7 @@ export default function Profile () {
                                                     <path
                                                         strokeLinecap="round"
                                                         strokeLinejoin="round"
-                                                        d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"
+                                                        d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88 6.228 6.228"
                                                     ></path>
                                                     </svg>
                                                 )}
@@ -1165,7 +1198,7 @@ export default function Profile () {
                                                     <path
                                                         strokeLinecap="round"
                                                         strokeLinejoin="round"
-                                                        d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"
+                                                        d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88 6.228 6.228"
                                                     ></path>
                                                     </svg>
                                                 )}
@@ -1177,9 +1210,14 @@ export default function Profile () {
                                 </div>
 
                                 <div className="flex gap-3 items-end justify-end">
+                                    <Link href={`/planner/${id}`}>
+                                <button className="bg-[#D9B34D] w-fit py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white">
+                                            Customer View
+                                </button>
+                                </Link>
                                     <button 
                                         className="bg-[#D9B34D] w-fit py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white"
-                                        onClick={()=>handlePasswordChange(id,oldPwd,newPwd,retypeNewPwd)}
+                                        onClick={()=>{handlePasswordChange(id,oldPwd,newPwd,retypeNewPwd); handleImageChange();}}
                                         >
                                             Save Changes
                                     </button>
@@ -1368,9 +1406,7 @@ export default function Profile () {
                                                 <label htmlFor="image">Image</label>
                                                 <input 
                                                     type="file" id="image" className="input" accept="image/*"
-                                                    value={venueImage}
-                                                    onChange={(e)=>setVenueImage(e.target.value)} />
-                                                    {/* {console.log(venueImage)} */}
+                                                    onChange={handleFileChange} />
                                             </div>
 
                                             {/* category list */}

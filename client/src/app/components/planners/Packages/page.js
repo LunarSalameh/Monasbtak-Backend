@@ -161,6 +161,7 @@ const fetchDeltePackage = async () => {
     formData.append('venue_id', formData.get('venue_id'));
     formData.append('category_id', formData.get('category_id'));
     formData.append('subCat_name', formData.get('subCat_name'));
+    formData.append('venueDetails' , formData.get('venueDetails'));
     formData.append('location', venues.find(venue => venue.id == formData.get('venue_id')).name);
     formData.append('status', 'Pending');
     formData.append('subCategory_id', subCategories.find(subCategory => subCategory.name == formData.get('subCat_name')).id);
@@ -298,7 +299,7 @@ const fetchDeltePackage = async () => {
               <div className='Package-Box' key={index}>
                 <div className='Package-img-container'>
                   <img src={`data:image/jpeg;base64,${pkg.image}`} className='Package-img'/>
-                  <span className='Price-tag'>$ {pkg.price}</span>
+                  <span className='Price-tag'>JD {pkg.price}</span>
                 </div>
                 <div className='Package-details'>
                   <span className='mid-font-size'>{pkg.name}</span>
@@ -373,6 +374,10 @@ const fetchDeltePackage = async () => {
                     <option key={index} value={venue.id}>{venue.name}</option>
                   ))}
                 </select>
+              </div>
+              <div className='Modal-Add-package-container'>
+                <span>Add Venue Details</span>
+                <input type='text' name='venueDetails' className='input' required />
               </div>
               <div className='Modal-Add-package-container'>
                 <span>Price</span>

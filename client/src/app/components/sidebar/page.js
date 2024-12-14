@@ -1,5 +1,5 @@
 "use client";
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { FaKey, FaRegCalendarCheck, FaCircle } from "react-icons/fa6";
 import { MdPeopleAlt } from "react-icons/md";
 import { FiPackage } from "react-icons/fi";
@@ -9,11 +9,13 @@ import { useSearchParams } from "next/navigation";
 import { LuPackageCheck ,LuPackagePlus } from "react-icons/lu";
 
 
-export default function Sidebar() {
+export default function Sidebar({ fetchPlannerData, handleImageChange }) {
     const searchParams = useSearchParams();
     const id = searchParams.get("id"); // Get user ID from the query parameters
     const [open, setOpen] = useState(true);
     const [submenuOpen, setSubmenuOpen] = useState(false);
+    const [planner, setPlanner] = useState({});
+    const [error, setError] = useState("");
 
 
     const menu = [
@@ -34,6 +36,25 @@ export default function Sidebar() {
     const handleSubmenuToggle = () => {
         setSubmenuOpen(!submenuOpen);
     }
+
+    useEffect(() => {
+        const fetchPlanner = async () => {
+            try {
+                const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getOnePlanner.php?id=${id}`);
+                const result = await response.json();
+    
+                if (result.success) {
+                    setPlanner(result.planner);
+                    handleImageChange(); // Call the handleImageChange prop here
+                } else {
+                    setError("Failed to fetch planner.");
+                }
+            } catch (error) {
+                setError("Error fetching data.");
+            }
+        }
+        fetchPlanner();
+    }, [id, handleImageChange]);
 
     return (
         <>
@@ -95,11 +116,20 @@ export default function Sidebar() {
                         style={{ marginTop: "295px" }}
                         className=" flex items-end gap-4 p-5 "
                     >
-                        <FaCircle color="#D9B34D" size={48} />
+                        {planner.image ? (
+                            <img
+                            src={`data:image/jpeg;base64,${planner.image}`}
+                            alt="Planner"
+                            style={{ width: "48px", height: "48px", borderRadius: "50%", objectFit:"cover"}}
+                            />
+                        ) : (
+                            <FaCircle color="#D9B34D" size={48} />
+                        )
+                        }
                         {open && (
                             <div className={`text-sm flex flex-col`}>
-                                <p className="font-bold">UserName</p>
-                                <p>Planner/Vendor</p>
+                                <p className="font-bold">{planner.username}</p>
+                                <p>Planner Account</p>
                             </div>
                         )}
                     </div>

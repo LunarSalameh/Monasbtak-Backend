@@ -311,10 +311,10 @@ function page() {
         <div className='main-top'>
             <div className='header'>
                 <span className='large-font-size bold-font'>Venues</span>
-                <button className='light-btn mid-font-size ' onClick={handleAddVenue}>
+                {/* <button className='light-btn mid-font-size ' onClick={handleAddVenue}>
                     Add Venue
                     <Icon icon="hugeicons:upload-03" className='end-icon' />
-                </button>
+                </button> */}
             </div>
             <div className="search-container">
                 <IoIosSearch className="search-icon" />

@@ -67,19 +67,19 @@ function page() {
         <span className='large-font-size font-color bold-font'>All Previous Events</span>
         <hr className='line'/>
 
-        <div className='Event-Types'>
+        <div className='All-Event-Types'>
             {loadingPrev ? (
                         <div className='flex w-full justify-center justify-items-center'>
                             <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
                         </div>
                     ) : prev.length > 0 ? (
                         prev.map((prev, index) => (
-                    <div className='Event-Box' key={index}>
-                            <div className='Event-img-container'>
-                                <img src={prev.image} className='Event-img' />
-                                <span className='Price-tag'>$ {prev.price}</span>
+                    <div className='All-Event-Box' key={index}>
+                            <div className='All-Event-img-container'>
+                                <img src={prev.image} className='All-Event-img' />
+                                <span className='Price-tag'>JD {prev.price}</span>
                             </div>
-                            <div className='Event-details small-font-size'>
+                            <div className='All-Event-details small-font-size'>
                                 <span className='bold-font'>{prev.name}</span>
                                 <span>{prev.description} </span>
                                 <div className='time'>
@@ -89,7 +89,7 @@ function page() {
                                 <span className='bold-font'>Attendings: </span>
                                 <span>{prev.attendings}</span>
                             </div>
-                                <div className='Event-location'>
+                                <div className='All-Event-location'>
                                     <div className='row-felx'>
                                         <CiLocationOn />
                                         <span>{prev.location}</span>

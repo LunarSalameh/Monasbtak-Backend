@@ -61,13 +61,13 @@ const Navbar = () => {
           </Link>
         </li>
         <li className={stl.navbar_item}>
-          <Link href="#categories">Categories</Link>
+          <Link href={id ? `/customers/landingPage?id=${id}#categories` : `/customers/landingPage#categories`}>Categories</Link>
         </li>
         <li className={stl.navbar_item}>
           <Link href={id ? `/customers/profile?id=${id}` : "/general/signIn"}>Profile</Link>
         </li>
         <li className={stl.navbar_item}>
-          <Link href="/general/aboutUs">About Us</Link>
+          <Link href={id ? `/general/aboutUs?id=${id}` : "/general/aboutUs"} >About Us</Link>
         </li>
         <li className={stl.navbar_item}>
           {id ? (
@@ -99,7 +99,9 @@ const Navbar = () => {
               </Link>
             </li>
             <li className={stl.sidebar_item}>
-              <Link href="#categories" onClick={toggleSidebar}>
+              <Link 
+                href={id ? `/customers/landingPage?id=${id}#categories` : `/customers/landingPage#categories`}
+                onClick={toggleSidebar}>
                 Categories
               </Link>
             </li>
@@ -112,7 +114,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li className={stl.sidebar_item}>
-              <Link href="/general/aboutUs" onClick={toggleSidebar}>
+              <Link href={id ? `/general/aboutUs?id=${id}` : "/general/aboutUs"} onClick={toggleSidebar}>
                 About Us
               </Link>
             </li>

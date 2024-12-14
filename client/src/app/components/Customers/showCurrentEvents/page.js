@@ -70,7 +70,7 @@ function page() {
         <span className='large-font-size font-color bold-font'>All Current Events</span>
         <hr className='line'/>
 
-        <div className='Event-Types'>
+        <div className='All-Event-Types'>
                 <div className='Phone-view'>
                 {loadingCurrent ? (
                         <div className='flex w-full justify-center justify-items-center'>
@@ -78,13 +78,13 @@ function page() {
                         </div>
                     ) : current.length > 0 ? (
                         current.map((current, index) => (
-                    <div className='Event-Box' key={index}>
-                        <div className='Event-img-container'>
-                            <img src={current.image} className='Event-img' />
-                            <span className='Price-tag'>$ {current.price}</span>
+                    <div className='All-Event-Box' key={index}>
+                        <div className='All-Event-img-container'>
+                            <img src={current.image} className='All-Event-img' />
+                            <span className='Price-tag'>JD {current.price}</span>
                         </div>
-                        <div className='Event-details small-font-size'>
-                            <span className='bold-font'>{current.name}</span>
+                        <div className='All-Event-details small-font-size'>
+                            <span className='bold-font mid-font-size'>{current.name}</span>
                             <span>{current.description}</span>
                             <div className='time'>
                                 <span className='bold-font'>Date & Time: </span>
@@ -93,7 +93,7 @@ function page() {
                                 <span className='bold-font'>Attendings: </span>
                                 <span>{current.attendings}</span>
                             </div>
-                            <div className='Event-location'>
+                            <div className='All-Event-location'>
                                 <div className='row-felx'>
                                     <CiLocationOn />
                                     <span>{current.location}</span>

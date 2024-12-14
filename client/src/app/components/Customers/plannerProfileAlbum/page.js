@@ -44,9 +44,15 @@ function PlannerAlbum() {
     setNoImagesMessage("");
   };
 
-  const handleImageClick = (index) => setCurrentImageIndex(index);
+  const handleImageClick = (index) => {
+    setCurrentImageIndex(index);
+    setImage(categoryImages[index]);
+    handleShowModal();
+  };
+
   const handleCloseImageModal = () => {
-    setImage(null);
+    setCurrentImageIndex(null);
+    // setImage(null);
     // setCurrentImageIndex(null);
   };
 
@@ -76,7 +82,7 @@ function PlannerAlbum() {
   // Fetch category data
   const fetchCategoryData = async (category_id) => {
     const urlParams = new URLSearchParams(window.location.search);
-    const planner_id = urlParams.get("id");
+    const planner_id = urlParams.get("planner_id");
 
     try {
       const response = await fetch(
@@ -114,6 +120,18 @@ function PlannerAlbum() {
       setCurrentImageIndex((currentImageIndex - 1 + categoryImages.length) % categoryImages.length);
     }
   };
+
+  useEffect(() => {
+    if (currentImageIndex !== null) {
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      window.removeEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [currentImageIndex, categoryImages.length]);
 
 
   return (
@@ -164,13 +182,13 @@ function PlannerAlbum() {
                 <div className="modal-content">
                   <div className="Modal-Album-container">
                     {categoryImages.length > 0 ? (
-                      categoryImages.map((image) => (
+                      categoryImages.map((image, index) => (
                         <div className="Modal-Album-img-container relative" key={image.id}>
                           <img
                             src={`data:image/jpeg;base64,${image.image}`}
                             className="Album-img"
                             alt="Album"
-                            onClick={() => handleImageClick(image.id)}                            
+                            onClick={() => handleImageClick(index)}
                           />
                         </div>
                       ))

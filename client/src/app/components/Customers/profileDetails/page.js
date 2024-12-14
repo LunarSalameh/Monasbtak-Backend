@@ -15,6 +15,7 @@ function ProfileDetails({ user, fetchUserData }) {
   const [acceptAlert, setAcceptAlert] = useState(false);
   const [edit, setEdit] = useState(false);
   const [updatedUser, setUpdatedUser] = useState(user);
+  const [reject, setReject] = useState(false);
   const [formData, setFormData] = useState({
     id: id || '',
     username: user.username || '',
@@ -67,8 +68,7 @@ function ProfileDetails({ user, fetchUserData }) {
         fetchUserData(); // Fetch updated user data
       }
     } catch (error) {
-      console.error('Error updating profile:', error);
-      alert('Failed to update profile');
+      setReject(true);
     }
   };
 
@@ -158,6 +158,15 @@ function ProfileDetails({ user, fetchUserData }) {
                         <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
                             <div className="bg-green-600 p-0 rounded-l-xl"></div>
                             <div className="p-5 bg-white border-2 border-green-600">Profile Edited Successfully</div>
+                        </div>
+                    </div>
+                )}
+
+      {reject &&(
+                    <div className="fixed top-4 right-4 modal-overlay-status">
+                        <div className="rounded-xl w-fit grid grid-cols-[0.25fr,1fr]">
+                            <div className="bg-red-600 p-0 rounded-l-xl"></div>
+                            <div className="p-5 bg-white border-2 border-red-600">Failed to Edit Profile</div>
                         </div>
                     </div>
                 )}

@@ -61,7 +61,7 @@ const PackageDetails = () => {
       </div>
       <div className="content">
         <div className='img-container'>
-          <img src={`data:image/jpeg;base64,${packageDetails.image}`} alt="Package" className="package-image" />
+          <img src={`data:image/jpeg;base64,${packageDetails.image}`} alt="Package" className="one-package-image" />
         </div>
         <div className="details">
           <div className="planner-info">
@@ -71,21 +71,25 @@ const PackageDetails = () => {
               {plannerDetails && <span className='bold-font mid-font-size'>{plannerDetails.username}</span>}
             </div>
             </Link>
-            <div className='flex-row'>
+            <div className='flexRow flexRow2 '>
               <span className="planner-name">{packageDetails.name}</span>
-              <span className="price">${packageDetails.price}</span>
+              <span className="price">JD {packageDetails.price}</span>
             </div>
           </div>
           <div className='package-details'>
-            <div className='flex-row'>
+            <div className='flexRow'>
               <span className="description bold-font">Category: </span>
               <span className='description'>{packageDetails.subCat_name}</span>
             </div>
-            <div className='flex-row'>
+            <div className='flexRow '>
               <span className="description bold-font">Location: </span>
               <span className='description'>{packageDetails.location}</span>
             </div>
-            <div className='flex-row'>
+            <div className='flexRow '>
+              <span className="description bold-font">Venue Details: </span>
+              <span className='description'>{packageDetails.venueDetails}</span>
+            </div>
+            <div className='flexRow '>
               <span className="description bold-font">Description: </span>
               <span className='description'>{packageDetails.description}</span>
             </div>

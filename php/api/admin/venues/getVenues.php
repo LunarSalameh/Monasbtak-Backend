@@ -14,8 +14,8 @@ error_reporting(E_ALL);
 $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
 try {
-        // Prepare the SQL query to fetch all venues with action 'Accepted'
-        $sql = "SELECT id, name, image, description, location FROM venues "; 
+        // Prepare the SQL query to fetch all venues with status 'Accepted'
+        $sql = "SELECT id, name, image, description, location FROM venues WHERE status = 'Accepted'"; 
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
 

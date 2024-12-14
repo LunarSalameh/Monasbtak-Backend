@@ -188,17 +188,18 @@ const fetchDeltePackage = async () => {
               <div className='Package-Box' key={index}>
                 <div className='Package-img-container'>
                   <img src={`data:image/jpeg;base64,${pkg.image}`} className='Package-img'/>
-                  <span className='Price-tag'>$ {pkg.price}</span>
+                  <span className='Price-tag'>JD {pkg.price}</span>
                 </div>
                 <div className='Package-details'>
                   <span className='mid-font-size'>{pkg.name}</span>
                   <span className='display'>{pkg.description}</span>
+                  <span>{pkg.venueDetails}</span>
                   <div className='row-flex'>
                     <div className='location'>
                       <Icon icon="hugeicons:location-04" className="Location-icon" />
                       <span>{pkg.location}</span>
                     </div>
-                    <span className='btn' >
+                    <span className='status-btn' >
                       {pkg.status}
                     </span>
                   </div>
