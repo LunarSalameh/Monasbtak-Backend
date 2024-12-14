@@ -14,7 +14,6 @@ function onePackageBooking() {
             <Navbar/>
             <PackageDetails />
             <ReactDatePicker />
-
             <Footer/>
         </div>
     );

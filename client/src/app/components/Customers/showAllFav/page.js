@@ -48,7 +48,7 @@ function FavoritePage() {
 
     const fetchPackagesDetails = async (packageId) => {
         try {
-            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?id=${packageId}`);
+            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?packageId=${packageId}`);
             const result = await response.json();
             if (result.status === 'success' && result.data.length > 0) {
                 return {

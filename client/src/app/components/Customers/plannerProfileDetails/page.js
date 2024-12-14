@@ -11,7 +11,8 @@ import { OrbitProgress } from 'react-loading-indicators';
 
 function ProfileDetails () {
     const searchParams = useSearchParams();
-    const id = searchParams.get('id');  //planner_id
+    const plannerId = searchParams.get('plannerId');  //planner_id
+
     const [planner, setPlanner] = useState([]);
     const [loading, setLoading] = useState(true);
   
@@ -19,7 +20,7 @@ function ProfileDetails () {
       const fetchPlannerDetails = async () => {
         try {
           const response = await fetch(
-            `http://localhost/Monasbtak-Backend/php/api/customer/getPlanner.php?id=${id}`
+            `http://localhost/Monasbtak-Backend/php/api/customer/getPlanner.php?plannerId=${plannerId}`
           );
           const data = await response.json();
           if (data.status === 'success') {
@@ -28,14 +29,15 @@ function ProfileDetails () {
             console.error(data.message);
           }
         } catch (error) {
-          console.error(error);
+          console.log(error);
         } finally {
           setLoading(false);
         }
       }
       fetchPlannerDetails();
     }
-    , [id]);
+    , [plannerId]);
+
   return (
     <div className='Box-Border'>
         {planner && planner.length > 0 ? (
@@ -45,7 +47,7 @@ function ProfileDetails () {
             <div className='Planner-Name'>
                 <div className='Rating-container'>
                     <span className='bold-font large-font-size'>{planner.username}</span>
-                    <RatingStars rating={3} />
+                    {/* <RatingStars rating={3} /> */}
                 </div>
                     <div className='Info-Details mid-font-size'>
                         <span className='flex gap-2'><MdEmail />&nbsp;&nbsp;{planner.email}</span>

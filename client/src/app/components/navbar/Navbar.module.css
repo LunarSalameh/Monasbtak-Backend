@@ -113,7 +113,11 @@
 .sidebar_item a:hover {
   text-decoration: underline;
 }
- 
+
+.navbar_item button {
+  color: white;
+  font-size: 20px;
+}
 
 @media (max-width:1200px){
   .Navbar{

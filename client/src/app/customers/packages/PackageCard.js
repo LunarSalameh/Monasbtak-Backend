@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { FaStar } from 'react-icons/fa';
 import { CiStar } from "react-icons/ci";
 
-const PackageCard = ({ title, description, image, package_id }) => {
+const PackageCard = ({ title, description, image, package_id,planner_Id }) => {
     const [isFavorited, setIsFavorited] = useState(false);
     const searchParams = useSearchParams();
     const userId = searchParams.get('id'); // Extract userId dynamically
@@ -64,7 +64,7 @@ const PackageCard = ({ title, description, image, package_id }) => {
 
             const result = await response.json();
         } catch (error) {
-            console.error('Error:', error);
+            console.log('Error:', error);
             setIsFavorited(!payload.isFavorited); 
         }
     };
@@ -85,7 +85,7 @@ const PackageCard = ({ title, description, image, package_id }) => {
                 <h3>{title}</h3>
                 <p className='padding'>{description}</p>
                 <div className="card-actions">
-                    <Link href={`/customers/onePackageBooking?id=${userId}&packageId=${package_id}`}>
+                    <Link href={`/customers/onePackageBooking?id=${userId}&packageId=${package_id}&plannerId=${planner_Id}`}>
                         <button className="details-button">Details</button>
                     </Link>
                 </div>

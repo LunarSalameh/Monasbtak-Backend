@@ -63,7 +63,7 @@ const Packages = () => {
                 setPackages([]);
             }
         } catch (error) {
-            console.error('Error fetching packages:', error);
+            console.log('Error fetching packages:', error);
             setPackages([]);
         } finally {
             setLoading(false);
@@ -109,6 +109,7 @@ const Packages = () => {
                                 description={pkg.description}
                                 image={`data:image/jpeg;base64,${pkg.image}`}
                                 package_id={pkg.id}
+                                planner_Id={pkg.planner_id}
                             />
                         ))
                     ) : (

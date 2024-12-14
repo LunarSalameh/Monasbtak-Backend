@@ -17,7 +17,7 @@ function page() {
         const fetchPrevEvents = async () => {
             try {
                 setUserId(id); // Set userId in state
-                const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getProfilePrevEvents.php?user_id=${id}`);
+                const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getProfilePrevEvents.php?id=${id}`);
                 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -47,7 +47,7 @@ function page() {
       
     const fetchPackagesDetails = async (packageId) => {
         try {
-          const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?id=${packageId}`);
+          const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?packageId=${packageId}`);
           const result = await response.json();
           if (result.status === 'success' && result.data.length > 0) {
             const packageDetails = result.data[0];

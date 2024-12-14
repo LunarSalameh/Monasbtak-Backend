@@ -9,6 +9,13 @@ error_reporting(E_ALL);
 
 // Include the database connection
 $pdo = include_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
+require_once '/opt/lampp/htdocs/Monasbtak-Backend/php/vendor/autoload.php';
+
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
+
+$secret_key = "1324qwer";
+
 
 // Get POST data
 $data = json_decode(file_get_contents('php://input'), true);
@@ -58,7 +65,30 @@ if (isset($data['usernameOrPhone']) && isset($data['pwd'])) {
             // Verify the password
             if (password_verify($password, $user['pwd'])) {
                 unset($user['pwd']);
-                echo json_encode(['success' => true, 'message' => 'Sign-in successful', 'user' => $user]);
+
+                 // Generate JWT payload
+                $payload = [
+                    "iat" => time(),
+                    "exp" => time() + 3600, 
+                    "userId" => $user['id'],
+                    "username" => $user['username'],
+                    "accountType" => $user['accountType']
+                ];
+                
+                $jwt = JWT::encode($payload, $secret_key, 'HS256');
+
+
+                echo json_encode([
+                'success' => true,
+                'message' => 'Sign-in successful',
+                'token' => $jwt,
+                'user' => [
+                    'id' => $user['id'],
+                    'username' => $user['username'],
+                    'accountType' => $user['accountType']
+                ]
+            ]);
+            
             } else {
                 echo json_encode(['success' => false, 'message' => 'Invalid password']);
             }

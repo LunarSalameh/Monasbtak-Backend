@@ -10,6 +10,7 @@ import { OrbitProgress } from 'react-loading-indicators';
 function ProfileEvents() {
     const [searchParams] = useSearchParams();
     const id = searchParams.get('id'); 
+
     const [userId, setUserId] = useState(null); // Store userId
     const [showModal, setShowModal] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
@@ -33,7 +34,7 @@ function ProfileEvents() {
         const fetchCurrentEvents = async () => {
             try {
                 setUserId(id); // Set userId in state
-                const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getProfileCurrentEvents.php?user_id=${id}`);
+                const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getProfileCurrentEvents.php?id=${id}`);
                 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -54,7 +55,7 @@ function ProfileEvents() {
                 }
                 setLoadingCurrent(false);
             } catch (error) {
-                console.error("Error fetching events:", error);
+                console.log("Error fetching events:", error);
                 setLoadingCurrent(false);
             }
         };
@@ -62,7 +63,7 @@ function ProfileEvents() {
         const fetchPrevEvents = async () => {
             try {
                 setUserId(id); // Set userId in state
-                const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getProfilePrevEvents.php?user_id=${id}`);
+                const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getProfilePrevEvents.php?id=${id}`);
                 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -83,7 +84,7 @@ function ProfileEvents() {
                 }
                 setLoadingPrev(false);
             } catch (error) {
-                console.error("Error fetching events:", error);
+                console.log("Error fetching events:", error);
                 setLoadingPrev(false);
             }
         };
@@ -94,7 +95,7 @@ function ProfileEvents() {
       
     const fetchPackagesDetails = async (packageId) => {
         try {
-          const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?id=${packageId}`);
+          const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?packageId=${packageId}`);
           const result = await response.json();
           if (result.status === 'success' && result.data.length > 0) {
             const packageDetails = result.data[0];
@@ -105,7 +106,7 @@ function ProfileEvents() {
           }
           return {};
         } catch (error) {
-          console.error("Error fetching package details:", error);
+          console.log("Error fetching package details:", error);
           return {};
         }
       }

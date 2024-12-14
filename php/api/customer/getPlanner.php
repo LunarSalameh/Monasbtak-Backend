@@ -13,7 +13,7 @@ error_reporting(E_ALL);
 $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
 try {
-    $id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
+    $id = isset($_GET['plannerId']) ? filter_var($_GET['plannerId'], FILTER_VALIDATE_INT) : null;
 
     if ($id) {
         $sql = "SELECT id, username, email, age, phonenumber, gender, description, image FROM planners WHERE id = :id"; 

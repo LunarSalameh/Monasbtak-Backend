@@ -24,12 +24,12 @@ export default function SignIn() {
 
     const handleSignIn = (e) => {
         e.preventDefault();
-
+    
         const credentials = {
-            usernameOrPhone, // Updated key to match input field
+            usernameOrPhone,
             pwd: password,
         };
-        
+        console.log('Sending credentials:', credentials);
 
         fetch('http://localhost/Monasbtak-Backend/php/api/auth/login.php', {
             method: 'POST',
@@ -42,19 +42,25 @@ export default function SignIn() {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                return response.json(); // Parse the JSON response
+                return response.json();
             })
             .then((data) => {
                 if (data.success) {
+                    // Store the JWT token
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+    
                     // Display success message and redirect
                     localStorage.setItem('message', `Welcome, ${data.user.username}!`);
+    
                     if (data.user.accountType === 'planner') {
                         router.push(`/planners/home?id=${data.user.id}`);
+                    } else if (data.user.accountType === 'admin') {
+                        router.push(`/admin/dashboard?id=${data.user.id}`);
                     } else {
                         router.push(`/customers/landingPage?id=${data.user.id}`);
                     }
                 } else {
-                    // Display error message from backend
                     setMessage(data.message || 'Invalid credentials.');
                 }
             })

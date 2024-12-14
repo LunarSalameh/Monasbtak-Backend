@@ -7,17 +7,21 @@ import { useSearchParams } from 'next/navigation';
 
 function ReactDatePicker(){
     const searchParams = useSearchParams();
+
     const userId = searchParams.get('id'); // userId 
-    const id = searchParams.get('packageId'); //package id
+    const packageId = searchParams.get('packageId'); //package id
+
     const [selectedDate, setSelectedDate] = useState(null);
     const [packageDetails, setPackageDetails] = useState(null);
     const numberBoxRef = useRef(null);
     const [acceptAlert, setAcceptAlert] = useState(false);
 
+    const [message,setMessage] = useState(null);
+
   useEffect(() => {
     const fetchPackageDetails = async () => {
       try {
-        const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?id=${id}`);
+        const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?packageId=${packageId}`);
         const data = await response.json();
         if (data.status === 'success') {
           setPackageDetails(data.data[0]);
@@ -30,10 +34,10 @@ function ReactDatePicker(){
       }
     };
 
-    if (id) {
+    if (packageId) {
       fetchPackageDetails();
     }
-  }, [id]);
+  }, [packageId]);
 
 
     const handelDateChange = (date) => {
@@ -47,14 +51,16 @@ maxdate.setDate(maxdate.getDate() +365)
 
     const handleBooking = async () => {
         if (!selectedDate || !packageDetails) {
-            alert('Please select a date and ensure package details are loaded.');
+            // alert('Please select a date and ensure package details are loaded.');
+            setMessage('Please select a date and ensure package details are loaded.')
             return;
         }
 
         const attendings = numberBoxRef.current ? numberBoxRef.current.value : '';
 
         if (!attendings) {
-            alert('Please enter the number of attendings.');
+            // alert('Please enter the number of attendings.');
+            setMessage('Please enter the number of attendings.')            
             return;
         }
 
@@ -64,7 +70,7 @@ maxdate.setDate(maxdate.getDate() +365)
             eventDay: selectedDate.toISOString().split('T')[0],
             attendings: attendings,
             eventTime: selectedDate.toTimeString().split(' ')[0],
-            package_id: id,
+            package_id: packageId,
             user_Id: userId, 
         };
 
@@ -85,10 +91,14 @@ maxdate.setDate(maxdate.getDate() +365)
                 setTimeout(() => {
                     window.location.href = `/customers/profile/?id=${userId}`;
                 }, 1500); 
+            }
+            else if (result.message === 'You already have an ongoing event with this package.') {
+                setMessage('Please choose another package, you already have an ongoing event with this package.');
             } 
         } catch (error) {
             console.error('Error booking event:', error);
-            alert('Failed to book event');
+            setMessage('Failed to book event: ',error)
+            // alert('Failed to book event');
         }
     };
 
@@ -100,6 +110,11 @@ maxdate.setDate(maxdate.getDate() +365)
                         <div className="bg-green-600 p-0 rounded-l-xl"></div>
                         <div className="p-5 bg-white border-2 border-green-600">Package Booked Successfully</div>
                     </div>
+                </div>
+            )}
+            {message && (
+                <div className={` ${message.includes('Please') || message.includes('Failed') ? 'text-red-600 border-red-600 bg-red-100' : 'text-green-600 border-green-600 bg-green-100'}  border-solid border-2 rounded-md   mb-6 mx-4 text-center px-2 py-2`}>
+                    {message}
                 </div>
             )}
         <div className="w-[100%] ">

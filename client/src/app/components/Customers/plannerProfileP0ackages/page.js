@@ -5,6 +5,7 @@ import Favorite from '../../Favorite/page'
 import { CiLocationOn } from "react-icons/ci";
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation';
+import { OrbitProgress } from 'react-loading-indicators';
 
 function PlannerPackages() {
   const searchParams = useSearchParams();
@@ -22,10 +23,10 @@ function PlannerPackages() {
         if (data.status === 'success') {
           setPackages(data.data);
         } else {
-          console.error(data.message);
+          console.log(data.message);
         }
       } catch (error) {
-        console.error(error);
+        console.log(error);
       } finally {
         setLoading(false);
       }

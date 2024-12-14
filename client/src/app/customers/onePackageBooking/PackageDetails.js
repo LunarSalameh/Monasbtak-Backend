@@ -7,21 +7,25 @@ import { OrbitProgress } from 'react-loading-indicators';
 
 const PackageDetails = () => {
   const searchParams = useSearchParams();
-  const id = searchParams.get('packageId');
+
+  const packageId = searchParams.get('packageId');
+  const userId = searchParams.get('id');
+  const plannerId = searchParams.get('plannerId');
+
   const [packageDetails, setPackageDetails] = useState(null);
   const [plannerDetails, setPlannerDetails] = useState(null);
 
   useEffect(() => {
     const fetchPackageDetails = async () => {
       try {
-        const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?id=${id}`);
+        const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?packageId=${packageId}`);
         const data = await response.json();
         if (data.status === 'success') {
           const packageData = data.data[0];
           setPackageDetails(packageData);
 
           // Fetch planner details using planner_id from packageData
-          const plannerResponse = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPlanner.php?id=${packageData.planner_id}`);
+          const plannerResponse = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPlanner.php?id=${userId}&plannerId=${plannerId}`);
           const plannerText = await plannerResponse.text();
           const plannerData = plannerText ? JSON.parse(plannerText).data[0] : {};
           if (plannerData && !plannerData.error) {
@@ -38,10 +42,10 @@ const PackageDetails = () => {
       }
     };
 
-    if (id) {
+    if (packageId) {
       fetchPackageDetails();
     }
-  }, [id]);
+  }, [packageId]);
 
   if (!packageDetails || !plannerDetails) {
     return  <div className='flex w-full justify-center justify-items-center py-16'>
@@ -61,7 +65,7 @@ const PackageDetails = () => {
         </div>
         <div className="details">
           <div className="planner-info">
-            <Link href={`/customers/plannerProfile/?id=${plannerDetails.id}`}>
+            <Link href={`/customers/plannerProfile/?id=${userId}&plannerId=${plannerDetails.id}`}>
             <div className='planner-profile'>
               <img src={`data:image/jpeg;base64,${plannerDetails.image}`} alt="Planner" className="planner-image" />
               {plannerDetails && <span className='bold-font mid-font-size'>{plannerDetails.username}</span>}

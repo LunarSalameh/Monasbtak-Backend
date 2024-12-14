@@ -14,7 +14,7 @@ error_reporting(E_ALL);
 $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
 try {
-    $user_id = isset($_GET['user_id']) ? filter_var($_GET['user_id'], FILTER_VALIDATE_INT) : null;
+    $user_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
     $IsDeleted = 0;
 
     if ($user_id) {

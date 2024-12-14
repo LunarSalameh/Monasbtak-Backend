@@ -11,6 +11,7 @@ import { useSearchParams } from 'next/navigation';
 function ProfileDetails({ user, fetchUserData }) {
   const searchParams = useSearchParams();
   const id = searchParams.get('id'); 
+
   const [acceptAlert, setAcceptAlert] = useState(false);
   const [edit, setEdit] = useState(false);
   const [updatedUser, setUpdatedUser] = useState(user);

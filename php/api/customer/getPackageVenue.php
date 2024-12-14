@@ -17,7 +17,7 @@ try {
     $subCategory_id = isset($_GET['subCategory_id']) ? filter_var($_GET['subCategory_id'], FILTER_VALIDATE_INT) : null;
 
     if ($venue_id) {
-        $sql = "SELECT id, name, description, price, image, location, subCat_name, category_id, subCategory_id, status 
+        $sql = "SELECT id, name, description, price, image, location, subCat_name, category_id, subCategory_id, status, planner_id
                 FROM packeges 
                 WHERE venue_id = :venue_id AND status = 'Accepted' AND IsDeleted = 0";
         
