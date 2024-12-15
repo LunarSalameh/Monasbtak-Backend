@@ -10,7 +10,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = require_once(__DIR__ . '/../php/config/dbh.inc.php');
+$pdo = require_once(__DIR__ . '/../../../php/config/dbh.inc.php');
 try {
     // Fetch id and venue_id from venue_subcategory using subCategory_id
     $subCategory_id = $_GET['subCategory_id'];

@@ -9,7 +9,7 @@ error_reporting(E_ALL);
 
 // Include the database connection
 
-$pdo = include_once('/monasbtak.org/php/config/dbh.inc.php');
+$pdo = require_once(__DIR__ . '/../../config/dbh.inc.php'); // Correct relative path
 require_once '/php/vendor/autoload.php';
 
 use Firebase\JWT\JWT;

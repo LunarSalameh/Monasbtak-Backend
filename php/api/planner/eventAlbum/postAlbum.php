@@ -8,7 +8,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$pdo = include_once('/monasbtak.org/php/config/dbh.inc.php');
+$pdo = require_once(__DIR__ . '/../../../php/config/dbh.inc.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_POST['category_id']) || !isset($_FILES['image']) || !isset($_POST['planner_id'])) {

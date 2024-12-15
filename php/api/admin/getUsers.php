@@ -10,7 +10,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = include_once('/monasbtak.org/php/config/dbh.inc.php');
+$pdo = require_once(__DIR__ . '/../../config/dbh.inc.php'); // Correct relative path
 
 try{
     $sql="(

@@ -4,7 +4,7 @@ header("Access-Control-Allow-Methods: GET, POST");
 header("Access-Control-Allow-Headers: Content-Type");
 
 // Include the database connection
-$pdo = include_once('/monasbtak.org/php/config/dbh.inc.php');
+$pdo = require_once(__DIR__ . '/../../config/dbh.inc.php'); // Correct relative path
 
 // Define the uploads directory
 $uploadDir = '/php/api/upload/';

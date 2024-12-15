@@ -12,7 +12,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 
-$pdo = include_once('/monasbtak.org/php/config/dbh.inc.php');
+$pdo = require_once(__DIR__ . '/../../../php/config/dbh.inc.php');
 
 try{
     $stmt = $pdo->prepare("SELECT id,name FROM venues WHERE status='Accepted'");

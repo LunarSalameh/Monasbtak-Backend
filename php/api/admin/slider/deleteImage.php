@@ -11,7 +11,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = require_once(__DIR__ . '/../php/config/dbh.inc.php');
+$pdo = require_once(__DIR__ . '/../../../config/dbh.inc.php'); // Correct relative path
+
 try {
     $data = json_decode(file_get_contents("php://input"), true);
     $id = isset($data['id']) ? filter_var($data['id'], FILTER_VALIDATE_INT) : null;

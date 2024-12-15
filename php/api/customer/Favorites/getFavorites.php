@@ -9,7 +9,8 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Cache-Control: no-cache, must-revalidate");
 
 // Include the database connection
-$pdo = require_once(__DIR__ . '/../php/config/dbh.inc.php');
+$pdo = require_once(__DIR__ . '/../../../php/config/dbh.inc.php');
+
 try {
     // Check if user_id is provided in the GET request
     if (isset($_GET['id']) && is_numeric($_GET['id'])) {
