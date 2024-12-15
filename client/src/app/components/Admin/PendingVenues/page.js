@@ -63,7 +63,7 @@ export default function PlannerVenues() {
     console.log(`venueId: ${venueId}`)
     if (!venue) return;
 
-    fetch("http://localhost/Monasbtak-Backend/php/api/admin/venues/postPendingVenues.php", {
+    fetch("http://monasbtak.org/php/api/admin/venues/postPendingVenues.php", {
         method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -98,7 +98,7 @@ export default function PlannerVenues() {
 
 // get pending venues
 useEffect(() => {
-  fetch("http://localhost/Monasbtak-Backend/php/api/admin/venues/getPendingVenues.php") 
+  fetch("http://monasbtak.org/php/api/admin/venues/getPendingVenues.php") 
     .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

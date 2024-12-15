@@ -19,7 +19,7 @@ const Scategories = () => {
   const category_id = searchParams.get('categoryId'); // Get category ID from the query parameters
 
   useEffect(() => {
-    fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getSubCategories.php?category_id=${category_id}`)
+    fetch(`http://monasbtak.org/php/api/customer/getSubCategories.php?category_id=${category_id}`)
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
@@ -42,7 +42,7 @@ const Scategories = () => {
 
   const fetchVenues = async (subCategory_id) => {
     try {
-      const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getVenueId.php?subCategory_id=${subCategory_id}`);
+      const response = await fetch(`http://monasbtak.org/php/api/customer/getVenueId.php?subCategory_id=${subCategory_id}`);
       const data = await response.json();
       if (data.status === 'success') {
         const venueIds = data.subCategories.map(subCategory => subCategory.venue_id);
@@ -62,7 +62,7 @@ const Scategories = () => {
     try {
       const venuesDataArray = [];
       for (const id of venueIds) {
-        const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getVenues.php?id=${id}`);
+        const response = await fetch(`http://monasbtak.org/php/api/customer/getVenues.php?id=${id}`);
         const text = await response.text();
         const data = text ? JSON.parse(text) : {};
         if (data.status === 'success') {

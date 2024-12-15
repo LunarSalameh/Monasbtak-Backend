@@ -21,7 +21,7 @@ const Slider = () => {
   const fetchImages = async () => {
     try {
       const response = await fetch(
-        "http://localhost/Monasbtak-Backend/php/api/admin/slider/getImages.php"
+        "http://monasbtak.org/php/api/admin/slider/getImages.php"
       );
       const data = await response.json();
       if (data.status === "success" && Array.isArray(data.data)) {

@@ -21,7 +21,7 @@ function ReactDatePicker(){
   useEffect(() => {
     const fetchPackageDetails = async () => {
       try {
-        const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?packageId=${packageId}`);
+        const response = await fetch(`http://monasbtak.org/php/api/customer/getPackage.php?packageId=${packageId}`);
         const data = await response.json();
         if (data.status === 'success') {
           setPackageDetails(data.data[0]);
@@ -77,7 +77,7 @@ maxdate.setDate(maxdate.getDate() +365)
         console.log('Booking Data:', bookingData); // Debugging: Log the booking data
 
         try {
-            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/customer/bookEvent.php', {
+            const response = await fetch('http://monasbtak.org/php/api/customer/bookEvent.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

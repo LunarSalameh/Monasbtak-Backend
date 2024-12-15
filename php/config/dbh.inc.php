@@ -1,8 +1,8 @@
 <?php
 // DATABASE CONNECTION
-$dsn = "mysql:host=127.0.0.1;dbname=montest";
-$dbusername = "root";
-$dbpassword = "";
+$dsn = "mysql:host=127.0.0.1;dbname=u812004406_montest";
+$dbusername = "u812004406_root";
+$dbpassword = "Root2002!";
 
 try {
     $pdo = new PDO($dsn, $dbusername, $dbpassword);

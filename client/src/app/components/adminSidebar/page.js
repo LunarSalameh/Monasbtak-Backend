@@ -49,7 +49,7 @@ export default function Sidebar() {
     useEffect(() => {
     const fetchAdmin = async () => {
         try {
-            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/admin/getAdmin.php?id=${id}`);
+            const response = await fetch(`http://monasbtak.org/php/api/admin/getAdmin.php?id=${id}`);
             const result = await response.json();
 
             if (result.success) {

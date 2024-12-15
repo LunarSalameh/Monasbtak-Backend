@@ -39,7 +39,7 @@ export default function AllEventsPlanner () {
     const fetchCurrentEvents = async () => {
         try {
             setUserId(id); // Set userId in state
-            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/events/getAll.php?planner_Id=${id}`);
+            const response = await fetch(`http://monasbtak.org/php/api/planner/events/getAll.php?planner_Id=${id}`);
             
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -74,7 +74,7 @@ export default function AllEventsPlanner () {
 
 const fetchCustomerName = async (userId) => {
     try {
-        const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/profile.php?id=${userId}`);
+        const response = await fetch(`http://monasbtak.org/php/api/customer/profile.php?id=${userId}`);
         const result = await response.json();
         if (result.success && result.user) {
             return result.user.username;
@@ -88,7 +88,7 @@ const fetchCustomerName = async (userId) => {
 
 const fetchPackagesDetails = async (packageId) => {
     try {
-      const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?id=${packageId}`);
+      const response = await fetch(`http://monasbtak.org/php/api/customer/getPackage.php?id=${packageId}`);
       const result = await response.json();
       if (result.status === 'success' && result.data.length > 0) {
         const packageDetails = result.data[0];
@@ -106,7 +106,7 @@ const fetchPackagesDetails = async (packageId) => {
 
   const handleStatusChange = async (event_Id, status) => {
     try {
-      const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/events/postEventsStatus.php`, {
+      const response = await fetch(`http://monasbtak.org/php/api/planner/events/postEventsStatus.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -140,7 +140,7 @@ const fetchPackagesDetails = async (packageId) => {
 
   const handleDeleteEvent = async () => {
     try {
-      const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/events/deleteEvent.php`, {
+      const response = await fetch(`http://monasbtak.org/php/api/planner/events/deleteEvent.php`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

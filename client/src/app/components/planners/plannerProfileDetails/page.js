@@ -19,7 +19,7 @@ function ProfileDetails () {
       const fetchPlannerDetails = async () => {
         try {
           const response = await fetch(
-            `http://localhost/Monasbtak-Backend/php/api/customer/getPlanner.php?id=${id}`
+            `http://monasbtak.org/php/api/customer/getPlanner.php?id=${id}`
           );
           const data = await response.json();
           if (data.status === 'success') {

@@ -38,7 +38,7 @@ export default function Sidebar({ fetchPlannerData, handleImageChange }) {
     useEffect(() => {
         const fetchPlanner = async () => {
             try {
-                const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getOnePlanner.php?id=${id}`);
+                const response = await fetch(`http://monasbtak.org/php/api/planner/profile/getOnePlanner.php?id=${id}`);
                 const result = await response.json();
     
                 if (result.success) {

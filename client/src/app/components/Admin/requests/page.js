@@ -39,7 +39,7 @@ function page() {
 
     const fetchPackages = async () => {
         try {
-            const response = await fetch("http://localhost/Monasbtak-Backend/php/api/admin/packages/getPackagesRequest.php", {
+            const response = await fetch("http://monasbtak.org/php/api/admin/packages/getPackagesRequest.php", {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -73,7 +73,7 @@ function page() {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/getCategorySub.php');
+                const response = await fetch('http://monasbtak.org/php/api/planner/packages/getCategorySub.php');
                 const result = await response.json();
                 setCategories(result.categories);
             } catch (error) {
@@ -87,7 +87,7 @@ function page() {
  useEffect(() => {
     const fetchPackageStatus = async () => {
         try {
-            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/packages/changeRequest.php', {
+            const response = await fetch('http://monasbtak.org/php/api/admin/packages/changeRequest.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

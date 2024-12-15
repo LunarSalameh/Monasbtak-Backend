@@ -66,7 +66,7 @@ function AddPlannerPage() {
 
   // Fetch all users
   useEffect(() => {
-    fetch("http://localhost/Monasbtak-Backend/php/api/admin/getUsers.php")
+    fetch("http://monasbtak.org/php/api/admin/getUsers.php")
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -109,7 +109,7 @@ function AddPlannerPage() {
       return;
     }
 
-    fetch("http://localhost/Monasbtak-Backend/php/api/admin/addPlanner.php", {
+    fetch("http://monasbtak.org/php/api/admin/addPlanner.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -151,7 +151,7 @@ function AddPlannerPage() {
   const handleDeleteUser = () => {
     if (!userToDelete) return;
 
-    fetch("http://localhost/Monasbtak-Backend/php/api/admin/deleteUser.php", {
+    fetch("http://monasbtak.org/php/api/admin/deleteUser.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

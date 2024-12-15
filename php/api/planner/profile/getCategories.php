@@ -10,7 +10,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 
-$pdo = include_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
+$pdo = include_once(' /php/config/dbh.inc.php');
 
 // Fetch Data the planners table
 $sql = "SELECT id,name FROM categories";

@@ -23,7 +23,7 @@ export default function CategoriesSection() {
 
     const fetchCategories = () => {
         setLoading(true);
-        fetch('http://localhost/Monasbtak-Backend/php/api/admin/categories/categories.php')
+        fetch('http://monasbtak.org/php/api/admin/categories/categories.php')
             .then(response => response.json())
             .then(data => {
                 if (Array.isArray(data)) {
@@ -49,7 +49,7 @@ export default function CategoriesSection() {
         if (editIndex === index) {
             const categoryToUpdate = categories[index];
             try {
-                const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/categories/updatecategory.php', {
+                const response = await fetch('http://monasbtak.org/php/api/admin/categories/updatecategory.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ name: categoryToUpdate.name, updatedName: updatedCategoryName }),
@@ -81,7 +81,7 @@ export default function CategoriesSection() {
     const handleDelete = async () => {
         const categoryToDeleteData = categories[categoryToDelete];
         try {
-            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/categories/deletecategory.php', {
+            const response = await fetch('http://monasbtak.org/php/api/admin/categories/deletecategory.php', {
                 method: 'POST',
                 body: JSON.stringify({ name: categoryToDeleteData.name }),  // Delete based on 'name'
                 headers: { 'Content-Type': 'application/json' },
@@ -120,7 +120,7 @@ export default function CategoriesSection() {
         formData.append('image', selectedImageFile);
 
         try {
-            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/categories/addcategory.php', {
+            const response = await fetch('http://monasbtak.org/php/api/admin/categories/addcategory.php', {
                 method: 'POST',
                 body: formData,
             });

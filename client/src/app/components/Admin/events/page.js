@@ -15,7 +15,7 @@ export default function AllEventsPlanner() {
     useEffect(() => {
         const fetchCurrentEvents = async () => {
             try {
-                const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/admin/events/getAll.php`);
+                const response = await fetch(`http://monasbtak.org/php/api/admin/events/getAll.php`);
                 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -46,7 +46,7 @@ export default function AllEventsPlanner() {
 
     const fetchCustomerName = async (userId) => {
         try {
-            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/profile.php?id=${userId}`);
+            const response = await fetch(`http://monasbtak.org/php/api/customer/profile.php?id=${userId}`);
             const result = await response.json();
             if (result.success && result.user) {
                 return result.user.username;
@@ -60,7 +60,7 @@ export default function AllEventsPlanner() {
 
     const fetchPackagesDetails = async (packageId) => {
         try {
-            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?id=${packageId}`);
+            const response = await fetch(`http://monasbtak.org/php/api/customer/getPackage.php?id=${packageId}`);
             const result = await response.json();
             if (result.status === 'success' && result.data.length > 0) {
                 const packageDetails = result.data[0];

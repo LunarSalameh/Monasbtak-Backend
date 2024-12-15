@@ -56,7 +56,7 @@ export default function SignUp() {
 
         
         try {
-            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/auth/register.php', {
+            const response = await fetch('http://monasbtak.org/php/api/auth/register.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

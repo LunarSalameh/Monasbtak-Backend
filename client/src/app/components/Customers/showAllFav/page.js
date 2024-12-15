@@ -16,7 +16,7 @@ function FavoritePage() {
     useEffect(() => {
         const fetchFavorites = async () => {
             try {
-                const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/Favorites/getFavorites.php?id=${id}`);
+                const response = await fetch(`http://monasbtak.org/php/api/customer/Favorites/getFavorites.php?id=${id}`);
                 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -48,7 +48,7 @@ function FavoritePage() {
 
     const fetchPackagesDetails = async (packageId) => {
         try {
-            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?packageId=${packageId}`);
+            const response = await fetch(`http://monasbtak.org/php/api/customer/getPackage.php?packageId=${packageId}`);
             const result = await response.json();
             if (result.status === 'success' && result.data.length > 0) {
                 return {
@@ -65,7 +65,7 @@ function FavoritePage() {
 
     const handleDelete = async (favoriteId) => {
         try {
-            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/customer/Favorites/deleteFavorite.php', {
+            const response = await fetch('http://monasbtak.org/php/api/customer/Favorites/deleteFavorite.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

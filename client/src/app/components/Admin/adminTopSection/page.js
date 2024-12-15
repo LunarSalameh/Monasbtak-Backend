@@ -23,7 +23,7 @@ export default function AdminTopSection () {
       useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await fetch("http://localhost/Monasbtak-Backend/php/api/admin/topSection/totalUsers.php");
+            const response = await fetch("http://monasbtak.org/php/api/admin/topSection/totalUsers.php");
             const result = await response.json();
     
             if (result.success) {
@@ -42,7 +42,7 @@ export default function AdminTopSection () {
 
         const fetchAdmin = async () => {
             try {
-              const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/admin/getAdmin.php?id=${id}`);
+              const response = await fetch(`http://monasbtak.org/php/api/admin/getAdmin.php?id=${id}`);
               const result = await response.json();
       
               if (result.success) {

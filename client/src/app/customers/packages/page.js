@@ -21,7 +21,7 @@ const Packages = () => {
     useEffect(() => {
         if (venue_id) {
             setLoading(true);
-            fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getVenues.php?id=${venue_id}`)
+            fetch(`http://monasbtak.org/php/api/customer/getVenues.php?id=${venue_id}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
@@ -55,7 +55,7 @@ const Packages = () => {
     const fetchPackages = async (venue_id) => {
         try {
             setLoading(true);
-            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackageVenue.php?venue_id=${venue_id}&subCategory_id=${subCategory_id}`);
+            const response = await fetch(`http://monasbtak.org/php/api/customer/getPackageVenue.php?venue_id=${venue_id}&subCategory_id=${subCategory_id}`);
             const data = await response.json();
             if (data.status === 'success') {
                 setPackages(data.data);

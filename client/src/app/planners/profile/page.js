@@ -232,7 +232,7 @@ export default function Profile () {
           return;
         }
     
-        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getOnePlanner.php?id=${id}`)
+        fetch(`http://monasbtak.org/php/api/planner/profile/getOnePlanner.php?id=${id}`)
           .then((response) => {
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
@@ -259,7 +259,7 @@ export default function Profile () {
     const handleProfileModal = () => {
         if (EditProfile) {
             // Send updated profile data to the server
-            fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/editProfile.php?id=${id}`, {
+            fetch(`http://monasbtak.org/php/api/planner/profile/editProfile.php?id=${id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -287,7 +287,7 @@ export default function Profile () {
 
     // get all categories 
     useEffect(() => {
-        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getCategories.php`)
+        fetch(`http://monasbtak.org/php/api/planner/profile/getCategories.php`)
           .then((response) => {
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
@@ -314,7 +314,7 @@ export default function Profile () {
         console.log(`catName: ${catName},,,, plannerName: ${plannerName}`)
         if (!catName || !plannerName) return;
     
-        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/postPlannerCategories.php`, {
+        fetch(`http://monasbtak.org/php/api/planner/profile/postPlannerCategories.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -343,7 +343,7 @@ export default function Profile () {
 
     // get categories Id's related to planner 
     const fetchPlannerCategories = () => {
-        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getPlannerCategories.php?planner_id=${id}`)
+        fetch(`http://monasbtak.org/php/api/planner/profile/getPlannerCategories.php?planner_id=${id}`)
           .then((response) => {
             if (!response.ok) {
               throw new Error(`HTTP error! status: ${response.status}`);
@@ -378,7 +378,7 @@ export default function Profile () {
         try {
             const names = await Promise.all(
                 plannerCategoryIds.map((id) =>
-                    fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getOneCategory.php?id=${id}`)
+                    fetch(`http://monasbtak.org/php/api/planner/profile/getOneCategory.php?id=${id}`)
                         .then((response) => {
                             if (!response.ok) {
                                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -409,7 +409,7 @@ export default function Profile () {
         console.log(`catName: ${catName},,,, id: ${id}`)
         if (!catName || !id) return;
     
-        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/deletePlannerCategory.php`, {
+        fetch(`http://monasbtak.org/php/api/planner/profile/deletePlannerCategory.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -440,7 +440,7 @@ export default function Profile () {
     // get all venues 
     useEffect(() => {
     
-        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getVenues.php`)
+        fetch(`http://monasbtak.org/php/api/planner/profile/getVenues.php`)
         .then((response) => {
             if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -467,7 +467,7 @@ export default function Profile () {
         console.log(`vanueName: ${venueName},,,, plannerName: ${plannerName}`)
         if (!venueName || !plannerName) return;
     
-        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/postPlannerVenue.php`, {
+        fetch(`http://monasbtak.org/php/api/planner/profile/postPlannerVenue.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -497,7 +497,7 @@ export default function Profile () {
     // get Venues Id's related to planner 
     const fetchPlannerVenues = () => {
   
-    fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getPlannerVenues.php?planner_id=${id}`)
+    fetch(`http://monasbtak.org/php/api/planner/profile/getPlannerVenues.php?planner_id=${id}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -533,7 +533,7 @@ export default function Profile () {
             const names = await Promise.all(
                 plannerVenueIds.map((id) =>
                   
-                    fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getOneVenue.php?id=${id}`)
+                    fetch(`http://monasbtak.org/php/api/planner/profile/getOneVenue.php?id=${id}`)
                         .then((response) => {
                             if (!response.ok) {
                                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -564,7 +564,7 @@ export default function Profile () {
         console.log(`venueName: ${venueName},,,, id: ${id}`)
         if (!venueName || !id) return;
     
-        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/deletePlannerVenue.php`, {
+        fetch(`http://monasbtak.org/php/api/planner/profile/deletePlannerVenue.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -600,7 +600,7 @@ export default function Profile () {
             return;
         }
         
-        fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/changePassword.php`, {
+        fetch(`http://monasbtak.org/php/api/planner/profile/changePassword.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -634,7 +634,7 @@ export default function Profile () {
       
           try {
             const response = await fetch(
-              `http://localhost/Monasbtak-Backend/php/api/planner/profile/getSubCategory.php?category_id=${selectedCategoriesVen}`
+              `http://monasbtak.org/php/api/planner/profile/getSubCategory.php?category_id=${selectedCategoriesVen}`
             );
       
             if (!response.ok) {
@@ -674,7 +674,7 @@ export default function Profile () {
    
         try {
             const response = await fetch(
-                "http://localhost/Monasbtak-Backend/php/api/planner/profile/addVenue.php",
+                "http://monasbtak.org/php/api/planner/profile/addVenue.php",
                 {
                     method: "POST",
                     body: formData,

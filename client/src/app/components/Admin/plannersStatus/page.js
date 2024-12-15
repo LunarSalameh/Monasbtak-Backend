@@ -63,7 +63,7 @@ export default function PlannerStatus() {
     console.log(`PlannerId: ${plannerId}`)
     if (!planner) return;
 
-    fetch("http://localhost/Monasbtak-Backend/php/api/admin/postPlannersStatus.php", {
+    fetch("http://monasbtak.org/php/api/admin/postPlannersStatus.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -97,7 +97,7 @@ export default function PlannerStatus() {
   };
 
   useEffect(() => {
-    fetch("http://localhost/Monasbtak-Backend/php/api/admin/getPendingPlanners.php") 
+    fetch("http://monasbtak.org/php/api/admin/getPendingPlanners.php") 
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -110,7 +110,7 @@ export default function PlannerStatus() {
             ...planner,
             resume: planner.resume ? (
               <a
-                href={`http://localhost/Monasbtak-Backend/php/api/admin/fileDownload.php?resume=${planner.resume}`}
+                href={`http://monasbtak.org/php/api/admin/fileDownload.php?resume=${planner.resume}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 underline"

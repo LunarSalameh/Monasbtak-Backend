@@ -18,14 +18,14 @@ const PackageDetails = () => {
   useEffect(() => {
     const fetchPackageDetails = async () => {
       try {
-        const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?packageId=${packageId}`);
+        const response = await fetch(`http://monasbtak.org/php/api/customer/getPackage.php?packageId=${packageId}`);
         const data = await response.json();
         if (data.status === 'success') {
           const packageData = data.data[0];
           setPackageDetails(packageData);
 
           // Fetch planner details using planner_id from packageData
-          const plannerResponse = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPlanner.php?id=${userId}&plannerId=${plannerId}`);
+          const plannerResponse = await fetch(`http://monasbtak.org/php/api/customer/getPlanner.php?id=${userId}&plannerId=${plannerId}`);
           const plannerText = await plannerResponse.text();
           const plannerData = plannerText ? JSON.parse(plannerText).data[0] : {};
           if (plannerData && !plannerData.error) {

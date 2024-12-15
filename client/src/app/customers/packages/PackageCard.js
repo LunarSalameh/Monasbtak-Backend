@@ -18,7 +18,7 @@ const PackageCard = ({ title, description, image, package_id,planner_Id }) => {
             }
 
             try {
-                const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/Favorites/getFavStatus.php?id=${userId}`);
+                const response = await fetch(`http://monasbtak.org/php/api/customer/Favorites/getFavStatus.php?id=${userId}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -50,7 +50,7 @@ const PackageCard = ({ title, description, image, package_id,planner_Id }) => {
         setIsFavorited(!isFavorited);
 
         try {
-            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/customer/Favorites/addFavorite.php', {
+            const response = await fetch('http://monasbtak.org/php/api/customer/Favorites/addFavorite.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -40,7 +40,7 @@ const handleReject = () => {
 
 const fetchDeltePackage = async () => {
   try {
-    const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/deletePackage.php', {
+    const response = await fetch('http://monasbtak.org/php/api/planner/packages/deletePackage.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ const fetchDeltePackage = async () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/getCategorySub.php');
+        const response = await fetch('http://monasbtak.org/php/api/planner/packages/getCategorySub.php');
         const result = await response.json();
         setCategories(result.categories);
         setSubCategories(result.sub_categories);
@@ -75,7 +75,7 @@ const fetchDeltePackage = async () => {
 
     const fetchVenues = async () => {
       try {
-        const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/getVenues.php');
+        const response = await fetch('http://monasbtak.org/php/api/planner/packages/getVenues.php');
         const result = await response.json();
         setVenues(result.venues);
       } catch (error) {
@@ -91,7 +91,7 @@ const fetchDeltePackage = async () => {
     const fetchPackages = async () => {
       try {
         const planner_id = id;
-        const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/packages/getPackageRequestStatus.php?planner_id=${planner_id}`, {
+        const response = await fetch(`http://monasbtak.org/php/api/planner/packages/getPackageRequestStatus.php?planner_id=${planner_id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ const fetchDeltePackage = async () => {
     const fetchPlanner = async () => {
       try {
         const planner_id = id; 
-        const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/admin/packages/getPlannerDetails.php?id=${planner_id}`, {
+        const response = await fetch(`http://monasbtak.org/php/api/admin/packages/getPlannerDetails.php?id=${planner_id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

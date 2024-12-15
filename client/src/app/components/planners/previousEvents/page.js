@@ -17,7 +17,7 @@ export default function PreviousEvents() {
         const fetchPreviousEvents = async () => {
             try {
                 setUserId(id);
-                const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/events/getPrev.php?planner_Id=${id}`);
+                const response = await fetch(`http://monasbtak.org/php/api/planner/events/getPrev.php?planner_Id=${id}`);
                 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -48,7 +48,7 @@ export default function PreviousEvents() {
 
     const fetchCustomerName = async (userId) => {
         try {
-            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/profile.php?id=${userId}`);
+            const response = await fetch(`http://monasbtak.org/php/api/customer/profile.php?id=${userId}`);
             const result = await response.json();
             if (result.success && result.user) {
                 return {
@@ -66,7 +66,7 @@ export default function PreviousEvents() {
 
     const fetchPackagesDetails = async (packageId) => {
         try {
-            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?id=${id}&packageId=${packageId}`);
+            const response = await fetch(`http://monasbtak.org/php/api/customer/getPackage.php?id=${id}&packageId=${packageId}`);
             const result = await response.json();
             if (result.status === 'success' && result.data.length > 0) {
                 const packageDetails = result.data[0];

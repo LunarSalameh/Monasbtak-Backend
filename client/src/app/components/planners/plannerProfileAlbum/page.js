@@ -61,7 +61,7 @@ function PlannerAlbum() {
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          `http://localhost/Monasbtak-Backend/php/api/planner/eventAlbum/getCategories.php`
+          `http://monasbtak.org/php/api/planner/eventAlbum/getCategories.php`
         );
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -86,7 +86,7 @@ function PlannerAlbum() {
 
     try {
       const response = await fetch(
-        `http://localhost/Monasbtak-Backend/php/api/planner/eventAlbum/getAlbumByCategory.php?category_id=${category_id}&planner_id=${planner_id}`
+        `http://monasbtak.org/php/api/planner/eventAlbum/getAlbumByCategory.php?category_id=${category_id}&planner_id=${planner_id}`
       );
       const data = await response.json();
 

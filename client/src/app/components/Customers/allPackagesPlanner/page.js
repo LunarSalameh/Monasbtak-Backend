@@ -15,7 +15,7 @@ function PlannerPackages() {
       const fetchPackages = async () => {
         try {
           const response = await fetch(
-            `http://localhost/Monasbtak-Backend/php/api/customer/getPlannerPackages.php?planner_id=${id}`
+            `http://monasbtak.org/php/api/customer/getPlannerPackages.php?planner_id=${id}`
           );
           const data = await response.json();
           if (data.status === 'success') {

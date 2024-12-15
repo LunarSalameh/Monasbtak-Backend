@@ -28,7 +28,7 @@ export default function HomeScrollBar () {
     const fetchImages = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/slider/getImages.php');
+            const response = await fetch('http://monasbtak.org/php/api/admin/slider/getImages.php');
             const data = await response.json();
             if (data.status === 'success' && Array.isArray(data.data)) {
                 setImages(data.data);
@@ -47,7 +47,7 @@ export default function HomeScrollBar () {
     const fetchDeleteImage = async (image) => {
         setLoading(true);
         try {
-            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/slider/deleteImage.php', {
+            const response = await fetch('http://monasbtak.org/php/api/admin/slider/deleteImage.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export default function HomeScrollBar () {
         
         setLoading(true);
         try {
-            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/slider/addImage.php', {
+            const response = await fetch('http://monasbtak.org/php/api/admin/slider/addImage.php', {
                 method: 'POST',
                 body: formData,
             });

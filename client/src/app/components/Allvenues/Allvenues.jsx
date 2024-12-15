@@ -8,7 +8,7 @@
 //     useEffect(() => {
 //         const fetchVenues = async () => {
 //             try {
-//                 const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/admin/venues/getVenues.php?categoryId=${categoryId}`);
+//                 const response = await fetch(`http://monasbtak.org/php/api/admin/venues/getVenues.php?categoryId=${categoryId}`);
 //                 const data = await response.json();
 //                 setVenues(data);
 //             } catch (error) {

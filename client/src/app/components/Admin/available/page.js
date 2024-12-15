@@ -19,7 +19,7 @@ function page() {
     useEffect(() => {
         const fetchPackages = async () => {
           try {
-            const response = await fetch("http://localhost/Monasbtak-Backend/php/api/admin/packages/getPlannersAccepted.php", {
+            const response = await fetch("http://monasbtak.org/php/api/admin/packages/getPlannersAccepted.php", {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',

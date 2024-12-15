@@ -30,7 +30,7 @@ function page() {
 
     const fetchVenues = async () => {
         try {
-            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/venues/getVenues.php', {
+            const response = await fetch('http://monasbtak.org/php/api/admin/venues/getVenues.php', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ function page() {
     useEffect(() => {
       const fetchCategories = async () => {
         try {
-          const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/getCategorySub.php');
+          const response = await fetch('http://monasbtak.org/php/api/planner/packages/getCategorySub.php');
           const result = await response.json();
           setCategories(result.categories);
           setSubCategories(result.sub_categories);
@@ -72,7 +72,7 @@ function page() {
 
       const fetchDelteVenue = async () => {
         try {
-          const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/venues/deleteVenue.php', {
+          const response = await fetch('http://monasbtak.org/php/api/admin/venues/deleteVenue.php', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ function page() {
         formData.append('subCategory_ids', subCategoryIds);
       
         try {
-          const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/venues/addVenueSubcategory.php', {
+          const response = await fetch('http://monasbtak.org/php/api/admin/venues/addVenueSubcategory.php', {
             method: 'POST',
             body: formData, // Use FormData directly
           });
@@ -169,7 +169,7 @@ function page() {
 
     const fetchVenueDetails = async (selectedVenue) => {
         try {
-            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/admin/venues/getAll.php?venue_id=${selectedVenue.id}`, {
+            const response = await fetch(`http://monasbtak.org/php/api/admin/venues/getAll.php?venue_id=${selectedVenue.id}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -223,7 +223,7 @@ function page() {
 
     const handleDeleteSubCategory = async (subCategoryId) => {
         try {
-            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/venues/deleteVenueSub.php', {
+            const response = await fetch('http://monasbtak.org/php/api/admin/venues/deleteVenueSub.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -247,7 +247,7 @@ function page() {
 
     const handleAddSubCategory = async (categoryId, subCategoryId) => {
         try {
-            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/venues/addSubCategory.php', {
+            const response = await fetch('http://monasbtak.org/php/api/admin/venues/addSubCategory.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -279,7 +279,7 @@ function page() {
         if (formData.get('location')) formData.append('location', formData.get('location'));
     
         try {
-            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/admin/venues/editVenue.php', {
+            const response = await fetch('http://monasbtak.org/php/api/admin/venues/editVenue.php', {
                 method: 'POST',
                 body: formData, // Use FormData directly
             });

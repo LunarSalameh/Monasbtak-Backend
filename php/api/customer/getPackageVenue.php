@@ -10,7 +10,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
+$pdo = require_once(' /php/config/dbh.inc.php');
 
 try {
     $venue_id = isset($_GET['venue_id']) ? filter_var($_GET['venue_id'], FILTER_VALIDATE_INT) : null;

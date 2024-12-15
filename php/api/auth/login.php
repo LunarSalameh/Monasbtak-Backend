@@ -8,8 +8,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = include_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
-require_once '/opt/lampp/htdocs/Monasbtak-Backend/php/vendor/autoload.php';
+$pdo = include_once(' /php/config/dbh.inc.php');
+require_once ' /php/vendor/autoload.php';
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;

@@ -15,7 +15,7 @@ const Categories = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost/Monasbtak-Backend/php/api/admin/categories/categories.php");
+        const response = await fetch("http://monasbtak.org/php/api/admin/categories/categories.php");
         const result = await response.json();
 
         // Log the result to check the category data

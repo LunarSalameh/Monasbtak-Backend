@@ -52,7 +52,7 @@ function ProfileDetails({ user, fetchUserData }) {
 
     try {
       const response = await fetch(
-        'http://localhost/Monasbtak-Backend/php/api/customer/updateUser.php',
+        'http://monasbtak.org/php/api/customer/updateUser.php',
         {
           method: 'POST',
           body: formDataObj,

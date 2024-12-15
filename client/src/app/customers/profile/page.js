@@ -17,7 +17,7 @@ function Profile() {
   const [error, setError] = useState(null);
 
   const fetchUserData = () => {
-    fetch(`http://localhost/Monasbtak-Backend/php/api/customer/profile.php?id=${id}`)
+    fetch(`http://monasbtak.org/php/api/customer/profile.php?id=${id}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

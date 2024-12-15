@@ -29,7 +29,7 @@ function page() {
         const fetchPackages = async () => {
           try {
             const planner_id = plannerId; 
-            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/packages/getPlannerPackages.php?planner_id=${planner_id}`, {
+            const response = await fetch(`http://monasbtak.org/php/api/planner/packages/getPlannerPackages.php?planner_id=${planner_id}`, {
               method: 'GET',
               headers: {
                 'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ function page() {
       useEffect(() => {
         const fetchCategories = async () => {
           try {
-            const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/packages/getCategorySub.php');
+            const response = await fetch('http://monasbtak.org/php/api/planner/packages/getCategorySub.php');
             const result = await response.json();
             setCategories(result.categories);
           } catch (error) {

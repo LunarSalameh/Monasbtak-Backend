@@ -22,7 +22,7 @@ export default function PendingOffers () {
         const fetchCurrentEvents = async () => {
             try {
                 setUserId(id); // Set userId in state
-                const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/events/getPending.php?planner_Id=${id}`);
+                const response = await fetch(`http://monasbtak.org/php/api/planner/events/getPending.php?planner_Id=${id}`);
                 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -54,7 +54,7 @@ export default function PendingOffers () {
     
     const fetchCustomerName = async (userId) => {
         try {
-            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/profile.php?id=${userId}`);
+            const response = await fetch(`http://monasbtak.org/php/api/customer/profile.php?id=${userId}`);
             const result = await response.json();
             if (result.success && result.user) {
                 return {
@@ -72,7 +72,7 @@ export default function PendingOffers () {
     
     const fetchPackagesDetails = async (packageId) => {
         try {
-          const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/customer/getPackage.php?id=${id}&packageId=${packageId}`);
+          const response = await fetch(`http://monasbtak.org/php/api/customer/getPackage.php?id=${id}&packageId=${packageId}`);
           const result = await response.json();
           if (result.status === 'success' && result.data.length > 0) {
             const packageDetails = result.data[0];
@@ -114,7 +114,7 @@ export default function PendingOffers () {
     const handleStatusUpdate = async (status) => {
         if (selectedOffer) {
             try {
-                const response = await fetch('http://localhost/Monasbtak-Backend/php/api/planner/events/updateStatus.php', {
+                const response = await fetch('http://monasbtak.org/php/api/planner/events/updateStatus.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

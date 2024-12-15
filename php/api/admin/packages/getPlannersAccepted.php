@@ -11,9 +11,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
+$pdo = require_once(' /php/config/dbh.inc.php');
 
-$defaultImagePath = '/opt/lampp/htdocs/Monasbtak-Backend/client/public/profileimage.jpg';
+$defaultImagePath = ' /client/public/profileimage.jpg';
 $defaultImageBase64 = file_exists($defaultImagePath) ? base64_encode(file_get_contents($defaultImagePath)) : null;
 
 try {

@@ -24,7 +24,7 @@ export default function TopSection () {
       useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/topSection/totalEvents.php?planner_Id=${planner_Id}`);
+            const response = await fetch(`http://monasbtak.org/php/api/planner/topSection/totalEvents.php?planner_Id=${planner_Id}`);
             const result = await response.json();
     
             if (result.success) {
@@ -44,7 +44,7 @@ export default function TopSection () {
 
         const fetchplanner = async () => {
             try {
-              const response = await fetch(`http://localhost/Monasbtak-Backend/php/api/planner/profile/getOnePlanner.php?id=${planner_Id}`);
+              const response = await fetch(`http://monasbtak.org/php/api/planner/profile/getOnePlanner.php?id=${planner_Id}`);
               const result = await response.json();
       
               if (result.success) {
