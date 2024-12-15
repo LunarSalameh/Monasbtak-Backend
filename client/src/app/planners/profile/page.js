@@ -720,14 +720,9 @@ export default function Profile () {
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            setProfileData((prevData) => ({
-                ...prevData,
-                image: reader.result.split(',')[1], // Get base64 string without the prefix
-            }));
-        };
-        reader.readAsDataURL(file);
+        if (file){
+            setVenueImage(file);
+        }
     };
 
     const handleDateChange = (date) => {
@@ -1406,7 +1401,9 @@ export default function Profile () {
                                                 <label htmlFor="image">Image</label>
                                                 <input 
                                                     type="file" id="image" className="input" accept="image/*"
-                                                    onChange={handleFileChange} />
+                                                    onChange={handleFileChange}
+                                                    
+                                                />
                                             </div>
 
                                             {/* category list */}

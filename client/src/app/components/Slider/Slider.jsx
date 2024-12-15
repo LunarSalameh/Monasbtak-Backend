@@ -30,7 +30,7 @@ const Slider = () => {
           type: "fixed", // Custom property to identify the fixed slide
           title: "Welcome to Our Platform",
           description: "Create the perfect event with ease. Monasbtak brings together expert planners, vendors, and everything you need to make your event unforgettable.",
-          buttonText: "Get Started",
+          buttonText: "Start Your Booking",
           buttonLink: "#categories",
           image: "/landingPageBG.jpg", // Path to the fixed image
         };

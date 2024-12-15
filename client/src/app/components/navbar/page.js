@@ -11,7 +11,6 @@ const Navbar = () => {
   const router = useRouter();
   const id = searchParams.get("id"); // Get user ID from the query parameters
   const [currentPath, setCurrentPath] = useState("");
-  const user = useAuth(); // Fetch the authenticated user (optional)
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 

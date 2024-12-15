@@ -32,12 +32,12 @@ function Profile() {
           setUser(data.user);
         } else {
           setError(data.message);
-          console.error('Error fetching user:', data.message);
+          console.log('Error fetching user:', data.message);
         }
       })
       .catch((error) => {
         setError('Failed to fetch user data');
-        console.error('Failed to fetch user:', error);
+        console.log('Failed to fetch user:', error);
       });
   };
 

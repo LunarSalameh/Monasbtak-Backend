@@ -51,11 +51,10 @@ try{
                 $stmt->bindParam(':newPwd', $newPwdHash);
                 $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
-                
 
                 if ($stmt->execute()) {
-                    $emailResponse = sendEmail($result['email'], $result['username']); 
-                    echo json_encode(['success' => 'Password Changed Successfully','emailStatus' => $emailResponse]);
+                    // $emailResponse = sendEmail($result['email'], $result['username']); 
+                    echo json_encode(['success' => 'Password Changed Successfully']);
                 } else {
                     echo json_encode(['error' => 'Failed to change password']);
                 }
