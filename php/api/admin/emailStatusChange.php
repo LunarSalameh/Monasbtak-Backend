@@ -2,7 +2,7 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-require ' /php/vendor/autoload.php';
+require '/php/vendor/autoload.php';
 
 function sendEmail($toEmail, $status) {
     $mail = new PHPMailer(true);

@@ -10,7 +10,7 @@
    error_reporting(E_ALL);
 
    // Include the database connection
-   $pdo = include_once(' /php/config/dbh.inc.php');
+   $pdo = include_once('/php/config/dbh.inc.php');
 
    try{
       $stmt = $pdo->prepare("SELECT id, username, email,	phonenumber, description, gender, resume, action FROM planners WHERE action='Pending'");

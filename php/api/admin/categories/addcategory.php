@@ -11,7 +11,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = require_once(' /php/config/dbh.inc.php');
+$pdo = require_once('/php/config/dbh.inc.php');
 
 // Handle category addition
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

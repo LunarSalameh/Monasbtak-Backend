@@ -8,8 +8,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = include_once(' /php/config/dbh.inc.php');
-include(' /php/api/admin/emailNewPlanner.php');
+$pdo = include_once('/php/config/dbh.inc.php');
+include('/php/api/admin/emailNewPlanner.php');
 
 $data = json_decode(file_get_contents('php://input'), true);
 
