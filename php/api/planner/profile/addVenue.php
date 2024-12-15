@@ -8,7 +8,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$pdo = require_once(__DIR__ . '/../../../php/config/dbh.inc.php');
+$pdo = require_once(__DIR__ . '/../../../config/dbh.inc.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if the file was uploaded

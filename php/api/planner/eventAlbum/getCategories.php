@@ -10,7 +10,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 
-$pdo = require_once(__DIR__ . '/../../../php/config/dbh.inc.php');
+$pdo = require_once(__DIR__ . '/../../../config/dbh.inc.php');
 
 // Fetch Data the categories table
 $sql = "SELECT id,name,image FROM categories";

@@ -10,7 +10,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = require_once(__DIR__ . '/../../../php/config/dbh.inc.php');
+$pdo = require_once(__DIR__ . '/../../../config/dbh.inc.php');
 try {
     $planner_id = isset($_GET['planner_id']) ? filter_var($_GET['planner_id'], FILTER_VALIDATE_INT) : null;
 
