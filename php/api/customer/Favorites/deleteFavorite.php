@@ -2,7 +2,7 @@
 
 // Set headers for JSON response and CORS
 header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: https://monasbtak.org");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 

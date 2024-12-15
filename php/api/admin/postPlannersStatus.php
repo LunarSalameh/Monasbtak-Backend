@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: https://monasbtak.org");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type");
 ini_set('display_errors', 1);
