@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: https://monasbtak.org");
+header("Access-Control-Allow-Origin: /monasbtak.org");
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Headers: Content-Type");
 
@@ -10,7 +10,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 
-$pdo = include_once('https://monasbtak.org/php/config/dbh.inc.php');
+$pdo = include_once('/monasbtak.org/php/config/dbh.inc.php');
 
 // Fetch Data the planners table
 $sql = "SELECT * FROM planners";

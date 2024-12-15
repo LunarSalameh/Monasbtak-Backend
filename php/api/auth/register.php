@@ -1,5 +1,5 @@
 <?php
-header("Access-Control-Allow-Origin: https://monasbtak.org");
+header("Access-Control-Allow-Origin: /monasbtak.org");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json');
@@ -8,7 +8,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = include_once('https://monasbtak.org/php/config/dbh.inc.php');
+$pdo = include_once('/monasbtak.org/php/config/dbh.inc.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get POST data

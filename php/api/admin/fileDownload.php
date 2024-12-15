@@ -1,10 +1,10 @@
 <?php
-header("Access-Control-Allow-Origin: https://monasbtak.org");
+header("Access-Control-Allow-Origin: /monasbtak.org");
 header("Access-Control-Allow-Methods: GET, POST");
 header("Access-Control-Allow-Headers: Content-Type");
 
 // Include the database connection
-$pdo = include_once('https://monasbtak.org/php/config/dbh.inc.php');
+$pdo = include_once('/monasbtak.org/php/config/dbh.inc.php');
 
 // Define the uploads directory
 $uploadDir = '/php/api/upload/';

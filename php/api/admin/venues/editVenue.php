@@ -2,7 +2,7 @@
 
 // Set headers for JSON response and CORS
 header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: https://monasbtak.org");
+header("Access-Control-Allow-Origin: /monasbtak.org");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Headers: Content-Type");
 
@@ -11,7 +11,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = require_once('https://monasbtak.org/php/config/dbh.inc.php');
+$pdo = require_once('/monasbtak.org/php/config/dbh.inc.php');
 
 // Get the input data
 $data = json_decode(json_encode($_POST));

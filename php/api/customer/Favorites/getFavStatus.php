@@ -2,13 +2,13 @@
 
 // Set necessary headers
 header('Content-Type: application/json');
-header("Access-Control-Allow-Origin: https://monasbtak.org");
+header("Access-Control-Allow-Origin: /monasbtak.org");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Cache-Control: no-cache, must-revalidate");
 
 // Include the database connection
-$pdo = require_once('https://monasbtak.org/php/config/dbh.inc.php');
+$pdo = require_once('/monasbtak.org/php/config/dbh.inc.php');
 
 try {
     // Check if user_id is provided in the GET request
