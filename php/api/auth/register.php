@@ -8,7 +8,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = include_once('/php/config/dbh.inc.php');
+$pdo = include_once('https://monasbtak.org/php/config/dbh.inc.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get POST data

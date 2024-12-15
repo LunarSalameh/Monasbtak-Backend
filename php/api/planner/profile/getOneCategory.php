@@ -10,7 +10,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = require_once('/php/config/dbh.inc.php');
+$pdo = require_once('https://monasbtak.org/php/config/dbh.inc.php');
 
 try {
     $category_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;

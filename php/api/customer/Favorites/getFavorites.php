@@ -9,7 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header("Cache-Control: no-cache, must-revalidate");
 
 // Include the database connection
-$pdo = require_once('/php/config/dbh.inc.php');
+$pdo = require_once('https://monasbtak.org/php/config/dbh.inc.php');
 
 try {
     // Check if user_id is provided in the GET request

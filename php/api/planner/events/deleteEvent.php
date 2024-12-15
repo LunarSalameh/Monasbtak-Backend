@@ -10,7 +10,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$pdo = require_once('/php/config/dbh.inc.php');
+$pdo = require_once('https://monasbtak.org/php/config/dbh.inc.php');
     $input = json_decode(file_get_contents('php://input'), true);
 
 try {
