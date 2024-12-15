@@ -11,8 +11,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = require_once('/monasbtak.org/php/config/dbh.inc.php');
-
+$pdo = require_once(__DIR__ . '/../php/config/dbh.inc.php');
 try {
     // Prepare the SQL query to fetch packages
     $sql = "SELECT id, name, description, price, image, location, subCat_name, category_id, planner_name, venue_id, subCategory_id FROM packeges WHERE status = 'Pending' AND IsDeleted = 0"; 

@@ -10,8 +10,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$pdo = require_once('/monasbtak.org/php/config/dbh.inc.php');
-
+$pdo = require_once(__DIR__ . '/../php/config/dbh.inc.php');
 try {
     $sql = "SELECT id, name, status, eventTime, attendings, eventDay, package_id, user_Id FROM events WHERE IsDeleted=0 ";
     $stmt = $pdo->prepare($sql);

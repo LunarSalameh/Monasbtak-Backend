@@ -10,8 +10,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = require_once('/monasbtak.org/php/config/dbh.inc.php');
-
+$pdo = require_once(__DIR__ . '/../php/config/dbh.inc.php');
 try {
     // Validate and sanitize the user ID from query parameters
     $user_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;

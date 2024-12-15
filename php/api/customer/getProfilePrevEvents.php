@@ -11,8 +11,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$pdo = require_once('/monasbtak.org/php/config/dbh.inc.php');
-
+$pdo = require_once(__DIR__ . '/../php/config/dbh.inc.php');
 try {
     $user_id = isset($_GET['id']) ? filter_var($_GET['id'], FILTER_VALIDATE_INT) : null;
     $IsDeleted = 0;

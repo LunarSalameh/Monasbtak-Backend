@@ -10,8 +10,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = require_once('/monasbtak.org/php/config/dbh.inc.php');
-
+$pdo = require_once(__DIR__ . '/../php/config/dbh.inc.php');
 try {
     // Fetch all names from categories table except 'Customized'
     $stmt = $pdo->query("SELECT id, name FROM categories WHERE name != 'Customized'");

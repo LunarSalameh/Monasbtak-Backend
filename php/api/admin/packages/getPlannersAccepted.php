@@ -11,8 +11,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 // Include the database connection
-$pdo = require_once('/monasbtak.org/php/config/dbh.inc.php');
-
+$pdo = require_once(__DIR__ . '/../php/config/dbh.inc.php');
 $defaultImagePath = ' /client/public/profileimage.jpg';
 $defaultImageBase64 = file_exists($defaultImagePath) ? base64_encode(file_get_contents($defaultImagePath)) : null;
 
