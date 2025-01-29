@@ -13,7 +13,7 @@ function sendEmail($toEmail,$username) {
         $mail->Host = 'smtp.gmail.com';   
         $mail->SMTPAuth = true;
         $mail->Username = 'monasbtakteam@gmail.com';   
-        $mail->Password = 'xwshrgykclrejien';   
+        $mail->Password = 'mgtrxysxxoslxxig';   
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
@@ -33,7 +33,7 @@ function sendEmail($toEmail,$username) {
             return ['success' => false, 'message' => 'Email not sent'];
         }
     } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        return  ['success' => false, 'message' => "Message could not be sent. Mailer Error: {$mail->ErrorInfo}"];
     }
 }
 ?>

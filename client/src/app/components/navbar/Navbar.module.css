@@ -135,7 +135,7 @@
     display: block;
   }
   .sidebar {
-    height: 45%;
+    height: fit-content;
 }
 .logo{
   height: 70px;

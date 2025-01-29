@@ -7,11 +7,12 @@ import { FaPhone } from "react-icons/fa6";
 import { GrUserManager } from "react-icons/gr";
 import { TbGenderBigender } from "react-icons/tb";
 import { useSearchParams } from 'next/navigation';
+import { OrbitProgress } from 'react-loading-indicators';
 
 
 function ProfileDetails () {
     const searchParams = useSearchParams();
-    const id = searchParams.get('id');  //planner_id
+    const id = searchParams.get('plannerId');  //planner_id
     const [planner, setPlanner] = useState([]);
     const [loading, setLoading] = useState(true);
   
@@ -19,16 +20,16 @@ function ProfileDetails () {
       const fetchPlannerDetails = async () => {
         try {
           const response = await fetch(
-            `http://localhost/Monasbtak-Backend/php/api/customer/getPlanner.php?id=${id}`
+            `http://localhost/Monasbtak-Backend/php/api/customer/getPlanner.php?plannerId=${id}`
           );
           const data = await response.json();
           if (data.status === 'success') {
             setPlanner(data.data);
           } else {
-            console.error(data.message);
+            console.log(data.message);
           }
         } catch (error) {
-          console.error(error);
+          console.log(error);
         } finally {
           setLoading(false);
         }
@@ -57,7 +58,9 @@ function ProfileDetails () {
             </div>
         </div>
         ))): (
-            <p>Loading...</p>
+          <div className='flex w-full justify-center justify-items-center py-4'>
+              <OrbitProgress variant="track-disc" speedPlus="1" easing="linear" color="#4C1B41" />
+          </div> 
         )}
     </div>
   );

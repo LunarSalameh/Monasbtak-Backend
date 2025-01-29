@@ -24,7 +24,7 @@ export default function PlannerStatus() {
   const closeRejectModal = () => {setRejectModal(false);};
 
   const handleAcceptModal =() => {
-    console.log ("handle accept modal");
+    // console.log ("handle accept modal");
         closeAcceptModal();
         setAcceptAlert(true);
         setTimeout(() => {
@@ -61,6 +61,7 @@ export default function PlannerStatus() {
   // Handle Accept/Reject
   const handleStatusChange = (plannerId, action) => {
     console.log(`PlannerId: ${plannerId}`)
+    console.log(`action: ${action}`)
     if (!planner) return;
 
     fetch("http://localhost/Monasbtak-Backend/php/api/admin/postPlannersStatus.php", {

@@ -14,7 +14,7 @@ import Link from "next/link";
 export default function Profile () {
     const searchParams = useSearchParams();
     const id = searchParams.get('id'); // Get user ID from the query parameters
-
+    
     const [EditProfile, setEditProfile] = useState(false);
 
     const [acceptAlert, setAcceptAlert] = useState(false);
@@ -985,7 +985,7 @@ export default function Profile () {
                     
                     {/* Edit & Change Password */}
                     <div className="btnR flex gap-4 mt-16 justify-end  flex-wrap">
-                        <Link href={`/planners/customerViewProfile?id=${id}`}>
+                        <Link href={`/planners/customerViewProfile?plannerId=${id}`}>
                             <button className="bg-[#D9B34D] w-fit py-2 px-5 rounded-lg shadow-md hover:bg-[#d9b44dcc] text-white">
                                 Customer View
                             </button>
