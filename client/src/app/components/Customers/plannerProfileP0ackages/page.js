@@ -10,7 +10,7 @@ import { OrbitProgress } from 'react-loading-indicators';
 function PlannerPackages() {
   const searchParams = useSearchParams();
   const userId = searchParams.get('id');  //user_id
-  const id = searchParams.get('planner_id');  //planner_id
+  const id = searchParams.get('plannerId');  //planner_id
   const [packages, setPackages] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -18,7 +18,7 @@ function PlannerPackages() {
     const fetchPackages = async () => {
       try {
         const response = await fetch(
-          `http://localhost/Monasbtak-Backend/php/api/customer/getPlannerPackages.php?planner_id=${id}`
+          `http://localhost/Monasbtak-Backend/php/api/customer/getPlannerPackages.php?plannerId=${id}`
         );
         const data = await response.json();
         if (data.status === 'success') {
@@ -40,7 +40,7 @@ function PlannerPackages() {
     <div className='Packages-container'>
       <div className='showall'> 
         <span className='XL-font-size font-color bold-font'>Packages</span>
-        <Link href={`/customers/plannerAllPackages?id=${userId}&planner_id=${id}`} >
+        <Link href={`/customers/plannerAllPackages?id=${userId}&plannerId=${id}`} >
           <span className='small-font-size bold-font Show-Button'>Show All</span>
         </Link>
       </div>

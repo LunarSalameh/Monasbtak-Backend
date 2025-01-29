@@ -3,7 +3,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 //import jwtDecode from 'jwt-decode'; // Ensure this is the correct import
 import { jwtDecode } from 'jwt-decode';
 
-export default function useAuth(redirectTo = '/general/signIn') {
+export default function useAuth( ) {
     const [user, setUser] = useState(null);
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -13,7 +13,7 @@ export default function useAuth(redirectTo = '/general/signIn') {
         const token = localStorage.getItem('token');
 
         if (!token) {
-            router.push(redirectTo); // Redirect if no token found
+            // router.push(redirectTo); // Redirect if no token found
             return;
         }
 
@@ -31,7 +31,7 @@ export default function useAuth(redirectTo = '/general/signIn') {
             localStorage.removeItem('token');
             router.push(redirectTo);
         }
-    }, [router, redirectTo, urlId]);
+    }, [router, urlId]);
 
     return user;
 }

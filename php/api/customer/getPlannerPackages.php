@@ -13,7 +13,7 @@ error_reporting(E_ALL);
 $pdo = require_once('/opt/lampp/htdocs/Monasbtak-Backend/php/config/dbh.inc.php');
 
 try {
-    $planner_id = isset($_GET['planner_id']) ? filter_var($_GET['planner_id'], FILTER_VALIDATE_INT) : null;
+    $planner_id = isset($_GET['plannerId']) ? filter_var($_GET['plannerId'], FILTER_VALIDATE_INT) : null;
 
     if ($planner_id) {
         $sql = "SELECT id, name, description, price, image, location, subCat_name, category_id, planner_id FROM packeges WHERE planner_id = :planner_id AND IsDeleted = 0"; 

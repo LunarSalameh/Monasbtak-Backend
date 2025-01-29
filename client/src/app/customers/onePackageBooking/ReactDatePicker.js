@@ -3,10 +3,13 @@ import DatePicker from "react-datepicker";
 import NumberBox from './box';
 import "react-datepicker/dist/react-datepicker.css";
 import './calender.css';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 function ReactDatePicker(){
     const searchParams = useSearchParams();
+    const router = useRouter();
+
+    const token = localStorage.getItem('token');
 
     const userId = searchParams.get('id'); // userId 
     const packageId = searchParams.get('packageId'); //package id
@@ -50,6 +53,12 @@ const maxdate = new Date()
 maxdate.setDate(maxdate.getDate() +365)
 
     const handleBooking = async () => {
+
+        if (!token){
+             router.push('/general/signIn'); // Redirect if no token found
+             return ;
+        }
+
         if (!selectedDate || !packageDetails) {
             // alert('Please select a date and ensure package details are loaded.');
             setMessage('Please select a date and ensure package details are loaded.')
